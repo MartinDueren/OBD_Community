@@ -1,0 +1,13 @@
+# This migration comes from community_engine (originally 37)
+class CreateOfferings < ActiveRecord::Migration
+  def self.up
+    # create_table :offerings do |t|
+    #   t.column :skill_id, :integer
+    #   t.column :user_id, :integer
+    # end
+  end
+
+  def self.down
+    # drop_table :offerings
+  end
+end
