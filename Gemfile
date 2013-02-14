@@ -1,6 +1,7 @@
 source 'https://rubygems.org'
 
-gem 'community_engine', :git => 'https://github.com/bborn/communityengine.git', :branch => 'jquery-bootstrap'
+gem 'community_engine', :git => 'https://github.com/MartinDueren/communityengine.git', :branch => 'jquery-bootstrap'
+gem 'omniauth-facebook'
 
 gem 'rails', '3.2.11'
 
