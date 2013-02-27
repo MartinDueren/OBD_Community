@@ -1,4 +1,4 @@
-1360848859
+1361962885
 AddActivationCodeToUser	/home/martin/Dropbox/Uni/Workspaces/AptanaWorkspace/CE_simple/OBDComm/db/migrate/20130213145721_add_activation_code_to_user.community_engine.rb	class AddActivationCodeToUser 
 AddActivitiesCount	/home/martin/Dropbox/Uni/Workspaces/AptanaWorkspace/CE_simple/OBDComm/db/migrate/20130213145765_add_activities_count.community_engine.rb	class AddActivitiesCount 
 AddAlbumIdToPhotos	/home/martin/Dropbox/Uni/Workspaces/AptanaWorkspace/CE_simple/OBDComm/db/migrate/20130213145780_add_album_id_to_photos.community_engine.rb	class AddAlbumIdToPhotos 

@@ -1,3 +1,6 @@
 --- 
-open_files: []
-
+open_files: 
+  - app/views/shared/_header.html.haml
+  - Gemfile
+  - Rakefile
+  - config/initializers/omniauth.rb
