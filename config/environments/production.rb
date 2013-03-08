@@ -1,4 +1,5 @@
 OBDComm::Application.configure do
+  Paperclip.options[:command_path] = "/usr/bin/identify"
   # config.assets.precompile += %w( *.js *.css )
   #config.after_initialize do
   #  EnginesHelper.autoload_assets = false
