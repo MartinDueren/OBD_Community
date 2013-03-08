@@ -1,5 +1,8 @@
 OBDComm::Application.configure do
   config.assets.precompile += %w( *.js *.css )
+  config.after_initialize do
+    EnginesHelper.autoload_assets = false
+  end
   # Settings specified here will take precedence over those in config/application.rb
 
   # Code is not reloaded between requests

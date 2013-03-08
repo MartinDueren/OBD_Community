@@ -4,3 +4,9 @@ open_files:
   - Gemfile
   - Rakefile
   - config/initializers/omniauth.rb
+  - config/application.rb
+  - config/environments/development.rb
+  - public/assets/manifest.yml
+  - app/assets/stylesheets/application.css
+  - config/environment.rb
+  - config/environments/production.rb

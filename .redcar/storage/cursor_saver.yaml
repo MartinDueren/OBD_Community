@@ -6,31 +6,45 @@ cursor_positions:
   - :path: config/routes.rb
     :cursor_offset: 1824
     :timestamp: 2013-02-13 15:58:04 +01:00
-  - :path: config/application.rb
-    :cursor_offset: 2567
-    :timestamp: 2013-02-13 15:58:46 +01:00
   - :path: app/views/layouts/application.html.erb.bk
     :cursor_offset: 46
     :timestamp: 2013-02-14 11:15:50 +01:00
   - :path: app/views/layouts/application.html.haml
     :cursor_offset: 626
     :timestamp: 2013-02-14 11:15:42 +01:00
-  - :path: config/environment.rb
-    :cursor_offset: 28
-    :timestamp: 2013-02-14 12:31:12 +01:00
   - :path: Gemfile.lock
     :cursor_offset: 3521
     :timestamp: 2013-02-14 13:12:21 +01:00
   - :path: app/views/shared/_header.html.haml
-    :cursor_offset: 420
-    :timestamp: 2013-02-14 11:28:57 +01:00
+    :cursor_offset: 0
+    :timestamp: 2013-02-14 11:28:06 +01:00
   - :path: Gemfile
-    :cursor_offset: 171
-    :timestamp: 2013-02-14 14:32:10 +01:00
+    :cursor_offset: 516
+    :timestamp: 2013-02-27 12:01:25 +01:00
   - :path: Rakefile
     :cursor_offset: 0
     :timestamp: 2013-02-13 15:37:22 +01:00
   - :path: config/initializers/omniauth.rb
     :cursor_offset: 109
     :timestamp: 2013-02-14 14:29:33 +01:00
+  - :path: config/application.rb
+    :cursor_offset: 2898
+    :timestamp: 2013-02-27 14:19:59 +01:00
+  - :path: config/environments/development.rb
+    :cursor_offset: 1272
+    :timestamp: 2013-02-13 15:37:22 +01:00
+    :selection_offset: 1278
+    :block_selection_mode: false
+  - :path: public/assets/manifest.yml
+    :cursor_offset: 1580
+    :timestamp: 2013-02-27 13:09:00 +01:00
+  - :path: app/assets/stylesheets/application.css
+    :cursor_offset: 0
+    :timestamp: 2013-02-13 15:37:22 +01:00
+  - :path: config/environment.rb
+    :cursor_offset: 28
+    :timestamp: 2013-02-14 12:31:12 +01:00
+  - :path: config/environments/production.rb
+    :cursor_offset: 114
+    :timestamp: 2013-02-27 13:36:15 +01:00
 files_to_retain: 0
