@@ -5,7 +5,6 @@ gem 'omniauth-facebook'
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'
-gem 'activerecord-mysql2-adapter'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
