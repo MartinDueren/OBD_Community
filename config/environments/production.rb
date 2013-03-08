@@ -1,5 +1,5 @@
 OBDComm::Application.configure do
-  config.assets.precompile += %w( *.js *.css )
+  # config.assets.precompile += %w( *.js *.css )
   config.after_initialize do
     EnginesHelper.autoload_assets = false
   end
