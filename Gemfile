@@ -5,8 +5,7 @@ gem 'omniauth-facebook'
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'
-gem "heroku"
-
+gem 'activerecord-mysql2-adapter'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
 
@@ -14,7 +13,7 @@ group :development, :test do
   gem 'sqlite3'
 end
 group :production do
-  gem 'pg'
+  gem 'mysql2'
 end
 
 gem 'multi_json'
