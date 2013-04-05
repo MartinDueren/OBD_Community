@@ -1,4 +1,4 @@
-class MeasurementController < ApplicationController
+class MeasurementController < BaseController
   def create
   end
 
