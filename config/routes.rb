@@ -1,4 +1,13 @@
 OBDComm::Application.routes.draw do
+  get "measurement/create"
+
+  get "measurement/show"
+
+  get "trip/show"
+
+  get "trip/create"
+  
+
   # The priority is based upon order of creation:
   # first created -> highest priority.
 

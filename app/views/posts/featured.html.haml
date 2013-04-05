@@ -1,0 +1,13 @@
+-@section = 'posts'
+-@page_title = :featured_posts.l
+
+-widget do 
+  %ul.nav.nav-list
+    %li.nav-header= :featured_writers.l
+    - @featured_writers.each do |user|
+      = render :partial => "users/sidebar_user", :locals => {:user => user}
+      
+= render :partial => 'posts/post', :collection => @posts
+= paginate @posts, :theme => 'bootstrap'
+
+  

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130213145796) do
+ActiveRecord::Schema.define(:version => 20130404124003) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id",    :limit => 10
@@ -74,6 +74,11 @@ ActiveRecord::Schema.define(:version => 20130213145796) do
     t.string   "access_token_secret"
     t.datetime "created_at",          :null => false
     t.datetime "updated_at",          :null => false
+  end
+
+  create_table "cars", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
   end
 
   create_table "categories", :force => true do |t|
@@ -177,6 +182,11 @@ ActiveRecord::Schema.define(:version => 20130213145796) do
   add_index "friendships", ["friendship_status_id"], :name => "index_friendships_on_friendship_status_id"
   add_index "friendships", ["user_id"], :name => "index_friendships_on_user_id"
 
+  create_table "garages", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+  end
+
   create_table "homepage_features", :force => true do |t|
     t.datetime "created_at"
     t.string   "url"
@@ -198,6 +208,16 @@ ActiveRecord::Schema.define(:version => 20130213145796) do
     t.string   "message"
     t.integer  "user_id"
     t.datetime "created_at"
+  end
+
+  create_table "measurements", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.integer  "trip_id"
+    t.float    "lon"
+    t.float    "lat"
+    t.integer  "rpm"
+    t.float    "speed"
   end
 
   create_table "message_threads", :force => true do |t|
@@ -399,6 +419,13 @@ ActiveRecord::Schema.define(:version => 20130213145796) do
   add_index "topics", ["forum_id", "replied_at"], :name => "index_topics_on_forum_id_and_replied_at"
   add_index "topics", ["forum_id", "sticky", "replied_at"], :name => "index_topics_on_sticky_and_replied_at"
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
+
+  create_table "trips", :force => true do |t|
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
+    t.string   "trip_id"
+    t.string   "login"
+  end
 
   create_table "users", :force => true do |t|
     t.string   "login"

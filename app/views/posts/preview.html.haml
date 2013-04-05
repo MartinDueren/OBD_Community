@@ -1,0 +1,31 @@
+- @page_title = @post.title
+
+=render :partial => 'author_profile', :locals => {:user => @user}
+      
+      
+%h2= :users_blog.l :user=>  @user.login
+.clearfix
+  .span3.pull-right
+    %ul.nav.nav-list
+      %li
+        %a{"href"=>"#{user_post_path(@user, @post)}", "rel"=>"bookmark"}
+          %i.icon-calendar.pull-left
+          %abbr.published{"title"=>"#{@post.published_at}"}= @post.published_at_display(:literal_date)
+      -if @is_current_user || admin? || moderator?
+        %li
+          = icon_link_to 'icon-edit', :edit.l, edit_user_post_path(@post.user, @post)
+        %li
+          = link_to '<i class="icon-trash"></i>'.html_safe + :delete.l, user_post_path(@post.user, @post), {:method => :delete, :confirm => :permanently_delete_this_post.l}
+        
+  = @post.post
+= render :partial => 'polls/poll_ui', :locals => {:poll => @post.polls.first} unless @post.polls.empty?
+- unless @post.tags.empty?
+  .clearfix
+    %ul.unstyled
+      - @post.tags.each do |t|
+        %li
+          %a.label.label-info{:href => tag_url(t), :rel => 'tag'}
+            %i.icon-tag.icon-white
+            =t.name
+
+

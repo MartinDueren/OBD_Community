@@ -1,0 +1,8 @@
+%h3
+  = link_to post.title, user_post_path(post.user, post)
+  %small= link_to :by.l(:login => post.user.login), user_path(post.user)
+
+= link_to image_tag(post.image_for_excerpt), user_post_path(post.user, post)
+%p
+  = truncate_words(post.post, 7, '...' )
+  = link_to :more.l, user_post_path(post.user, post))

@@ -1,0 +1,12 @@
+-@page_title = @post.category ? (:new_post_for_category.l :category => @post.category.name) : :new_post.l
+
+-widget :id => 'category_tips' do
+  -if @post.category
+    = render :partial => "categories/tips", :locals => {:category => @post.category}
+  - else 
+    = render :partial => "categories/tips", :locals => {:category => nil}
+
+%p
+  =link_to :back.l, manage_user_posts_path(@user), :class => 'btn'
+  
+=render 'form'

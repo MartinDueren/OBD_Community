@@ -7,14 +7,12 @@
 .nav-collapse
   %ul.nav
     = render 'categories/menu_item'
-    -#= render 'clippings/menu_item'
-    -#= render 'events/menu_item'
     = render 'forums/menu_item'
     = render 'posts/menu_item'
     = render 'users/menu_item'
     - if @header_tabs.any?
       - for tab in @header_tabs
-        %li= link_to tab.name, tab.url
+        %li= link_to "tab.name", "tab.url"
   %ul.nav.pull-right
     = render 'messages/menu_item'
     = render 'sessions/menu_item'

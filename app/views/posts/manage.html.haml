@@ -1,0 +1,50 @@
+-@page_title = :manage_posts.l
+
+-widget do
+  %h3=:search.l
+  = bootstrap_form_for @search, :url => manage_user_posts_path(current_user), :html => {:class => "form"} do |f|
+    = f.text_field :title_like, :label => :title.l
+    = f.select :category_id_equals, Category.all.collect{|c| [c.name, c.id]}, :include_blank => true, :label => :category.l
+    = f.select :published_as_equals, [['Published','live'], ['Draft','draft']], :include_blank => true, :label => :status.l
+
+    .control-group
+      %label.control-label= :show.l
+      .controls= select_tag :size, options_for_select([['10',10], ['20',20], ['100',100]], params[:size].to_i )
+
+    .controls= f.submit :search.l
+  
+%p=:posts_saved_with_draft_status_wont_appear_in_your_blog_until_you_publish_them.l
+
+%table.table.table-bordered.table-striped
+  %tr
+    %th
+      =sort_link @search, :created_at, :date_created.l
+    %th
+      =sort_link @search, :published_at, :date_published.l
+    %th=:title.l
+    %th=:category.l
+    %th=:tags.l
+    %th=:comments.l
+    %th=:status.l
+    %th=:actions.l
+  - @posts.each do |post|
+    %tr            
+      %td
+        %abbr{:title=>"#{post.created_at}"}= I18n.l(post.created_at, :format => :published_date)
+      %td
+        %abbr{:title=>"#{post.published_at}"}= post.published_at_display
+      %td
+        = link_to post.title, user_post_path(post.user, post)
+      %td= post.category ? post.category.name : :uncategorized.l
+      %td= post.tags.any? ? post.tag_list : :no_tags.l
+      %td= post.comments.count
+      %td= post.is_live? ? link_to(:published.l, user_post_path(post.user, post)) : :draft.l
+      %td
+        =link_to :show.l, user_post_path(post.user, post), :class => 'btn'
+        =link_to :edit.l, edit_user_post_path(post.user, post), :class => 'btn btn-warning'
+        =link_to :delete.l, user_post_path(post.user, post), :method => 'delete', :confirm => :are_you_sure.l, :class => 'btn btn-danger'
+        
+= paginate @posts, :theme => 'bootstrap'
+%p
+  =link_to :new_post.l, new_user_post_path(current_user), :class => 'btn btn-success'
+   
