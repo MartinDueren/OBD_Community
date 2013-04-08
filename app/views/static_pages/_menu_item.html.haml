@@ -1,0 +1,6 @@
+- if current_page?(static_pages_community_map_path)
+  - css_class = 'active'
+- else
+  - css_class = 'inactive'
+  
+%li{:class => css_class}= link_to :community_map.l, static_pages_community_map_path

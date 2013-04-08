@@ -1,7 +1,12 @@
 OBDComm::Application.routes.draw do
+  get "static_pages/community_map"
+
+  get "static_pages/help"
+
   get "measurement/create"
 
   get "measurement/show"
+  match "/measurement/:id" => "measurement#show"
 
   get "trip/show"
 

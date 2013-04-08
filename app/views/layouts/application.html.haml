@@ -14,8 +14,8 @@
       = auto_discovery_link_tag(:rss, @rss_url, {:title => @rss_title})
       
     = render :partial => "shared/scripts_and_styles"      
-    
-  %body
+
+  %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    
       =render :partial => 'facebook/fb_require'    
       

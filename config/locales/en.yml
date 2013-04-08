@@ -4,3 +4,5 @@
 en:
   hello: "Hello world"
   community_tagline: ""
+  my_trips: "Trips"
+  :community_map: "Community Map"
