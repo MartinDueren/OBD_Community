@@ -11,3 +11,12 @@
  *= require_self
  *= require_tree .
  */
+body {
+  margin: 0;
+  background: url('/assets/bg.jpg');
+  background-size: 100%;
+  background-repeat:no-repeat;
+  display: compact;
+  font: 13px/18px "Helvetica Neue", Helvetica, Arial, sans-serif;
+  background-attachment:fixed;
+}

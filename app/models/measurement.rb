@@ -20,13 +20,14 @@ class Measurement < ActiveRecord::Base
       :features => [
         :type => "Feature",
         :geometry => {
-          :type => "GeometryCollection",
-          :geometries => [
-            { :type => "LineString", :coordinates => coordinates }
-          ]
-        }
+          :type => "Point",
+          :coordinates => coordinates[0]
+        },
+        :properties => {}
       ]
     }
+      
+    
   end
   
 end
