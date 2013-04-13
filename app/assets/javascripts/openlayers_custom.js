@@ -39,7 +39,7 @@ function init() {
         ]
     };
     
-    var url = "/measurement/1.json"
+/*    var url = "/measurement/1.json"
     OpenLayers.loadURL(url, {}, null, function (response){
     var geojson_format = new OpenLayers.Format.GeoJSON({
         'internalProjection': new OpenLayers.Projection("EPSG:900913"), //900913 for Google
@@ -50,48 +50,8 @@ function init() {
     map.addLayer(vector_layer);
     vector_layer.addFeatures(geojson_format.read(response.responseText));
     map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
-  })
-    // Create a new vector layer including the above StyleMap
-    /*var vectorLayer = new OpenLayers.Layer.Vector(
-    "Measurements",
-    { styleMap: myStyleMap }
-  );
-  map.addLayer(vectorLayer);
-
-  // Get the polylines from Rails
-  var url = "/measurement/1.json"
-  OpenLayers.loadURL(url, {}, null, function (response){
-    var geojson_format = new OpenLayers.Format.GeoJSON({
-      'internalProjection': new OpenLayers.Projection("EPSG:4326"),//900913 for Google
-      'externalProjection': new OpenLayers.Projection("EPSG:4326")
-    });
-
-    //Read the GeoJSON
-    var features = geojson_format.read(response.responseText,"FeatureCollection");
-
-    var bounds;
-
-    if(features) {
-      if(features.constructor != Array) {
-        features = [features];
-      }
-
-      // Iterate over the features and extend the bounds to the bounds of the geometries
-      for(var i=0; i<features.length; ++i) {
-        if (!bounds) {
-          bounds = features[i].geometry.getBounds();
-        } else {
-          bounds.extend(features[i].geometry.getBounds());
-        }
-      }
-
-      // Add features to the 'vectorLayer'
-      vectorLayer.addFeatures(features);
-
-      // Set the extent of the map to the 'bounds'
-      map.zoomToExtent(bounds);
-    }
-  });*/
+  })*/
+    
 }
 
 window.onload = init;

@@ -14,9 +14,9 @@
 ActiveRecord::Schema.define(:version => 20130404124003) do
 
   create_table "activities", :force => true do |t|
-    t.integer  "user_id",    :limit => 10
+    t.integer  "user_id"
     t.string   "action",     :limit => 50
-    t.integer  "item_id",    :limit => 10
+    t.integer  "item_id"
     t.string   "item_type"
     t.datetime "created_at"
   end
@@ -213,7 +213,7 @@ ActiveRecord::Schema.define(:version => 20130404124003) do
   create_table "measurements", :force => true do |t|
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
-    t.integer  "trip_id"
+    t.string   "trip_id"
     t.float    "lon"
     t.float    "lat"
     t.integer  "rpm"
@@ -424,7 +424,7 @@ ActiveRecord::Schema.define(:version => 20130404124003) do
     t.datetime "created_at", :null => false
     t.datetime "updated_at", :null => false
     t.string   "trip_id"
-    t.string   "login"
+    t.integer  "login"
   end
 
   create_table "users", :force => true do |t|
