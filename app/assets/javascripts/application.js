@@ -14,3 +14,10 @@
 //= require jquery_ujs
 //= require_tree .
 //= require_directory ../../../vendor/assets/openlayers
+
+!function ($) {
+  $(function(){
+    // carousel demo
+    $('#myCarousel').carousel()
+  })
+  }(window.jQuery)

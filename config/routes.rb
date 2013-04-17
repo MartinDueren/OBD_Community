@@ -2,6 +2,8 @@ OBDComm::Application.routes.draw do
   get "static_pages/community_map"
 
   get "static_pages/help"
+  
+  get "static_pages/landing"
 
   get "measurement/create"
 
