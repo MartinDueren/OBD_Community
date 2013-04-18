@@ -11,10 +11,3 @@
   - css_class = 'inactive'
   
 %li{:class => css_class}= link_to :help.l, static_pages_landing_path
-
-- if current_page?(static_pages_landing_path)
-  - css_class = 'active'
-- else
-  - css_class = 'inactive'
-  
-%li{:class => css_class}= link_to :landing.l, static_pages_landing_path

@@ -1,7 +1,5 @@
 var map, layer;
-
-function init() {
-  
+function init() { 
     // Define a new map.  We want it to be loaded into the 'map_canvas' div in the view
     map = new OpenLayers.Map('map');
 
@@ -38,6 +36,16 @@ function init() {
             }
         ]
     };
+    
+    var geojson_format = new OpenLayers.Format.GeoJSON({
+        'internalProjection': new OpenLayers.Projection("EPSG:900913"), //900913 for Google
+        'externalProjection': new OpenLayers.Projection("EPSG:4326")
+    });
+    
+    var vector_layer = new OpenLayers.Layer.Vector();
+    map.addLayer(vector_layer);
+    vector_layer.addFeatures(geojson_format.read(featurecollection));
+    map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
     
 /*    var url = "/measurement/1.json"
     OpenLayers.loadURL(url, {}, null, function (response){
