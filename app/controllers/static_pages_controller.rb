@@ -1,5 +1,5 @@
 class StaticPagesController < BaseController
-  
+ 
   def community_map
     render :layout => "fullmap"
   end
