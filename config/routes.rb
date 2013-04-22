@@ -5,6 +5,8 @@ OBDComm::Application.routes.draw do
   
   get "static_pages/landing"
 
+  get "static_pages/auth"
+  
   get "measurement/create"
 
   get "measurement/show"
