@@ -94,8 +94,15 @@ GEM
       coffee-script-source
       execjs
     coffee-script-source (1.4.0)
+    columnize (0.3.6)
     configatron (2.10.0)
       yamler (>= 0.1.0)
+    debugger (1.5.0)
+      columnize (>= 0.3.1)
+      debugger-linecache (~> 1.2.0)
+      debugger-ruby_core_source (~> 1.2.0)
+    debugger-linecache (1.2.0)
+    debugger-ruby_core_source (1.2.0)
     dynamic_form (1.1.4)
     erubis (2.7.0)
     execjs (1.4.0)
@@ -107,6 +114,9 @@ GEM
       sass-rails (>= 3.1.1)
     friendly_id (3.3.3.0)
       babosa (~> 0.3.0)
+    gon (4.1.0)
+      actionpack (>= 2.3.0)
+      json
     haml (4.0.0)
       tilt
     hashie (1.2.0)
@@ -243,6 +253,8 @@ DEPENDENCIES
   activerecord-postgis-adapter
   coffee-rails (~> 3.2.1)
   community_engine!
+  debugger
+  gon
   jquery-rails
   multi_json
   mysql2

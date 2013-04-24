@@ -1,0 +1,10 @@
+!!!
+%html
+  %head
+    =include_gon
+    = javascript_include_tag "OpenLayers"
+    = javascript_include_tag "trip_single"
+    = stylesheet_link_tag 'trip_single'     
+  %body{ :onload => @onload }
+    =yield
+    

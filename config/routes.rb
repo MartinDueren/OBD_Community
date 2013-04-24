@@ -12,7 +12,11 @@ OBDComm::Application.routes.draw do
   get "measurement/show"
   match "/measurement/:id" => "measurement#show"
 
+  
+  get "trip/show_single_trip"
+  
   get "trip/show"
+  match "/trip/:id" => "trip#show"
 
   get "trip/create"
   
