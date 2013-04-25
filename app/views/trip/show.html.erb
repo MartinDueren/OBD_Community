@@ -1,2 +1,14 @@
-<h1>Trip#show</h1>
-<p>Find me in app/views/trip/show.html.erb</p>
+<h1>My recent Trips</h1>
+<% if @trips.blank? %>
+<p>No trips to display</p>
+
+<% else %>
+<ul id="trips">
+  <% @trips.each do |c| %>
+  <li>
+    <%= "Trip ID: #{c.trip_id}" %>
+    <%= image_tag "/assets/trips/#{c.trip_id}.png"%>
+  </li>
+  <% end %>
+</ul>
+<% end %>

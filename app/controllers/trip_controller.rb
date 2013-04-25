@@ -30,9 +30,24 @@ class TripController < BaseController
       }
       
       format.html {
-        @test = 100
+        @user = current_user.login
+        @trips = Trip.where("login = ?", @user)
+        #debugger
+        @trips.each { |x|
+          if !x.has_snapshot
+            system(
+              "/usr/bin/phantomjs " + 
+              "./app/assets/javascripts/phantom_snapshot.js " + 
+              "http://localhost:3000/trip/show_single_trip?tripId=#{x.trip_id} " +
+              "./public/assets/trips/#{x.trip_id}.png '#map'&"
+              )    
+            #Should do some verification here
+            x.update_attribute(:has_snapshot, true)
+          end
+        }
+        
         render :layout => "trips"
-        system("/usr/bin/phantomjs ./app/assets/javascripts/phantom_snapshot.js http://localhost:3000/trip/show_single_trip?tripId=1 ./app/assets/images/trips/#{@test}.png '#map'&")
+        
         
       }
     end
