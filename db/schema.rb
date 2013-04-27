@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130423120909) do
+ActiveRecord::Schema.define(:version => 20130427104837) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -421,11 +421,9 @@ ActiveRecord::Schema.define(:version => 20130423120909) do
   add_index "topics", ["forum_id"], :name => "index_topics_on_forum_id"
 
   create_table "trips", :force => true do |t|
-    t.datetime "created_at",                      :null => false
-    t.datetime "updated_at",                      :null => false
-    t.integer  "trip_id"
+    t.datetime "created_at", :null => false
+    t.datetime "updated_at", :null => false
     t.string   "login"
-    t.boolean  "has_snapshot", :default => false
   end
 
   create_table "users", :force => true do |t|

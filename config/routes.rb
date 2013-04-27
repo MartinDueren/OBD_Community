@@ -1,11 +1,15 @@
 OBDComm::Application.routes.draw do
   get "static_pages/community_map"
-
+  match "/map" => "static_pages#community_map"
+  
   get "static_pages/help"
+  match "/help" => "static_pages#help"
   
   get "static_pages/landing"
+  
 
   get "static_pages/auth"
+  match "/auth" => "static_pages#auth"
   
   get "measurement/create"
 
@@ -16,10 +20,10 @@ OBDComm::Application.routes.draw do
   get "trip/show_single_trip"
   
   get "trip/show"
-  match "/trip/:id" => "trip#show"
+  match "/trip/show/:id" => "trip#show"
 
   get "trip/create"
-  
+  match '/trip/create' => 'trip#create', :via => :post
 
   # The priority is based upon order of creation:
   # first created -> highest priority.

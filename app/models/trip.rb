@@ -4,8 +4,8 @@ class Trip < ActiveRecord::Base
   belongs_to :user
   has_many   :measurements  
   
-  validates_presence_of    :trip_id,   :login
+  validates_presence_of :login
 
-  attr_accessible :trip_id, :login
+  attr_accessible :login
   
 end

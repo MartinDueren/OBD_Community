@@ -6,8 +6,8 @@
 <ul id="trips">
   <% @trips.each do |c| %>
   <li>
-    <%= "Trip ID: #{c.trip_id}" %>
-    <%= image_tag "/assets/trips/#{c.trip_id}.png"%>
+    <%= "Trip ID: #{c.id}" %>
+    <%= image_tag "/assets/trips/#{c.id}.png"%>
   </li>
   <% end %>
 </ul>
