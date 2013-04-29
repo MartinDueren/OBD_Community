@@ -1,65 +1,68 @@
 var map, layer;
-function init() { 
-    // Define a new map.  We want it to be loaded into the 'map_canvas' div in the view
-    map = new OpenLayers.Map('map');
+function init() {
+  // Define a new map.  We want it to be loaded into the 'map_canvas' div in the view
+  map = new OpenLayers.Map('map');
+  
+  // Add a LayerSwitcher controller
+  map.addControl(new OpenLayers.Control.LayerSwitcher());
 
-    // Add a LayerSwitcher controller
-    map.addControl(new OpenLayers.Control.LayerSwitcher());
+  var osm = new OpenLayers.Layer.OSM();
+  var vectorLayer = new OpenLayers.Layer.Vector("Measurements/Speed");
+    
+  map.addLayers([osm, vectorLayer]);
 
-    // OpenStreetMaps
-    var osm = new OpenLayers.Layer.OSM();
+  var style = {
+    'strokeColor': 'magenta',
+    'strokeOpacity': 1.0,
+    'strokeWidth': 2
+  };
 
-    // Add the layers defined above to the map  
-    map.addLayers([osm]);
+  epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+  projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
 
-    // Set some styles 
-    var myStyleMap = new OpenLayers.StyleMap({
-        'strokeColor': 'magenta',
-        'strokeOpacity': 1.0,
-        'strokeWidth': 2
-    });
-
-    var lon = 5;
-    var lat = 40;
-    var zoom = 5;
-
-    var featurecollection = {
-        "type": "FeatureCollection",
-        "features": [
-          {
-                    "type": "Feature",
-                    "geometry": {
-                            "type": "Point",
-                            "coordinates": [15.87646484375, 44.1748046875]
-                        },
-                "properties": {}
-            }
-        ]
+  //Get the coordinates from the gon measurements
+  var gonPoints = [];
+  for(var i=0; i<gon.measurements.length; i++) {
+    var measurement = gon.measurements[i];
+    gonPoints.push(
+        new OpenLayers.Geometry.Point( measurement.lat, measurement.lon ).transform(epsg4326, projectTo)
+    )
+  }
+  //Every Vector can have its own style: 
+  var features = [];
+  for(var i=0; i<gonPoints.length; i++) {
+    debugger;
+    console.log(i+gon.measurements[i]);
+     style = { 
+      pointRadius: Math.round(1 + gon.measurements[i].speed / 50),
+      'strokeColor': 'magenta',
+      'strokeOpacity': 1.0,
+      'strokeWidth': 2
     };
-    
-    var geojson_format = new OpenLayers.Format.GeoJSON({
-        'internalProjection': new OpenLayers.Projection("EPSG:900913"), //900913 for Google
-        'externalProjection': new OpenLayers.Projection("EPSG:4326")
-    });
-    
-    var vector_layer = new OpenLayers.Layer.Vector();
-    map.addLayer(vector_layer);
-    vector_layer.addFeatures(geojson_format.read(featurecollection));
-    map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
-    
-/*    var url = "/measurement/1.json"
-    OpenLayers.loadURL(url, {}, null, function (response){
-    var geojson_format = new OpenLayers.Format.GeoJSON({
-        'internalProjection': new OpenLayers.Projection("EPSG:900913"), //900913 for Google
-        'externalProjection': new OpenLayers.Projection("EPSG:4326")
-    });
-    
-    var vector_layer = new OpenLayers.Layer.Vector();
-    map.addLayer(vector_layer);
-    vector_layer.addFeatures(geojson_format.read(response.responseText));
-    map.setCenter(new OpenLayers.LonLat(lon, lat), zoom);
-  })*/
-    
-}
+     features.push(
+       new OpenLayers.Feature.Vector(gonPoints[i], null, style)
+     )
+  }
+  
+  vectorLayer.addFeatures(features);
+  debugger;
+  var bounds = new OpenLayers.Bounds();
 
-window.onload = init;
+  if(gonPoints) {
+    if(gonPoints.constructor != Array) {
+      gonPoints = [gonPoints];
+    }
+
+    // Iterate over the features and extend the bounds to the bounds of the geometries
+    for(var i=0; i<gonPoints.length; i++) {
+      if (!bounds) {
+        bounds = gonPoints[i].getBounds();
+      } else {
+        bounds.extend(gonPoints[i].getBounds());
+      }
+    }
+  }
+  map.zoomToExtent(bounds);
+  }
+
+  window.onload = init;

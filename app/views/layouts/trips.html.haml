@@ -1,11 +1,12 @@
 !!!
 %html
   %head
-    =include_gon
     %link{:rel=>"shortcut icon", :href=>"#{home_url}favicon.ico"}
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html;charset=utf-8"}
     =csrf_meta_tag
-
+    =include_gon
+    -if defined? @action
+      = javascript_include_tag @action
     %title= page_title
     -if @meta
       -@meta.each do |key|
@@ -15,7 +16,8 @@
       = auto_discovery_link_tag(:rss, @rss_url, {:title => @rss_title})
       
     = render :partial => "shared/scripts_and_styles"      
-
+    = stylesheet_link_tag 'trip_single'
+    
   %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    
       =render :partial => 'facebook/fb_require'    
@@ -30,11 +32,9 @@
       .row
         = render_hero_unit
       .row
-        .span9
-          = render :partial => "shared/messages"
-          = yield
-        .span3.pull-right
-          = render :partial => "shared/sidebar"
+        = render :partial => "shared/messages"
+        = yield
+
           
       
       -if show_footer_content?    

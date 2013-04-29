@@ -3,12 +3,22 @@
 <p>No trips to display</p>
 
 <% else %>
-<ul id="trips">
+<table id="trips" class="table">
+  <thead>
+    <tr>
+      <th>Trip ID</th>
+      <th>Screenshot</th>
+      <th>Actions</th>
+    </tr>
+  </thead>
   <% @trips.each do |c| %>
-  <li>
-    <%= "Trip ID: #{c.id}" %>
-    <%= image_tag "/assets/trips/#{c.id}.png"%>
-  </li>
+  <tbody>
+    <tr>
+      <td><%= c.id%></td>
+      <td><%= image_tag "/assets/trips/#{c.id}.png"%></td>
+      <td>/</td>
+    </tr>
+  </tbody>
   <% end %>
-</ul>
+</table>
 <% end %>

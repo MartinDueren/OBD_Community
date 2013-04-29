@@ -7,20 +7,26 @@ OBDComm::Application.routes.draw do
   
   get "static_pages/landing"
   
-
+  get "static_pages/badges"
+  match "/badges" => "static_pages#badges"
+  
+  get "static_pages/scoreboard"
+  match "/scoreboard" => "static_pages#scoreboard"
+  
   get "static_pages/auth"
   match "/auth" => "static_pages#auth"
   
   get "measurement/create"
-
+  match '/measurement/create' => 'measurement#create', :via => :post
+  
   get "measurement/show"
   match "/measurement/:id" => "measurement#show"
 
+  get "trip/show_static_trip"
   
   get "trip/show_single_trip"
-  
   get "trip/show"
-  match "/trip/show/:id" => "trip#show"
+  match "/trip/show/:id" => "trip#show_single_trip"
 
   get "trip/create"
   match '/trip/create' => 'trip#create', :via => :post

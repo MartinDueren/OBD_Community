@@ -3,7 +3,7 @@
   %head
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html;charset=utf-8"}
     =csrf_meta_tag
-
+    =include_gon
     -if @meta
       -@meta.each do |key|
         %meta{:name=>key[0], :content=>key[1]}
