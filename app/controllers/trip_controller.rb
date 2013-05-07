@@ -12,19 +12,23 @@ class TripController < BaseController
       gon.measurements = Measurement.where("trip_id = ?", params[:id])
       render :layout => "trips"
     else
-      @user = current_user.login
-      @trips = Trip.where("login = ?", @user)
+      #If this isn't in a thread the server stalls'
+      thread = Thread.new{
+        @user = current_user.login
+        @trips = Trip.where("login = ?", @user)
 
-      @trips.each { |x|
-        if !FileTest.exist?("./public/assets/trips/#{x.id}.png")
-          system(
-          "/usr/bin/phantomjs " +
-          "./app/assets/javascripts/phantom_snapshot.js " +
-          "http://localhost:3000/trip/show_static_trip?id=#{x.id} " +
-          "./public/assets/trips/#{x.id}.png '#map'&"
-          )
-        end
+        @trips.each { |x|
+          if !FileTest.exist?("./public/assets/trips/#{x.id}.png")
+            system(
+            "/usr/bin/phantomjs " +
+            "./app/assets/javascripts/phantom_snapshot.js " +
+            "http://localhost:3000/trip/show_static_trip?id=#{x.id} " +
+            "./public/assets/trips/#{x.id}.png '#map'&"
+            )
+          end
+        }
       }
+      thread.join
       render :layout => "trips"
     end
   end
