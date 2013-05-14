@@ -3,10 +3,12 @@
   %head
     %link{:rel=>"shortcut icon", :href=>"#{home_url}favicon.ico"}
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html;charset=utf-8"}
-    =csrf_meta_tag
-    =include_gon
+    = csrf_meta_tag
+    = include_gon
+    
     -if defined? @action
       = javascript_include_tag @action
+      
     %title= page_title
     -if @meta
       -@meta.each do |key|
@@ -17,7 +19,10 @@
       
     = render :partial => "shared/scripts_and_styles"      
     = stylesheet_link_tag 'trip_single'
-    
+    -#jquery is loaded twice here, required for charts, didn't want to relocate that in every layout
+    = javascript_include_tag "jquery"
+    = javascript_include_tag "highcharts", "chartkick"
+  
   %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    
       =render :partial => 'facebook/fb_require'    
@@ -47,6 +52,6 @@
           = render :partial => 'shared/footer_links'
   
           %p= :community_tagline.l
-
+          
     = render :partial => "shared/end_javascript"
     = yield :end_javascript

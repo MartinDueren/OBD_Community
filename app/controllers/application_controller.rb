@@ -10,4 +10,13 @@ class ApplicationController < ActionController::Base
       end
     end
   end
+  
+  protected
+  def log_event(category, action, label, value)
+    #Gabba event
+    Gabba::Gabba.new("UA-40780044-1", "giv-dueren.uni-muenster.de").event(category, action, label, value, true)
+    
+    #Custom db entry
+    Analytics.create(:userid => current_user.id, :category => category, :action => action, :label => label, :value => value)
+  end
 end

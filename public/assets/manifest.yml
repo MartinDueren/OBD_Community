@@ -27,6 +27,8 @@ thumbs.png: thumbs-2940e11b6e71813bdeb3f4db0fd272b0.png
 thumbs/index.png: thumbs-2940e11b6e71813bdeb3f4db0fd272b0.png
 application.js: application-55ab14ac3f74f429cb0614031a961502.js
 application/index.js: application-55ab14ac3f74f429cb0614031a961502.js
+chartkick.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
+chartkick/index.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
 application.css: application-1b13569e9620782f423d4cd3ce931750.css
 application/index.css: application-1b13569e9620782f423d4cd3ce931750.css
 img/blank.gif: img/blank-2a6bf2ee400574f71ea23e90ecae3260.gif

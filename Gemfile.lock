@@ -86,6 +86,8 @@ GEM
       sass (~> 3.2)
     bootstrap_forms (2.0.8)
     builder (3.0.4)
+    chartkick (0.0.4)
+      railties (>= 3.1)
     cocaine (0.3.2)
     coffee-rails (3.2.2)
       coffee-script (>= 2.2.0)
@@ -114,9 +116,12 @@ GEM
       sass-rails (>= 3.1.1)
     friendly_id (3.3.3.0)
       babosa (~> 0.3.0)
+    gabba (1.0.1)
     gon (4.1.0)
       actionpack (>= 2.3.0)
       json
+    groupdate (0.1.6)
+      activerecord (>= 3.0.0)
     haml (4.0.0)
       tilt
     hashie (1.2.0)
@@ -251,10 +256,13 @@ PLATFORMS
 
 DEPENDENCIES
   activerecord-postgis-adapter
+  chartkick
   coffee-rails (~> 3.2.1)
   community_engine!
   debugger
+  gabba
   gon
+  groupdate
   jquery-rails
   multi_json
   mysql2

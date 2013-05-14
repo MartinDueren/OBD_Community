@@ -1,10 +1,19 @@
 function init() {
 
-  var map = new OpenLayers.Map("map");//, {controls:[]});
+  var map = new OpenLayers.Map("map", {controls:[]});//, {controls:[]});
 
   var osm = new OpenLayers.Layer.OSM();
   var vectorLayer = new OpenLayers.Layer.Vector("Overlay");
   map.addLayers([osm, vectorLayer]);
+ 
+  map.addControl(new OpenLayers.Control.PanZoomBar());
+  map.addControl(new OpenLayers.Control.LayerSwitcher({'ascending':false}));
+  map.addControl(new OpenLayers.Control.MousePosition());
+  map.addControl(new OpenLayers.Control.OverviewMap());
+  map.addControl(new OpenLayers.Control.KeyboardDefaults());
+  map.addControl(new OpenLayers.Control.DragPan());
+  
+                        
 
   var style = {
     strokeColor: '#0000ff',

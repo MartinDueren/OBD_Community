@@ -1,5 +1,4 @@
 class MeasurementController < BaseController
-  
   before_filter :login_with_access_token, :only => [:create]
   
   uses_tiny_mce do

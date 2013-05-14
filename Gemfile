@@ -2,6 +2,10 @@ source 'https://rubygems.org'
 
 gem 'community_engine', :git => 'https://github.com/MartinDueren/communityengine.git', :branch => 'jquery-bootstrap'
 gem 'omniauth-facebook'
+gem 'gabba'
+gem "chartkick"
+gem 'groupdate'
+
 ruby '1.9.3'
 gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
