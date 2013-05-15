@@ -31,8 +31,6 @@ function init() {
   //Every Vector can have its own style: 
   var features = [];
   for(var i=0; i<gonPoints.length; i++) {
-    debugger;
-    console.log(i+gon.measurements[i]);
      style = { 
       pointRadius: Math.round(1 + gon.measurements[i].speed / 50),
       'strokeColor': 'magenta',
@@ -45,7 +43,7 @@ function init() {
   }
   
   vectorLayer.addFeatures(features);
-  debugger;
+  
   var bounds = new OpenLayers.Bounds();
 
   if(gonPoints) {

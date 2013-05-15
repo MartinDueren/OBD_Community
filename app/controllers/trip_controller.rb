@@ -38,7 +38,7 @@ class TripController < BaseController
       
       @speed_data= Measurement.where("trip_id = ?", params[:id]).select("created_at,speed").group_by {|x| x.created_at}
       @speed_data.each_pair do |k,v| 
-        @speed_data[k]=v[0].speed
+      @speed_data[k]=v[0].speed
       end
       
       gon.measurements = Measurement.where("trip_id = ?", params[:id])

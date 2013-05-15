@@ -6,7 +6,11 @@
         <div id="map" class="smallmap"></div>
       </div>
       <div class="span6">
-        <%= line_chart (@speed_data) %>
+        <div id="chart_container">
+          <div id="y_axis"></div>
+	        <div id="chart"></div>
+	        <div id="legend"></div>
+        </div>
       </div>
     </div>
     <footer>
