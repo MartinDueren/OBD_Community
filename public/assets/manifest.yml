@@ -1,4 +1,16 @@
 --- 
+Badges (Case Conflict 1)/dark_red.png: Badges (Case Conflict 1)/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
+Badges (Case Conflict 1)/dark_red/index.png: Badges (Case Conflict 1)/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
+Badges (Case Conflict 1)/orange.png: Badges (Case Conflict 1)/orange-abcb58bdc1e7f9305fad48c6ea11d4a5.png
+Badges (Case Conflict 1)/orange/index.png: Badges (Case Conflict 1)/orange-abcb58bdc1e7f9305fad48c6ea11d4a5.png
+Badges (Case Conflict 1)/orange_red.png: Badges (Case Conflict 1)/orange_red-4fd9b04e33ae40b2a0738d1e761d4f42.png
+Badges (Case Conflict 1)/orange_red/index.png: Badges (Case Conflict 1)/orange_red-4fd9b04e33ae40b2a0738d1e761d4f42.png
+Badges (Case Conflict 1)/purple.png: Badges (Case Conflict 1)/purple-31a45fa473c6613587157ab11274a047.png
+Badges (Case Conflict 1)/purple/index.png: Badges (Case Conflict 1)/purple-31a45fa473c6613587157ab11274a047.png
+Badges (Case Conflict 1)/red.png: Badges (Case Conflict 1)/red-7ec5bf280b2036a7ef5a3f618ef11ab8.png
+Badges (Case Conflict 1)/red/index.png: Badges (Case Conflict 1)/red-7ec5bf280b2036a7ef5a3f618ef11ab8.png
+Badges (Case Conflict 1)/yellow_purple.png: Badges (Case Conflict 1)/yellow_purple-56a08191fbfb161b63f813d8e71f8c1a.png
+Badges (Case Conflict 1)/yellow_purple/index.png: Badges (Case Conflict 1)/yellow_purple-56a08191fbfb161b63f813d8e71f8c1a.png
 Badges/dark_red.png: Badges/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
 Badges/dark_red/index.png: Badges/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
 Badges/orange.png: Badges/orange-abcb58bdc1e7f9305fad48c6ea11d4a5.png
@@ -25,8 +37,8 @@ rails.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 rails/index.png: rails-a3386665c05a2d82f711a4aaa72d247c.png
 thumbs.png: thumbs-2940e11b6e71813bdeb3f4db0fd272b0.png
 thumbs/index.png: thumbs-2940e11b6e71813bdeb3f4db0fd272b0.png
-application.js: application-55ab14ac3f74f429cb0614031a961502.js
-application/index.js: application-55ab14ac3f74f429cb0614031a961502.js
+application.js: application-096c9fb83905e2b8bf12854821e62490.js
+application/index.js: application-096c9fb83905e2b8bf12854821e62490.js
 chartkick.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
 chartkick/index.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
 application.css: application-1b13569e9620782f423d4cd3ce931750.css
