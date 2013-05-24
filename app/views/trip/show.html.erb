@@ -3,22 +3,17 @@
 <p>No trips to display</p>
 
 <% else %>
-<table id="trips" class="table">
-  <thead>
-    <tr>
-      <th>Trip ID</th>
-      <th>Screenshot</th>
-      <th>Actions</th>
-    </tr>
-  </thead>
-  <% @trips.each do |c| %>
+
+<%= paginate @trips %>
+<!--Loop through all the trips and printem-->
+<table width=100% cellpadding=0 cellspacing=0 border=0>
+  <% for @trip in @trips do%>
   <tbody>
     <tr>
-      <td><%= c.id%></td>
-      <td><%= link_to image_tag("/assets/trips/#{c.id}.png"), "/trip/show/#{c.id}" %></td>
-      <td>/</td>
+      <td><%= @trip.id%></td>
+      <td><%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %></td>
     </tr>
   </tbody>
-  <% end %>
+  <%end%>
 </table>
-<% end %>
+<%end%>

@@ -16,3 +16,4 @@ ActionMailer::Base.smtp_settings =  {
   :user_name => 'obdcomm',
   :password => 'communityengine'
 }
+

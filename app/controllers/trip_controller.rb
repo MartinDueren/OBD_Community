@@ -1,7 +1,7 @@
 class TripController < BaseController
   before_filter :login_required, :only => [:show]
   before_filter :login_with_access_token, :only => [:create]
-
+  
   uses_tiny_mce do
     {:only => [:show], :options => configatron.default_mce_options}
   end
@@ -28,6 +28,8 @@ class TripController < BaseController
         }
       }
       thread.join
+      #@trips = Trip.where("login = ?", @user).paginate(:page => params[:page])
+      @trips = Trip.where("login = ?", @user).page(params[:page]).per(5)
       render :layout => "trips"
     end
   end
