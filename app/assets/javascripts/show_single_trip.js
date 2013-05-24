@@ -106,9 +106,9 @@ function selectPoint(point){
     map.removeLayer(marker);
   }
 
-  marker = new OpenLayers.Layer.Vector("Marker", { 
-                'displayInLayerSwitcher': false 
-        });
+  marker = new OpenLayers.Layer.Vector("Marker", {
+    'displayInLayerSwitcher': false
+  });
   var markers = [new OpenLayers.Feature.Vector(point, null, highlightStyle)];
   marker.addFeatures(markers);
   map.addLayers([marker]);
@@ -122,85 +122,72 @@ function selectPoint(point){
 function initGraph(){
   // set up our data series with 50 random data points
 
-  var seriesData = [[]];
+  var seriesData = [[],[]];
   var hash = {};
   epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
   projectTo = map.getProjectionObject();
 
   for(var i = 0; i < gon.measurements.length; i++) {
     var date = new Date(gon.measurements[i].created_at).getTime();
+    //speed
     seriesData[0][i] = {
       x: date,
       y: gon.measurements[i].speed
+    }
+    //rpm
+    seriesData[1][i] = {
+      x: date,
+      y: gon.measurements[i].rpm
     }
     hash[date] = new OpenLayers.Geometry.Point( gon.measurements[i].lat, gon.measurements[i].lon ).transform(epsg4326, projectTo);
   }
   // instantiate our graph!
   var graph = new Rickshaw.Graph( {
     element: document.getElementById("chart"),
-    height: 400,
-    renderer: 'line',
+    height: 250,
+    width: 400,
+    renderer: 'area',
+    stroke: true,
     series: [
     {
-      color: "#0000ff",
+      color: 'rgba(70,130,180,0.5)',
+      stroke: 'rgba(0,0,0,0.15)',
       data: seriesData[0],
       name: 'Speed'
+    }, {
+      color: 'rgba(202,226,247,0.5)',
+      stroke: 'rgba(0,0,0,0.15)',
+      data: seriesData[1],
+      name: 'Rpm'
     }
     ]
   } );
 
+  var hoverDetail = new Rickshaw.Graph.HoverDetail( {
+    graph: graph
+  } );
+
+  var time = new Rickshaw.Fixtures.Time();
+  var hour = time.unit('hour');
+
   var xAxis = new Rickshaw.Graph.Axis.Time({
-    graph: graph
+    graph: graph,
+    timeUnit: hour
   });
-
-  var yAxis = new Rickshaw.Graph.Axis.Y({
-    graph: graph
-  });
-
-  yAxis.render();
 
   xAxis.render();
-
+  graph.renderer.unstack = true;
   graph.render();
 
-  var legend = document.querySelector('#legend');
+
 
   var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {
 
     render: function(args) {
 
-      legend.innerHTML = args.formattedXValue;
-
       args.detail.sort(function(a, b) { return a.order - b.order }).forEach( function(d) {
 
         selectPoint(hash[d.value.x]);
-
-        var line = document.createElement('div');
-        line.className = 'line';
-
-        var swatch = document.createElement('div');
-        swatch.className = 'swatch';
-        swatch.style.backgroundColor = d.series.color;
-
-        var label = document.createElement('div');
-        label.className = 'label';
-        label.innerHTML = d.name + ": " + d.formattedYValue;
-
-        line.appendChild(swatch);
-        line.appendChild(label);
-
-        legend.appendChild(line);
-
-        var dot = document.createElement('div');
-        dot.className = 'dot';
-        dot.style.top = graph.y(d.value.y0 + d.value.y) + 'px';
-        dot.style.borderColor = d.series.color;
-
-        this.element.appendChild(dot);
-
-        dot.className = 'dot active';
-
-        this.show();
 
         }, this );
       }
