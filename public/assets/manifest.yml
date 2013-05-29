@@ -1,16 +1,4 @@
 --- 
-Badges (Case Conflict 1)/dark_red.png: Badges (Case Conflict 1)/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
-Badges (Case Conflict 1)/dark_red/index.png: Badges (Case Conflict 1)/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
-Badges (Case Conflict 1)/orange.png: Badges (Case Conflict 1)/orange-abcb58bdc1e7f9305fad48c6ea11d4a5.png
-Badges (Case Conflict 1)/orange/index.png: Badges (Case Conflict 1)/orange-abcb58bdc1e7f9305fad48c6ea11d4a5.png
-Badges (Case Conflict 1)/orange_red.png: Badges (Case Conflict 1)/orange_red-4fd9b04e33ae40b2a0738d1e761d4f42.png
-Badges (Case Conflict 1)/orange_red/index.png: Badges (Case Conflict 1)/orange_red-4fd9b04e33ae40b2a0738d1e761d4f42.png
-Badges (Case Conflict 1)/purple.png: Badges (Case Conflict 1)/purple-31a45fa473c6613587157ab11274a047.png
-Badges (Case Conflict 1)/purple/index.png: Badges (Case Conflict 1)/purple-31a45fa473c6613587157ab11274a047.png
-Badges (Case Conflict 1)/red.png: Badges (Case Conflict 1)/red-7ec5bf280b2036a7ef5a3f618ef11ab8.png
-Badges (Case Conflict 1)/red/index.png: Badges (Case Conflict 1)/red-7ec5bf280b2036a7ef5a3f618ef11ab8.png
-Badges (Case Conflict 1)/yellow_purple.png: Badges (Case Conflict 1)/yellow_purple-56a08191fbfb161b63f813d8e71f8c1a.png
-Badges (Case Conflict 1)/yellow_purple/index.png: Badges (Case Conflict 1)/yellow_purple-56a08191fbfb161b63f813d8e71f8c1a.png
 Badges/dark_red.png: Badges/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
 Badges/dark_red/index.png: Badges/dark_red-e9cc16fd76af383ae5aab3735de38f30.png
 Badges/orange.png: Badges/orange-abcb58bdc1e7f9305fad48c6ea11d4a5.png
@@ -39,8 +27,6 @@ thumbs.png: thumbs-2940e11b6e71813bdeb3f4db0fd272b0.png
 thumbs/index.png: thumbs-2940e11b6e71813bdeb3f4db0fd272b0.png
 application.js: application-096c9fb83905e2b8bf12854821e62490.js
 application/index.js: application-096c9fb83905e2b8bf12854821e62490.js
-chartkick.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
-chartkick/index.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
 application.css: application-5ef2ea6795bb6843ec649b3203038488.css
 application/index.css: application-5ef2ea6795bb6843ec649b3203038488.css
 img/blank.gif: img/blank-2a6bf2ee400574f71ea23e90ecae3260.gif
@@ -157,6 +143,8 @@ theme/default/img/zoom-panel-NOALPHA.png: theme/default/img/zoom-panel-NOALPHA-e
 theme/default/img/zoom-panel-NOALPHA/index.png: theme/default/img/zoom-panel-NOALPHA-e057d984730fa3a7faa8e19a080db5b0.png
 theme/default/img/zoom-panel.png: theme/default/img/zoom-panel-57fad3f610d78e94f5ee4ce257006a84.png
 theme/default/img/zoom-panel/index.png: theme/default/img/zoom-panel-57fad3f610d78e94f5ee4ce257006a84.png
+chartkick.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
+chartkick/index.js: chartkick-9e790b6d704cf43238ba6fb66e05b1b0.js
 jquery-ui/black-tie/ui-bg_diagonals-thick_8_333333_40x40.png: jquery-ui/black-tie/ui-bg_diagonals-thick_8_333333_40x40-5703bfe65d3ac1ade97733cc96183f00.png
 jquery-ui/black-tie/ui-bg_diagonals-thick_8_333333_40x40/index.png: jquery-ui/black-tie/ui-bg_diagonals-thick_8_333333_40x40-5703bfe65d3ac1ade97733cc96183f00.png
 jquery-ui/black-tie/ui-bg_flat_65_ffffff_40x100.png: jquery-ui/black-tie/ui-bg_flat_65_ffffff_40x100-3c4b974defa5e8bdaf8a603034c4435e.png

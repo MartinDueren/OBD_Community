@@ -7,6 +7,7 @@
     = include_gon    
       
     %title= page_title
+    %meta{'http-equiv' => 'X-UA-Compatible', :content => 'IE=Edge,chrome=1'}
     -if @meta
       -@meta.each do |key|
         %meta{:name=>key[0], :content=>key[1]}
@@ -48,9 +49,7 @@
     = render :partial => "shared/end_javascript"
     = javascript_include_tag "heatmap"
     = javascript_include_tag "heatmap-openlayers-renderer"
-    = javascript_include_tag "highcharts", "chartkick"
-    = javascript_include_tag "rickshaw"
-    = javascript_include_tag "d3"
+    = javascript_include_tag "canvasjs"
     -if defined? @action
       = javascript_include_tag @action
     = yield :end_javascript

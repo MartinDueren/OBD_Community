@@ -1,35 +1,107 @@
-var map = new OpenLayers.Map("map", {controls:[]});//, {controls:[]});
+var map = new OpenLayers.Map("map");//, {controls:[]});
 var marker;
+//style for selected measurement
 highlightStyle = {
   pointRadius: 10,
-  'strokeColor': 'magenta',
+  'fillColor': '#0066FF',
+  'strokeColor': '#0000CC',
   'strokeOpacity': 1.0,
   'strokeWidth': 2
+};
+//route line style
+var style = {
+  strokeColor: '#0000ff',
+  strokeOpacity: 0.8,
+  strokeWidth: 5
 };
 var gonPoints = [];
 var epsg4326;
 var projectTo;
 
-function init() {
+function init(){
+ initMap();
+ initChart();
+ addHeatmapLayer();
+}
+
+function initChart(){
+  
+  //defining data and setting up the hash for lookup
+  var seriesData = [[],[]];
+  epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
+  projectTo = map.getProjectionObject();
+
+  for(var i = 0; i < gon.measurements.length; i++) {
+    var date = new Date(gon.measurements[i].created_at).getTime();
+    //speed
+    seriesData[0][i] = {
+      x: date,
+      y: gon.measurements[i].speed,
+      label: "Km/h"
+    }
+    //rpm
+    seriesData[1][i] = {
+      x: date,
+      y: gon.measurements[i].rpm/10,
+      label: "rpm/10"
+    }
+    dataHash[date] = new OpenLayers.Geometry.Point( gon.measurements[i].lat, gon.measurements[i].lon ).transform(epsg4326, projectTo);
+  }
+  
+  
+  var chart = new CanvasJS.Chart("chartContainer", {
+    zoomEnabled: true,
+    panEnabled: true,
+    legend: {
+      horizontalAlign: "left", // left, center ,right 
+      verticalAlign: "top",  // top, center, bottom
+    },
+    axisX:{
+        valueFormatString: "hh:mm",
+        includeZero: false
+    },
+    axisY: {
+        valueFormatString: " "
+    },
+    data: [//array of dataSeries
+    { //dataSeries object
+
+      /*** Change type "column" to "bar", "area", "line" or "pie"***/
+      
+      type: "spline",
+      name: "Speed in Km/h",
+      showInLegend: true,
+      xValueType: "dateTime",
+      dataPoints: seriesData[0]
+    },
+    { //dataSeries object
+
+      /*** Change type "column" to "bar", "area", "line" or "pie"***/
+      
+      type: "spline",
+      name: "rpm/10",
+      showInLegend: true,
+      xValueType: "dateTime",
+      dataPoints: seriesData[1]
+    }
+    ]
+  });
+
+  chart.render();
+}
+
+function initMap() {
 
   var osm = new OpenLayers.Layer.OSM("Base Layer");
   var vectorLayer = new OpenLayers.Layer.Vector("Driven Route");
   map.addLayers([osm, vectorLayer]);
 
-  map.addControl(new OpenLayers.Control.PanZoomBar());
+  //map.addControl(new OpenLayers.Control.PanZoomBar());
   map.addControl(new OpenLayers.Control.LayerSwitcher());
-  map.addControl(new OpenLayers.Control.MousePosition());
-  map.addControl(new OpenLayers.Control.OverviewMap());
+  //map.addControl(new OpenLayers.Control.MousePosition());
+  //map.addControl(new OpenLayers.Control.OverviewMap());
   map.addControl(new OpenLayers.Control.KeyboardDefaults());
-  map.addControl(new OpenLayers.Control.DragPan());
-
-
-
-  var style = {
-    strokeColor: '#0000ff',
-    strokeOpacity: 0.8,
-    strokeWidth: 10
-  };
+  //map.addControl(new OpenLayers.Control.DragPan());
 
   epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
   projectTo = map.getProjectionObject();
@@ -70,9 +142,7 @@ function init() {
     }
   }
   map.zoomToExtent(bounds);
-  initGraph();
-
-  addHeatmapLayer();
+  //initGraph();
 }
 
 function addHeatmapLayer(){
@@ -93,7 +163,7 @@ function addHeatmapLayer(){
     rendererOptions: {
       weight: 'count',
       heatmapConfig: {
-        radius: 10
+        radius: 15
       }
     }
   });
@@ -114,88 +184,9 @@ function selectPoint(point){
   map.addLayers([marker]);
 }
 
-
-
-/*
-* All below is for the rickshaw graph
-*/
-function initGraph(){
-  // set up our data series with 50 random data points
-
-  var seriesData = [[],[]];
-  var hash = {};
-  epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-  projectTo = map.getProjectionObject();
-
-  for(var i = 0; i < gon.measurements.length; i++) {
-    var date = new Date(gon.measurements[i].created_at).getTime();
-    //speed
-    seriesData[0][i] = {
-      x: date,
-      y: gon.measurements[i].speed
-    }
-    //rpm
-    seriesData[1][i] = {
-      x: date,
-      y: gon.measurements[i].rpm
-    }
-    hash[date] = new OpenLayers.Geometry.Point( gon.measurements[i].lat, gon.measurements[i].lon ).transform(epsg4326, projectTo);
-  }
-  // instantiate our graph!
-  var graph = new Rickshaw.Graph( {
-    element: document.getElementById("chart"),
-    height: 250,
-    width: 400,
-    renderer: 'area',
-    stroke: true,
-    series: [
-    {
-      color: 'rgba(70,130,180,0.5)',
-      stroke: 'rgba(0,0,0,0.15)',
-      data: seriesData[0],
-      name: 'Speed'
-    }, {
-      color: 'rgba(202,226,247,0.5)',
-      stroke: 'rgba(0,0,0,0.15)',
-      data: seriesData[1],
-      name: 'Rpm'
-    }
-    ]
-  } );
-
-  var hoverDetail = new Rickshaw.Graph.HoverDetail( {
-    graph: graph
-  } );
-
-  var time = new Rickshaw.Fixtures.Time();
-  var hour = time.unit('hour');
-
-  var xAxis = new Rickshaw.Graph.Axis.Time({
-    graph: graph,
-    timeUnit: hour
-  });
-
-  xAxis.render();
-  graph.renderer.unstack = true;
-  graph.render();
+//call init
+window.onload = init;
 
 
 
-  var Hover = Rickshaw.Class.create(Rickshaw.Graph.HoverDetail, {
 
-    render: function(args) {
-
-      args.detail.sort(function(a, b) { return a.order - b.order }).forEach( function(d) {
-
-        selectPoint(hash[d.value.x]);
-
-        }, this );
-      }
-    });
-
-    var hover = new Hover( { graph: graph } );
-  }
-
-
-  //call init
-  window.onload = init;
