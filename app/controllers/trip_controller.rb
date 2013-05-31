@@ -47,6 +47,11 @@ class TripController < BaseController
       render :layout => "trips"
     end
   end
+  
+  def abstract
+    #@action = action_name
+    #Do calcs here and provide numbers
+  end
 
   #used for making a map snapshot
   def show_static_trip
