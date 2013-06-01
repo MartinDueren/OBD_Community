@@ -43,7 +43,7 @@ class MeasurementController < BaseController
       end
     end
   end
-  
+
   private 
     def login_with_access_token
       if params[:token].nil?

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130507094851) do
+ActiveRecord::Schema.define(:version => 20130601161456) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -218,6 +218,8 @@ ActiveRecord::Schema.define(:version => 20130507094851) do
     t.float    "lat"
     t.integer  "rpm"
     t.float    "speed"
+    t.float    "maf"
+    t.string   "fuel_type"
   end
 
   create_table "message_threads", :force => true do |t|
@@ -425,6 +427,7 @@ ActiveRecord::Schema.define(:version => 20130507094851) do
     t.datetime "updated_at",                      :null => false
     t.string   "login"
     t.boolean  "has_snapshot", :default => false
+    t.integer  "user_id"
   end
 
   create_table "users", :force => true do |t|
