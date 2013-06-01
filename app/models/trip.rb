@@ -2,7 +2,7 @@ class Trip < ActiveRecord::Base
   acts_as_commentable
   
   belongs_to :user
-  has_many   :measurements, :foreign_key => 'measurement_id' 
+  has_many   :measurements, :foreign_key => 'trip_id' 
   
   validates_presence_of :login
 
