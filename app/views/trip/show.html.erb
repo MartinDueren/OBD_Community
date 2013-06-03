@@ -11,7 +11,7 @@
   <tbody>
     <tr>
       <td><%= @trip.id%></td>
-      <td><%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/#{@trip.id}" %></td>
+      <td><%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %></td>
     </tr>
   </tbody>
   <%end%>

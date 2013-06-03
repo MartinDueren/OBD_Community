@@ -4,9 +4,8 @@ class Trip < ActiveRecord::Base
   belongs_to :user
   has_many   :measurements, :foreign_key => 'trip_id' 
   
-  validates_presence_of :login
-
-  attr_accessible :login
+  attr_accessible :login, :measurements_attributes
+  accepts_nested_attributes_for :measurements
 
   def getTripLength
   	"getTripLength"

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130601161456) do
+ActiveRecord::Schema.define(:version => 20130603130716) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -425,7 +425,6 @@ ActiveRecord::Schema.define(:version => 20130601161456) do
   create_table "trips", :force => true do |t|
     t.datetime "created_at",                      :null => false
     t.datetime "updated_at",                      :null => false
-    t.string   "login"
     t.boolean  "has_snapshot", :default => false
     t.integer  "user_id"
   end

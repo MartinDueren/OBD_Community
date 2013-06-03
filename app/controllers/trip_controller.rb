@@ -7,43 +7,31 @@ class TripController < BaseController
   end
 
   def show
-    if params.has_key?(:id)
-      gon.measurements = Measurement.where("trip_id = ?", params[:id])
-      render :layout => "trips"
-    else
-      #If this isn't in a thread the server stalls'
-      thread = Thread.new{
-        @user = current_user.login
-        @trips = Trip.where("login = ?", @user)
+    #If this isn't in a thread the server stalls'
+    thread = Thread.new{
+      @trips = current_user.trips
 
-        @trips.each { |x|
-          if !FileTest.exist?("./public/assets/trips/#{x.id}.png")
-            system(
-            "/usr/bin/phantomjs " +
-            "./app/assets/javascripts/phantom_snapshot.js " +
-            "http://localhost:3000/trip/show_static_trip?id=#{x.id} " +
-            "./public/assets/trips/#{x.id}.png '#map'&"
-            )
-          end
-        }
+      @trips.each { |x|
+        if !FileTest.exist?("./public/assets/trips/#{x.id}.png")
+          system(
+          "/usr/bin/phantomjs " +
+          "./app/assets/javascripts/phantom_snapshot.js " +
+          "http://localhost:3000/trip/show_static_trip?id=#{x.id} " +
+          "./public/assets/trips/#{x.id}.png '#map'&"
+          )
+        end
       }
-      thread.join
-      #@trips = Trip.where("login = ?", @user).paginate(:page => params[:page])
-      @trips = Trip.where("login = ?", @user).page(params[:page]).per(5)
-      render :layout => "trips"
-    end
+    }
+    thread.join
+    @trips = current_user.trips.scoped.page(params[:page]).per(5)
+    render :layout => "trips"
   end
   
+  #used for ..\show\trip\:id
   def show_single_trip
     @action = action_name
     if params.has_key?(:id)
-      
-      @speed_data= Measurement.where("trip_id = ?", params[:id]).select("created_at,speed").group_by {|x| x.created_at}
-      @speed_data.each_pair do |k,v| 
-      @speed_data[k]=v[0].speed
-      end
-      
-      gon.measurements = Measurement.where("trip_id = ?", params[:id])
+      gon.measurements = Trip.find_by_id(params[:id]).measurements
       render :layout => "trips"
     end
   end
@@ -56,19 +44,25 @@ class TripController < BaseController
   #used for making a map snapshot
   def show_static_trip
     if params.has_key?(:id)
-      @tripId = params[:id]
-      @measurements = Measurement.where("trip_id = ?",  @tripId)
-      gon.tripId = @tripId
-      gon.measurements = @measurements
-      puts(@tripId)
+      gon.measurements = Trip.find_by_id(params[:id]).measurements# @tripMeasurement.where("trip_id = ?",  @tripId)
     end
     render :layout => "trip_static"
   end
 
 
   def create
-    @trip = Trip.new(:login => current_user.login)
+    #create empty trip to get an id to pass on to measurements
+    @trip = Trip.new
+    @trip.save
+    trip_id = @trip.id
 
+    #create real trip from json here
+    @trip = Trip.new(params[:trip])
+    @trip.user_id = current_user.id
+    #change trip_id in measurements
+    @trip.measurements.each { |x|
+      x.trip_id = trip_id
+    }
     respond_to do |format|
       if @trip.save
         format.html { redirect_to @trip, notice: 'Trip successfully created.' }
@@ -84,13 +78,13 @@ class TripController < BaseController
   def login_with_access_token
     if params[:token].nil?
       access_denied
-    end
-
-    user = User.find_by_single_access_token(params[:token])
-    if user.nil?
-      access_denied
     else
-      UserSession.create(user) if(user.present?)
+      user = User.find_by_single_access_token(params[:token])
+      if user.nil?
+        access_denied
+      else
+        UserSession.create(user) if(user.present?)
+      end
     end
   end
 end

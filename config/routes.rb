@@ -29,7 +29,7 @@ OBDComm::Application.routes.draw do
   
   get "trip/abstract"
   
-  match "/trip/:id" => "trip#show_single_trip"
+  match "/trip/show/:id" => "trip#show_single_trip"
   
 
   get "trip/create"

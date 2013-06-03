@@ -3,12 +3,11 @@ class Measurement < ActiveRecord::Base
   belongs_to :trip
   
   validates_presence_of :trip_id
-  attr_accessible :trip_id, :lon, :lat, :rpm, :speed
+  attr_accessible :trip_id, :lon, :lat, :rpm, :speed, :measurements_attributes
 
   def getFuelConsumption
     #TODO make this in l/100km (include speed information) (pay attention
 	#to speed=0)
-
 	if self.fuel_type == "Gasoline"
 		(self.maf / 14.7) / 747
 	elsif self.fuel_type == "Diesel"
