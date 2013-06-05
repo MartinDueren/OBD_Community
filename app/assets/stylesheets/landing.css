@@ -1,0 +1,46 @@
+.smallmap {
+    height: 400px;
+	width: 100%;
+	position: absolute;
+	z-index: 0;
+}
+
+.jumbotron.subhead {
+	height: 400px;
+}
+
+.container.marketing {
+	top: -35px;
+	margin-bottom: 45px;
+	position: relative;
+}
+
+.apply-wrapper {
+	bottom: -100%;
+	position: absolute;
+	left: 0;
+	right: 0;
+}
+
+
+.footer-headline.soon {
+width: 90%;
+max-width: 600px;
+padding: 20px 45px 30px 45px;
+margin: 70px 0 80px;
+-webkit-box-sizing: border-box;
+-moz-box-sizing: border-box;
+box-sizing: border-box;
+background: #fff;
+-webkit-border-radius: 5px;
+-moz-border-radius: 5px;
+-ms-border-radius: 5px;
+-o-border-radius: 5px;
+border-radius: 5px;
+-webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+-moz-box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+box-shadow: 0 1px 3px rgba(0,0,0,0.4);
+border-top: none;
+border-bottom: none;
+display: inline-block;
+}

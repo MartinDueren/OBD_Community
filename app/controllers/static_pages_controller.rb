@@ -29,7 +29,7 @@ class StaticPagesController < BaseController
   
   def badges
     #All Measurements of that user, now do something with it!
-    @measurements = Measurement.where(:trip_id => Trip.where("login = ?", "Martin").select(:id).pluck(:id))
+    @measurements = Measurement.where(:trip_id => Trip.where("user_id = ?", current_user.id).select(:id).pluck(:id))
     render :layout => "trips"
   end
 
@@ -40,6 +40,8 @@ class StaticPagesController < BaseController
   end
   
   def landing
+    @measurements = Measurement.all
+    gon.measurements = @measurements
     render :layout => "landing"
   end
   
@@ -47,7 +49,6 @@ class StaticPagesController < BaseController
   def require_group_1
     debugger
     if current_user.group = 1
-      debugger
       redirect_to login_path
     end
   end

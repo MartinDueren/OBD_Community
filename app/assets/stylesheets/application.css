@@ -12,3 +12,20 @@
  *
  */
 img { max-width:none; }
+
+.navbar-inner {
+  background-image:url('http://www.mrgeek.me/tutorials/demos/Bootstrap_Series_P3/img/low_contrast_linen.png');
+  text-align: center;
+  color:lightgrey;
+  border-bottom:3px solid tomato;
+}
+
+.brand {
+	font-family: 'PT Sans', sans-serif;
+	color:white;
+	font-size:40px;
+}
+
+.am_brand {
+  color:tomato;
+}

@@ -1,19 +1,41 @@
-<h1>My recent Trips</h1>
-<% if @trips.blank? %>
-<p>No trips to display</p>
-
-<% else %>
-
-<%= paginate @trips %>
-<!--Loop through all the trips and printem-->
-<table width=100% cellpadding=0 cellspacing=0 border=0>
-  <% for @trip in @trips do%>
-  <tbody>
-    <tr>
-      <td><%= @trip.id%></td>
-      <td><%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %></td>
-    </tr>
-  </tbody>
-  <%end%>
-</table>
-<%end%>
+<div class="container">
+	<div class="row">
+		<h1>My recent Trips</h1>
+	</div>
+	<% if @trips.blank? %>
+		<p>No trips to display</p>
+	<% else %>
+		<%= paginate @trips %>
+		<hr class="featurette-divider">
+		<!--Loop through all the trips and printem-->
+		<% for @trip in @trips do%>
+			<div class="row">
+				<div class="span6">
+					<div class="trip_info">
+						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>
+					</div>
+				</div>
+				<div class="span6">
+					<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at} at #{@trip.created_at}", "/trip/show/#{@trip.id}" %>
+					<table class="table">
+						<tr>
+							<td>
+								<h4 class="muted">DISTANCE</h4>
+								<li><i class="icon-globe"></i><%= @trip.getTripLength %></li>
+							</td>
+							<td>
+								</i><h4 class="muted">GAS BURNED</h4>
+								<li><i class="icon-fire"></i><%= @trip.getTripLength %></li>
+							</td>
+							<td>
+								<h4 class="muted">CO<sub>2</sub> EMISSIONS</h4>
+								<li><i class="icon-leaf"></i><%= @trip.getTripLength %></li>
+							</td>
+						</tr>
+					</table>					
+				</div>
+			</div>
+			<hr class="featurette-divider">			
+		<%end%>
+	<%end%>	
+</div> <!-- end container -->

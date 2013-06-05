@@ -4,6 +4,7 @@
     %link{:rel=>"shortcut icon", :href=>"#{home_url}favicon.ico"}
     %meta{"http-equiv"=>"Content-Type", :content=>"text/html;charset=utf-8"}
     =csrf_meta_tag
+    =include_gon
     %title= page_title
     -if @meta
       -@meta.each do |key|
@@ -14,6 +15,8 @@
       
     = render :partial => "shared/scripts_and_styles"    
     = stylesheet_link_tag 'static_pages'
+
+    = javascript_include_tag "community_map"
   %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    
       =render :partial => 'facebook/fb_require'    
@@ -28,3 +31,4 @@
     
     = render :partial => "shared/end_javascript"
     = yield :end_javascript
+    = stylesheet_link_tag 'landing', :media => "all"

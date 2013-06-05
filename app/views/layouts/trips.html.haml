@@ -17,6 +17,7 @@
       
     = render :partial => "shared/scripts_and_styles"      
     = stylesheet_link_tag 'trip_single'
+    = stylesheet_link_tag 'trip_show'
     
   %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    

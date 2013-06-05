@@ -1,0 +1,11 @@
+.trip_info {
+	border-right: 1px solid #eeeeee;
+}
+
+.table th, .table td { 
+     border-top: none; 
+ }
+
+li {
+    list-style-type: none;
+}

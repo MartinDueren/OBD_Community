@@ -188,5 +188,3 @@ function selectPoint(point){
 window.onload = init;
 
 
-
-

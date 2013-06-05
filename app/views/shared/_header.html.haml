@@ -3,7 +3,10 @@
   .icon-bar
   .icon-bar
   .icon-bar
-= link_to configatron.community_name, home_path, :class => 'brand'
+= link_to home_path, :class => 'brand' do 
+  #{configatron.community_name[0..2]}
+  %span.am_brand #{configatron.community_name[3..6]}
+-#= link_to configatron.community_name[3..6], home_path, :class => 'am_brand'
 .nav-collapse
   %ul.nav
     -#= render 'categories/menu_item'
