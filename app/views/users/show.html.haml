@@ -1,0 +1,61 @@
+- @meta = { :description => "#{@user.login}'s profile on #{configatron.community_name}.", :keywords => "#{@user.login}, #{@user.tags.join(", ") unless @user.tags.nil?}", :robots => configatron.robots_meta_show_content }
+- @section = @user.eql?(current_user) ? 'my_profile' : 'users'
+- @sidebar_left = true
+
+-widget :id => 'friends' do
+  %ul.nav.nav-list
+    %li.nav-header=:my_friends.l
+    %li= link_to "(#{@friend_count})", accepted_user_friendships_path(@user) if @friend_count > 5
+    %li= link_to "#{:invite_a_friend.l :site => configatron.community_name}", invite_user_path(@user) if @is_current_user
+    %li= link_to "#{:view_all_my_friend_requests.l} (#{@pending_friendships_count})", pending_user_friendships_path(@user) if @is_current_user
+    - @accepted_friendships.each do |user|
+      =render :partial => "users/sidebar_user", :locals => {:user => user}
+    -if @accepted_friendships.size > 4
+      %li
+        =icon_link_to 'icon-plus-sign', :see_all.l, accepted_user_friendships_path(@user)
+   
+- if @is_current_user and @user.vendor? and @user.description.nil?
+  .alert.alert-info
+    Hey, you're a
+    = configatron.community_name
+    Pro! You should
+    = link_to :update_your_profile.l, edit_user_path(@user)
+    \! Add your contact info and Web site.
+
+
+-#= render :partial => 'profile_user_info_sidebar', :locals => {:user => @user}
+
+- unless @user.description.blank?
+  -box :id => "about_me" do
+    %h2
+      =:about_me.l
+    %p= @user.description.html_safe
+
+- unless @users_comments.empty?
+  .clearfix
+    %h2=:my_recent_comments.l
+    - @users_comments.each do |comment|
+      .clearfix
+        .pull-left
+          - if comment.recipient
+            = link_to image_tag(comment.recipient.avatar_photo_url(:thumb), :alt => "#{comment.recipient.login}"), commentable_url(comment), :class => 'thumbnail'
+        %h3
+          - if comment.commentable.eql?(comment.recipient)
+            = :to.l + ": #{link_to comment.recipient.login, commentable_url(comment)}".html_safe
+          - else
+            = :on_commentable.l + ": #{link_to comment.commentable_name, commentable_url(comment)} (#{comment.commentable_type.l})".html_safe
+        %p= truncate_words( comment.comment, 10, '...').html_safe
+
+- unless @recent_posts.empty?
+  .clearfix
+    %h2=:recent_blog_posts.l
+    = render :partial => 'posts/post', :collection => @recent_posts
+    %h6.right.all= link_to :view_my_blog.l, user_posts_path(@user)
+
+.clearfix
+  %h2=:profile_comments.l
+  %h3=:add_your_comment.l
+  = render :partial => 'comments/comment_form', :locals => {:commentable => @user}
+  %a#newest_comment
+  = render :partial => 'comments/comment', :collection => @comments
+  %span#more_comments_links= more_comments_links(@user)

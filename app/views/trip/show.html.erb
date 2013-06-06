@@ -1,7 +1,5 @@
 <div class="container">
-	<div class="row">
-		<h1>My recent Trips</h1>
-	</div>
+	<h1>My recent Trips</h1>
 	<% if @trips.blank? %>
 		<p>No trips to display</p>
 	<% else %>
@@ -9,7 +7,7 @@
 		<hr class="featurette-divider">
 		<!--Loop through all the trips and printem-->
 		<% for @trip in @trips do%>
-			<div class="row">
+			<div class="row well">
 				<div class="span6">
 					<div class="trip_info">
 						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>

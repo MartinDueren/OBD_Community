@@ -29,13 +29,11 @@
       .row
         = render_hero_unit
       .row
-        .span9
+        .span12
           %h1=container_title
           = render :partial => "shared/messages"
-          = yield
-        .span3.pull-right
-          = render :partial => "shared/sidebar"
-          
+      
+      = yield
       
       -if show_footer_content?    
         .row#footer-content
