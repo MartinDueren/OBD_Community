@@ -32,7 +32,7 @@ function initChart(){
   projectTo = map.getProjectionObject();
 
   for(var i = 0; i < gon.measurements.length; i++) {
-    var date = new Date(gon.measurements[i].created_at).getTime();
+    var date = new Date(gon.measurements[i].recorded_at).getTime();
     //speed
     seriesData[0][i] = {
       x: date,

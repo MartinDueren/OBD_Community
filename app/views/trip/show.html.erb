@@ -13,7 +13,7 @@
 						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>
 					</div>
 				</div>
-				<div class="span6">
+				<div class="span4">
 					<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at} at #{@trip.created_at}", "/trip/show/#{@trip.id}" %>
 					<table class="table">
 						<tr>

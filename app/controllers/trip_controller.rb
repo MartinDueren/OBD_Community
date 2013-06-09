@@ -51,25 +51,54 @@ class TripController < BaseController
 
 
   def create
-    #create empty trip to get an id to pass on to measurements
-    @trip = Trip.new
-    @trip.save
-    trip_id = @trip.id
 
-    #create real trip from json here
-    @trip = Trip.new(params[:trip])
-    @trip.user_id = current_user.id
-    #change trip_id in measurements
-    @trip.measurements.each { |x|
-      x.trip_id = trip_id
-    }
-    respond_to do |format|
-      if @trip.save
-        format.html { redirect_to @trip, notice: 'Trip successfully created.' }
-        format.json { render json: @trip, status: :created}
-      else
-        format.html { render :layout => "trips" }
-        format.json { render json: @trip.errors, status: :unprocessable_entity }
+    unless params[:import].nil?
+      @trip = Trip.new
+      @trip.save
+      @trip.user_id = current_user.id
+
+      params[:features].each { |feature| 
+        @trip.measurements.new(
+          "recorded_at" => Time.parse(feature[:properties][:time]),
+          "speed" => feature[:properties][:phenomenons][:Speed][:value],
+          "lat" => feature[:geometry][:coordinates][0],
+          "lon" => feature[:geometry][:coordinates][1],
+          "trip_id" => @trip.id
+          )
+      }
+
+      respond_to do |format|
+        if @trip.save
+          format.html { redirect_to @trip, notice: 'Trip successfully created.' }
+          format.json { render json: @trip, status: :created}
+        else
+          format.html { render :layout => "trips" }
+          format.json { render json: @trip.errors, status: :unprocessable_entity }
+        end
+      end
+
+
+    else
+      #create empty trip to get an id to pass on to measurements
+      @trip = Trip.new
+      @trip.save
+      trip_id = @trip.id
+
+      #create real trip from json here
+      @trip = Trip.new(params[:trip])
+      @trip.user_id = current_user.id
+      #change trip_id in measurements
+      @trip.measurements.each { |x|
+        x.trip_id = trip_id
+      }
+      respond_to do |format|
+        if @trip.save
+          format.html { redirect_to @trip, notice: 'Trip successfully created.' }
+          format.json { render json: @trip, status: :created}
+        else
+          format.html { render :layout => "trips" }
+          format.json { render json: @trip.errors, status: :unprocessable_entity }
+        end
       end
     end
   end

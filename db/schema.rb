@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130603130716) do
+ActiveRecord::Schema.define(:version => 20130609110022) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -211,8 +211,8 @@ ActiveRecord::Schema.define(:version => 20130603130716) do
   end
 
   create_table "measurements", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
     t.integer  "trip_id"
     t.float    "lon"
     t.float    "lat"
@@ -220,6 +220,7 @@ ActiveRecord::Schema.define(:version => 20130603130716) do
     t.float    "speed"
     t.float    "maf"
     t.string   "fuel_type"
+    t.datetime "recorded_at"
   end
 
   create_table "message_threads", :force => true do |t|
