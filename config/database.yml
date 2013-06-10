@@ -34,11 +34,14 @@ test:
 
   
 production:
-  adapter: mysql2
-  encoding: utf8
-  reconnect: false
-  database: obdcomm
-  username: dueren
-  password: pw
+  adapter: postgis
+  encoding: unicode
+  database: obd_dev
+  host: localhost
   pool: 5
-  timeout: 5000
+  username: obd_user
+  password: letmein
+  schema_search_path: "public,postgis"
+  script_dir: /usr/share/postgresql/9.1/contrib/postgis-2.0
+  su_username: obd_creator
+  su_password: letmein
