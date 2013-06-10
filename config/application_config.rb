@@ -1,12 +1,12 @@
 configuration = {
 
-  :app_host => "example.com", #override this in your application.yml
+  :app_host => "giv-dueren.uni-muenster.de", #override this in your application.yml
   
   :community_name => "OBDComm",
   
   :community_tagline => "",
   :community_description =>  "The Best Place for People Who Love Communities",
-  :support_email =>  "support@community.com",
+  :support_email =>  "martin.dueren@gmail.com",
   :meta_description => 'A description of your community for use in META tags.',
   :meta_keywords => 'keywords for use in META tags',
   

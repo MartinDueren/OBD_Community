@@ -7,22 +7,6 @@ class TripController < BaseController
   end
 
   def show
-    #If this isn't in a thread the server stalls'
-    thread = Thread.new{
-      @trips = current_user.trips
-
-      @trips.each { |x|
-        if !FileTest.exist?("./public/assets/trips/#{x.id}.png")
-          system(
-          "/usr/bin/phantomjs " +
-          "./app/assets/javascripts/phantom_snapshot.js " +
-          "http://localhost:3000/trip/show_static_trip?id=#{x.id} " +
-          "./public/assets/trips/#{x.id}.png '#map'&"
-          )
-        end
-      }
-    }
-    thread.join
     @trips = current_user.trips.scoped.page(params[:page]).per(5)
     render :layout => "trips"
   end
@@ -51,7 +35,7 @@ class TripController < BaseController
 
 
   def create
-
+    debugger
     unless params[:import].nil?
       @trip = Trip.new
       @trip.save
@@ -66,7 +50,6 @@ class TripController < BaseController
           "trip_id" => @trip.id
           )
       }
-
       respond_to do |format|
         if @trip.save
           format.html { redirect_to @trip, notice: 'Trip successfully created.' }
@@ -76,8 +59,6 @@ class TripController < BaseController
           format.json { render json: @trip.errors, status: :unprocessable_entity }
         end
       end
-
-
     else
       #create empty trip to get an id to pass on to measurements
       @trip = Trip.new
@@ -101,6 +82,16 @@ class TripController < BaseController
         end
       end
     end
+
+    @exec = "/usr/bin/phantomjs " +
+          "./app/assets/javascripts/phantom_snapshot.js " +
+          "http://" + configatron.app_host + "/trip/show_static_trip?id=#{@trip.id} " +
+          "./public/assets/trips/#{@trip.id}.png '#map'&"
+    thread = Thread.new{
+      system(@exec)
+    }
+    thread.join
+
   end
 
   private
