@@ -35,10 +35,11 @@ class TripController < BaseController
 
 
   def create
-    debugger
+    #create empty trip to get an id to pass on to measurements
+    @trip = Trip.new
+    @trip.save
+
     unless params[:import].nil?
-      @trip = Trip.new
-      @trip.save
       @trip.user_id = current_user.id
 
       params[:features].each { |feature| 
@@ -60,17 +61,12 @@ class TripController < BaseController
         end
       end
     else
-      #create empty trip to get an id to pass on to measurements
-      @trip = Trip.new
-      @trip.save
-      trip_id = @trip.id
-
       #create real trip from json here
       @trip = Trip.new(params[:trip])
       @trip.user_id = current_user.id
       #change trip_id in measurements
       @trip.measurements.each { |x|
-        x.trip_id = trip_id
+        x.trip_id = @trip.id
       }
       respond_to do |format|
         if @trip.save
@@ -83,10 +79,10 @@ class TripController < BaseController
       end
     end
 
-    @exec = "/usr/bin/phantomjs " +
+    @exec = "/usr/bin/phantomjs/bin/phantomjs " +
           "./app/assets/javascripts/phantom_snapshot.js " +
           "http://" + configatron.app_host + "/trip/show_static_trip?id=#{@trip.id} " +
-          "./public/assets/trips/#{@trip.id}.png '#map'&"
+          "./public/assets/trips/#{@trip.id}.png '#map'"
     thread = Thread.new{
       system(@exec)
     }
