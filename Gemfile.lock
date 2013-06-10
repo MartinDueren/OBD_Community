@@ -185,6 +185,8 @@ GEM
     omniauth-oauth2 (1.1.1)
       oauth2 (~> 0.8.0)
       omniauth (~> 1.0)
+    openlayers-rails (0.0.3)
+      railties (>= 3.1)
     paperclip (2.7.5)
       activerecord (>= 2.3.0)
       activesupport (>= 2.3.2)
@@ -277,6 +279,7 @@ DEPENDENCIES
   multi_json
   mysql2
   omniauth-facebook
+  openlayers-rails
   pg
   rails (= 3.2.11)
   rsocialize
