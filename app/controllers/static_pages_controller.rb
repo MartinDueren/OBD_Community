@@ -1,6 +1,6 @@
 class StaticPagesController < BaseController
   
-  before_filter force_ssl, :only => [:auth]
+  #before_filter force_ssl, :only => [:auth]
   #before_filter :require_group_1, :only => [:community_map]
 
   def community_map
