@@ -118,6 +118,7 @@ GEM
     friendly_id (3.3.3.0)
       babosa (~> 0.3.0)
     gabba (1.0.1)
+    geocoder (1.1.8)
     gon (4.1.0)
       actionpack (>= 2.3.0)
       json
@@ -272,6 +273,7 @@ DEPENDENCIES
   community_engine!
   debugger
   gabba
+  geocoder
   gon
   groupdate
   jquery-rails

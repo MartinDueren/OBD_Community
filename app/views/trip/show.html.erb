@@ -13,21 +13,21 @@
 						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>
 					</div>
 				</div>
-				<div class="span4">
-					<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at} at #{@trip.created_at}", "/trip/show/#{@trip.id}" %>
+				<div class="span5">
+					<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
 					<table class="table">
 						<tr>
 							<td>
 								<h4 class="muted">DISTANCE</h4>
-								<li><i class="icon-globe"></i><%= @trip.getTripLength %></li>
+								<li><i class="icon-globe"></i><%= @trip.getTripLength %> Km</li>
 							</td>
 							<td>
 								</i><h4 class="muted">GAS BURNED</h4>
-								<li><i class="icon-fire"></i><%= @trip.getTripLength %></li>
+								<li><i class="icon-fire"></i><%= @trip.getTripLength %> Litres</li>
 							</td>
 							<td>
 								<h4 class="muted">CO<sub>2</sub> EMISSIONS</h4>
-								<li><i class="icon-leaf"></i><%= @trip.getTripLength %></li>
+								<li><i class="icon-leaf"></i><%= @trip.getTripLength %> Grams</li>
 							</td>
 						</tr>
 					</table>					

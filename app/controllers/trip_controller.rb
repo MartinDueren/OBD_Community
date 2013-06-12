@@ -7,7 +7,7 @@ class TripController < BaseController
   end
 
   def show
-    @trips = current_user.trips.scoped.page(params[:page]).per(5)
+    @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
     render :layout => "trips"
   end
   

@@ -7,7 +7,8 @@ gem "chartkick"
 gem 'groupdate'
 gem 'kaminari-bootstrap'
 gem 'rsocialize'
-gem "openlayers-rails"
+gem 'openlayers-rails'
+gem 'geocoder'
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'
