@@ -9,3 +9,7 @@
 li {
     list-style-type: none;
 }
+
+.well {
+	padding: 10px;
+}

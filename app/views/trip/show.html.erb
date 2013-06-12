@@ -13,24 +13,24 @@
 						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>
 					</div>
 				</div>
-				<div class="span5">
-					<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
-					<table class="table">
-						<tr>
-							<td>
-								<h4 class="muted">DISTANCE</h4>
-								<li><i class="icon-globe"></i><%= @trip.getTripLength %> Km</li>
-							</td>
-							<td>
-								</i><h4 class="muted">GAS BURNED</h4>
-								<li><i class="icon-fire"></i><%= @trip.getTripLength %> Litres</li>
-							</td>
-							<td>
-								<h4 class="muted">CO<sub>2</sub> EMISSIONS</h4>
-								<li><i class="icon-leaf"></i><%= @trip.getTripLength %> Grams</li>
-							</td>
-						</tr>
-					</table>					
+				<div class="span6">
+					<div class="row">
+						<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
+					</div>
+					<div class="row">
+						<div class="span2">
+							<h4 class="muted">DISTANCE</h4>
+							<p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
+						</div>
+						<div class="span2">
+							<h4 class="muted">GAS CONSUMED</h4>
+							<p><i class="icon-fire"> </i><%= @trip.getTripLength %> Litres</p>
+						</div>
+						<div class="span2">
+							<h4 class="muted">CO2 EMISSIONS</h4>
+							<p><i class="icon-leaf"></i> <%= @trip.getTripLength %> Grams</p>
+						</div>			
+					</div>
 				</div>
 			</div>
 			<hr class="featurette-divider">			
