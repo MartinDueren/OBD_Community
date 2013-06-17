@@ -1,5 +1,4 @@
 class TripController < BaseController
-  include badge_utils
 
   before_filter :login_required, :only => [:show]
   before_filter :login_with_access_token, :only => [:create]
@@ -89,11 +88,11 @@ class TripController < BaseController
       system(@exec)
     }
     getBadges = Thread.new{
-      checkTripForBadges
+      @trip.checkTripForBadges
     }
     getBadges.join
     thread.join
-
+    
   end
 
   private

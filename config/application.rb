@@ -1,5 +1,6 @@
 require File.expand_path('../boot', __FILE__)
 
+
 require 'rails/all'
 require 'active_record/connection_adapters/postgis_adapter/railtie'
 
@@ -10,8 +11,11 @@ if defined?(Bundler)
   # Bundler.require(:default, :assets, Rails.env)
 end
 
+
 module OBDComm
   class Application < Rails::Application
+
+    config.autoload_paths += %W(#{config.root}/lib)
     # Settings in config/environments/* take precedence over those specified here.
     # Application configuration should go into files in config/initializers
     # -- all .rb files in that directory are automatically loaded.

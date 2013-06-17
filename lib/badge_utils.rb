@@ -1,5 +1,5 @@
 module BadgeUtils
-
+  debugger
   @tripAttrs = {:length => self.getTripLength, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0}
 
 
@@ -39,7 +39,7 @@ module BadgeUtils
       end
   	end
 
-
+    debugger
 
   	firstTrip
   	km

@@ -31,6 +31,13 @@
 							<p><i class="icon-leaf"></i> <%= @trip.getTripLength %> Grams</p>
 						</div>			
 					</div>
+					<div class="row">
+						<div class="span6">
+							<% @trip.badges.each do |badge|%>
+								<%= image_tag "badges/#{badge.custom_fields[:image]}" %>
+							<%end%>
+						</div>	
+					</div>	
 				</div>
 			</div>
 			<hr class="featurette-divider">			
