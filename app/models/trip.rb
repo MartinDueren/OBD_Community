@@ -21,4 +21,12 @@ class Trip < ActiveRecord::Base
   	'%.2f' % @trip_length
   end
   
+  def next
+    Trip.where("id > ?", id).order("id ASC").first
+  end
+
+  def prev
+    Trip.where("id < ?", id).order("id DESC").first
+  end
+
 end

@@ -2,6 +2,8 @@ require 'digest/sha1'
 require 'bcrypt'
 
 class User < ActiveRecord::Base
+  has_merit
+
   include UrlUpload
   include FacebookProfile
   include TwitterProfile

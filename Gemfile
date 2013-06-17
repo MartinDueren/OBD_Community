@@ -3,20 +3,23 @@ source 'https://rubygems.org'
 gem 'community_engine', :git => 'https://github.com/MartinDueren/communityengine.git', :branch => 'jquery-bootstrap'
 gem 'omniauth-facebook'
 gem 'gabba'
-gem "chartkick"
 gem 'groupdate'
 gem 'kaminari-bootstrap'
 gem 'rsocialize'
 gem 'openlayers-rails'
 gem 'geocoder'
+gem 'whenever', :require => false
+gem 'merit'
+gem 'pg'
+gem 'activerecord-postgis-adapter'
+gem 'jquery-rails'
+gem 'gon'
+gem 'debugger'
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'
 # Bundle edge Rails instead:
 # gem 'rails', :git => 'git://github.com/rails/rails.git'
-
-gem 'pg'
-gem 'activerecord-postgis-adapter'
 
 group :production do
   gem 'mysql2'
@@ -36,10 +39,6 @@ group :assets do
   gem 'uglifier', '>= 1.0.3'
 end
 
-gem 'jquery-rails'
-
-gem 'gon'
-gem 'debugger'
 # To use ActiveModel has_secure_password
 # gem 'bcrypt-ruby', '~> 3.0.0'
 
