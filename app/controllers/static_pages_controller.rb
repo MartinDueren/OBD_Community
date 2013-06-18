@@ -30,6 +30,10 @@ class StaticPagesController < BaseController
   def badges
     #All Measurements of that user, now do something with it!
     @measurements = Measurement.where(:trip_id => Trip.where("user_id = ?", current_user.id).select(:id).pluck(:id))
+    @badgesList = Hash.new(0)
+    current_user.badges.each do |v|
+      @badgesList[v] += 1
+    end
     render :layout => "trips"
   end
 

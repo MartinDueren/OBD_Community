@@ -1,18 +1,33 @@
-<table class="table">
-  <thead>
-    <tr>
-      <th><img src="/assets/badges/red.png" alt=""></th>
-      <th><img src="/assets/badges/orange.png" alt=""></th>
-      <th><img src="/assets/badges/purple.png" alt=""></th>
-      <th><img src="/assets/badges/orange_red.png" alt=""></th>
-    </tr>
-  </thead>
-  <tbody>
-    <tr>
-      <th><div class='text-center'>Low CO2</div></th>
-      <th>Speed</th>
-      <th>Best Driver</th>
-      <th>Most Mileage</th>
-    </tr>
-  </tbody>
-</table>
+<div class="container">
+  <h1>My recent Badges</h1>
+  <% if current_user.badges.empty? %>
+    <p>No Badges to show</p>
+  <% else %>
+    <hr class="featurette-divider">
+    <div class="row">
+      <div class="span9">
+        <% current_user.trips.each do |trip|%>
+          <% trip.badges.each do |badge| %>
+            <div class="row well">
+              <div class="span2">
+                <%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %>
+              </div>
+              <div class="span7">
+                <%= link_to "Granted for a trip on #{Trip.find_by_id(badge[1]).created_at.strftime("%a, %d %B %Y")} at #{Trip.find_by_id(badge[1]).created_at.strftime("%H:%M %P")}", "/trip/show/#{badge[1]}" %>
+              </div>
+            </div>
+          <%end%>
+        <%end%>
+      </div>
+      <div class="span3 well">
+        <%= progress_bar(33, :color => 'blue', :rounded => true) %> 
+        <h4>999 Points</h4>
+        <h2>Earned Badges:</h2>
+        <% @badgesList.each do |k, v| %>
+          <h4><%= image_tag "Badges/#{k.custom_fields[:image]}" %> x<%= v %></h4>
+        <%end%>
+      </div>
+    </div>
+  <%end%>
+</div>        
+ 

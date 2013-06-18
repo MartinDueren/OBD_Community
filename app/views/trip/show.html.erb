@@ -34,7 +34,7 @@
 					<div class="row">
 						<div class="span6">
 							<% @trip.badges.each do |badge|%>
-								<%= image_tag "badges/#{badge.custom_fields[:image]}" %>
+								<%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %>
 							<%end%>
 						</div>	
 					</div>	

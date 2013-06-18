@@ -84,13 +84,15 @@ class Trip < ActiveRecord::Base
     smoothAcceleration
     consecutiveTrips
     self.save
-    debugger
+    self.badges.each do |badge|
+      User.find_by_id(self.user_id).add_badge(badge[0].id)
+    end
+    
   end
 
   def firstTrip
     if User.find_by_id(self.user_id).trips.length == 1
-      self.badges << Merit::Badge.get(1)
-      debugger
+      self.badges << [Merit::Badge.get(1), self.id]
     end
   end
 
@@ -102,16 +104,16 @@ class Trip < ActiveRecord::Base
     }
 
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(2) && mileage >= 50 
-      self.badges << Merit::Badge.get(2)
+      self.badges << [Merit::Badge.get(2), self.id]  
     end
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(3) && mileage >= 100 
-      self.badges << Merit::Badge.get(3)
+      self.badges << [Merit::Badge.get(3), self.id]
     end
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(4) && mileage >= 500 
-      self.badges << Merit::Badge.get(4)
+      self.badges << [Merit::Badge.get(4), self.id]
     end
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(5) && mileage >= 1000 
-      self.badges << Merit::Badge.get(5)
+      self.badges << [Merit::Badge.get(5), self.id]
     end
   end
 
@@ -125,27 +127,27 @@ class Trip < ActiveRecord::Base
 
   def shifting
     if @tripAttrs[:rpmAbove2500] <= 2*self.measurements.length/100
-      self.badges << Merit::Badge.get(13)
+      self.badges << [Merit::Badge.get(13), self.id]
     elsif @tripAttrs[:rpmAbove3000] <= 2*self.measurements.length/100
-      self.badges << Merit::Badge.get(12)
+      self.badges << [Merit::Badge.get(12), self.id]
     end
   end
 
   def goodRoute
     if @tripAttrs[:standingTime] <= 10*self.measurements.length/100
-      self.badges << Merit::Badge.get(14)
+      self.badges << [Merit::Badge.get(14), self.id]
     end
   end
 
   def smoothBraking
     if @tripAttrs[:braking] >= 20
-      self.badges << Merit::Badge.get(15)
+      self.badges << [Merit::Badge.get(15), self.id]
     end
   end
 
   def smoothAcceleration
     if @tripAttrs[:braking] >= 20
-      self.badges << Merit::Badge.get(16)
+      self.badges << [Merit::Badge.get(16), self.id]
     end
   end
 
@@ -162,17 +164,17 @@ class Trip < ActiveRecord::Base
     end
     case @consecutive
     when 2
-      self.badges << Merit::Badge.get(18)
+      self.badges << [Merit::Badge.get(18), self.id]
     when 3
-      self.badges << Merit::Badge.get(19)
+      self.badges << [Merit::Badge.get(19), self.id]
     when 4
-      self.badges << Merit::Badge.get(20)
+      self.badges << [Merit::Badge.get(20), self.id]
     when 5
-      self.badges << Merit::Badge.get(21)
+      self.badges << [Merit::Badge.get(21), self.id]
     when 6
-      self.badges << Merit::Badge.get(22)
+      self.badges << [Merit::Badge.get(22), self.id]
     when 7
-      self.badges << Merit::Badge.get(23)
+      self.badges << [Merit::Badge.get(23), self.id]
     end
   end
 

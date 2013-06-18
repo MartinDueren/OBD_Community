@@ -15,6 +15,7 @@ gem 'activerecord-postgis-adapter'
 gem 'jquery-rails'
 gem 'gon'
 gem 'debugger'
+gem 'css3-progress-bar-rails'
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'
