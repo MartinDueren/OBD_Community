@@ -12,4 +12,13 @@ li {
 
 .well {
 	padding: 10px;
+	margin-left: 0px;
+}
+
+.row {
+	margin-left: 0px;
+}
+
+.span6 {
+	margin-left: 0px;
 }

@@ -47,8 +47,7 @@ class TripController < BaseController
         @trip.measurements.new(
           "recorded_at" => Time.parse(feature[:properties][:time]),
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
-          "lat" => feature[:geometry][:coordinates][0],
-          "lon" => feature[:geometry][:coordinates][1],
+          "latlon" => "POINT(#{feature[:geometry][:coordinates][0]} #{feature[:geometry][:coordinates][1]})",
           "trip_id" => @trip.id
           )
       }
