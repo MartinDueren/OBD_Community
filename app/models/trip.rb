@@ -9,17 +9,15 @@ class Trip < ActiveRecord::Base
 
   serialize :badges,Array
 
+  after_create :checkTripForBadges
+
   def getTripLength
   	@trip_length = 0
-  # 	for i in 1..(User.all[0].trips[0].measurements.length-1)
-  # 		if self.measurements[i-1].class == Measurement && self.measurements[i].class == Measurement
-		# 	@trip_length += Geocoder::Calculations.distance_between(
-		# 		[self.measurements[i-1].lat,self.measurements[i-1].lon], 
-		# 		[self.measurements[i].lat,self.measurements[i].lon], 
-		# 		:units => :km)
-		# end
-  	#end
-  	#Rounding to two decimal places
+   	for i in 1..(self.measurements.length-1)
+		 	@trip_length += self.measurements[i-1].latlon.distance(self.measurements[i].latlon)
+  	end
+  	#Convert to km and round to two decimal places
+    @trip_length = @trip_length/1000
   	'%.2f' % @trip_length
   end
   
@@ -34,21 +32,26 @@ class Trip < ActiveRecord::Base
   
   def checkTripForBadges
     @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0}
-
-    #debugger
     @tripAttrs[:length] = self.getTripLength
-    #debugger
+
+    User.find_by_id(self.user_id).update_attributes(:mileage => (User.find_by_id(self.user_id).mileage + @tripAttrs[:length].to_i))
     #remove standing time from beginning and end
-    # while self.measurements.last.speed == 0
-    #   self.measurements.last.destroy
-    #   debugger
-    # end
-    #debugger
-    # while self.measurements.first.speed == 0
-    #   self.measurements.first.destroy
-      #debugger
-    #end
-    #debugger
+    for i in (self.measurements.length-1).downto(0)
+      if self.measurements[i].speed == 0
+        self.measurements[i].delete
+      else
+        break
+      end
+    end
+
+    for i in 0..self.measurements.length-1
+      if self.measurements[i].speed == 0
+        self.measurements[i].delete
+      else
+        break
+      end
+    end
+
     self.measurements.each_with_index do |m, i|
       # if m.rpm >= 2500
       #   @tripAttrs[:rpmAbove2500] += 1
@@ -103,16 +106,16 @@ class Trip < ActiveRecord::Base
 
     }
 
-    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(2) && mileage >= 50 
+    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(2) and mileage >= 50 
       self.badges << [Merit::Badge.get(2), self.id]  
     end
-    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(3) && mileage >= 100 
+    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(3) and mileage >= 100 
       self.badges << [Merit::Badge.get(3), self.id]
     end
-    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(4) && mileage >= 500 
+    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(4) and mileage >= 500 
       self.badges << [Merit::Badge.get(4), self.id]
     end
-    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(5) && mileage >= 1000 
+    if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(5) and mileage >= 1000 
       self.badges << [Merit::Badge.get(5), self.id]
     end
   end

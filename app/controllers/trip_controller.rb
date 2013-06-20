@@ -2,7 +2,7 @@ class TripController < BaseController
 
   before_filter :login_required, :only => [:show]
   before_filter :login_with_access_token, :only => [:create]
-  
+
   uses_tiny_mce do
     {:only => [:show], :options => configatron.default_mce_options}
   end
@@ -21,9 +21,9 @@ class TripController < BaseController
     end
   end
   
-  def abstract
-    #@action = action_name
-    #Do calcs here and provide numbers
+  def show_abstract_trip
+    @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+    render :layout => "trips"
   end
 
   #used for making a map snapshot
@@ -38,7 +38,7 @@ class TripController < BaseController
   def create
     #create empty trip to get an id to pass on to measurements
     @trip = Trip.new
-    @trip.save
+    #@trip.save
 
     unless params[:import].nil?
       @trip.user_id = current_user.id
@@ -48,7 +48,7 @@ class TripController < BaseController
           "recorded_at" => Time.parse(feature[:properties][:time]),
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
           "latlon" => "POINT(#{feature[:geometry][:coordinates][0]} #{feature[:geometry][:coordinates][1]})",
-          "trip_id" => @trip.id
+          #"trip_id" => @trip.id
           )
       }
       respond_to do |format|
@@ -86,10 +86,6 @@ class TripController < BaseController
     thread = Thread.new{
       system(@exec)
     }
-    getBadges = Thread.new{
-      @trip.checkTripForBadges
-    }
-    getBadges.join
     thread.join
     
   end

@@ -34,7 +34,6 @@ class StaticPagesController < BaseController
     current_user.badges.each do |v|
       @badgesList[v.id] += 1
     end
-    debugger
     render :layout => "trips"
   end
 

@@ -22,9 +22,9 @@ function init() {
   //Get the coordinates from the gon measurements
   var gonPoints = [];
   for(var i=0; i<gon.measurements.length; i++) {
-    var measurement = gon.measurements[i];
+    var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
     gonPoints.push(
-      new OpenLayers.Geometry.Point( measurement.lat, measurement.lon ).transform(epsg4326, projectTo)
+      new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo)
     )
   }
   

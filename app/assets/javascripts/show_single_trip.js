@@ -32,6 +32,7 @@ function initChart(){
   projectTo = map.getProjectionObject();
 
   for(var i = 0; i < gon.measurements.length; i++) {
+    var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
     var date = new Date(gon.measurements[i].recorded_at).getTime();
     //speed
     seriesData[0][i] = {
@@ -45,7 +46,7 @@ function initChart(){
       y: gon.measurements[i].rpm/10,
       label: "rpm/10"
     }
-    dataHash[date] = new OpenLayers.Geometry.Point( gon.measurements[i].lat, gon.measurements[i].lon ).transform(epsg4326, projectTo);
+    dataHash[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
   
   
@@ -111,9 +112,9 @@ function initMap() {
   //Get the coordinates from the gon measurements
   //var gonPoints = [];
   for(var i=0; i<gon.measurements.length; i++) {
-    var measurement = gon.measurements[i];
+    var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
     gonPoints.push(
-      new OpenLayers.Geometry.Point( measurement.lat, measurement.lon ).transform(epsg4326, projectTo)
+      new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo)
     )
   }
 
@@ -149,7 +150,8 @@ function addHeatmapLayer(){
   features = [];
   for(var i=0; i<gon.measurements.length; i++) {
     var measurement = gon.measurements[i];
-    var g = new OpenLayers.Geometry.Point( measurement.lat, measurement.lon ).transform(epsg4326, projectTo)
+    var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
+    var g = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo)
     //insert what has to be shown here, e.g. speed/CO2
     features.push(
       new OpenLayers.Feature.Vector(g, {count: measurement.speed})
