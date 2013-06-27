@@ -8,39 +8,71 @@
 		<!--Loop through all the trips and printem-->
 		<% for @trip in @trips do%>
 			<div class="row well">
-				<div class="span6">
-					<div class="trip_info">
-						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>
-					</div>
-				</div>
-				<div class="span6 listing">
-					<div class="row">
-						<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
-					</div>
-					<div class="row">
-						<div class="span2">
-							<h4 class="muted">DISTANCE</h4>
-							<p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
-						</div>
-						<div class="span2">
-							<h4 class="muted">GAS CONSUMED</h4>
-							<p><i class="icon-fire"> </i><%= @trip.getTripLength %> Litres</p>
-						</div>
-						<div class="span2">
-							<h4 class="muted">CO2 EMISSIONS</h4>
-							<p><i class="icon-leaf"></i> <%= @trip.getTripLength %> Grams</p>
-						</div>			
-					</div>
-					<div class="row">
-						<div class="span6">
-							<% @trip.badges.each do |badge|%>
-								<%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %>
-							<%end%>
-						</div>	
-					</div>	
-				</div>
-			</div>
-			<hr class="featurette-divider">			
-		<%end%>
+				<div id="myCarousel_<%= @trip.id %>" class="carousel slide">
+		      <div class="carousel-inner">
+						<div class="item active">
+			        <div class="container">
+			        	<div class="span6">
+									<div class="trip_info">
+										<%= image_tag "/assets/trips/#{@trip.id}.png" %>
+									</div>
+								</div>
+								<div class="span6 listing">
+									<div class="row">
+										<%= "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}" %>
+									</div>
+									<div class="row">
+										<div class="span2">
+											<h4 class="muted">DISTANCE</h4>
+											<p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
+										</div>
+										<div class="span2">
+											<h4 class="muted">GAS CONSUMED</h4>
+											<p><i class="icon-fire"> </i><%= @trip.getTripLength %> Litres</p>
+										</div>
+										<div class="span2">
+											<h4 class="muted">CO2 EMISSIONS</h4>
+											<p><i class="icon-leaf"></i> <%= @trip.getTripLength %> Grams</p>
+										</div>			
+									</div>
+									<div class="row">
+										<div class="span6">
+											<% @trip.badges.each do |badge|%>
+												<%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %>
+											<%end%>
+										</div>	
+									</div>	
+								</div>
+			        </div>
+			      </div>
+			      <div class="item">
+			        <div class="container">
+			        	<div class="span4 listing"> 
+			        		<%= image_tag "beef.jpg" %>
+			        	</div>
+			        	<div class="span8">
+			        		<h4>Lorem Ipsum</h4>
+									<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+			        	</div>
+			        </div>
+			      </div>
+			      <div class="item">
+			        <div class="container">
+			        	<div class="span4 listing"> 
+			        		<%= image_tag "tree.png" %>
+			        	</div>
+			        	<div class="span8">
+			        		<h4>Lorem Ipsum</h4>
+									<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
+			        	</div>
+			        </div>
+			      </div>
+		      </div>
+		      <a class="left carousel-control" href="#myCarousel_<%= @trip.id %>" data-slide="prev">&lsaquo;</a>
+			  	<a class="right carousel-control" href="#myCarousel_<%= @trip.id %>" data-slide="next">&rsaquo;</a>
+		    </div>
+			</div><!-- /.carousel -->
+			<hr class="featurette-divider">	
+    <%end%>
 	<%end%>	
 </div> <!-- end container -->

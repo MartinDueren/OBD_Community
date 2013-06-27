@@ -27,7 +27,7 @@ function init(){
 function initChart(){
   
   //defining data and setting up the hash for lookup
-  var seriesData = [[],[]];
+  var seriesData = [[],[],[]];
   epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
   projectTo = map.getProjectionObject();
 
@@ -43,8 +43,14 @@ function initChart(){
     //rpm
     seriesData[1][i] = {
       x: date,
-      y: gon.measurements[i].rpm/10,
+      y: gon.measurements[i].rpm,
       label: "rpm/10"
+    }
+    //consumption
+    seriesData[2][i] = {
+      x: date,
+      y: gon.measurements[i].consumption,
+      label: "l/100km"
     }
     dataHash[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
@@ -78,9 +84,19 @@ function initChart(){
     { //dataSeries object
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
-      
+      axisYType: "secondary",
       type: "spline",
-      name: "rpm/10",
+      name: "Consumption in l/100km",
+      showInLegend: true,
+      xValueType: "dateTime",
+      dataPoints: seriesData[2]
+    },
+    { //dataSeries object
+
+      /*** Change type "column" to "bar", "area", "line" or "pie"***/
+      axisYType: "secondary",
+      type: "spline",
+      name: "rpm",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[1]

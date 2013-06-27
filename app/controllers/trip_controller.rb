@@ -47,6 +47,12 @@ class TripController < BaseController
         @trip.measurements.new(
           "recorded_at" => Time.parse(feature[:properties][:time]),
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
+          "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
+          "maf" => feature[:properties][:phenomenons][:'Calculated MAF'][:value],
+          "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
+          "map" => feature[:properties][:phenomenons][:'Intake Pressure'][:value],
+          "consumption" => feature[:properties][:phenomenons][:Consumption][:value],
+          "co2" => feature[:properties][:phenomenons][:CO2][:value],
           "latlon" => "POINT(#{feature[:geometry][:coordinates][0]} #{feature[:geometry][:coordinates][1]})",
           #"trip_id" => @trip.id
           )

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130620162453) do
+ActiveRecord::Schema.define(:version => 20130627122401) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -236,6 +236,8 @@ ActiveRecord::Schema.define(:version => 20130620162453) do
     t.integer  "ve"
     t.integer  "ed"
     t.spatial  "latlon",      :limit => {:srid=>4326, :type=>"point", :geographic=>true}
+    t.float    "consumption"
+    t.float    "co2"
   end
 
   create_table "merit_actions", :force => true do |t|

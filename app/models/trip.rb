@@ -18,7 +18,23 @@ class Trip < ActiveRecord::Base
   	end
   	#Convert to km and round to two decimal places
     @trip_length = @trip_length/1000
-  	'%.2f' % @trip_length
+  	('%.2f' % @trip_length).to_f
+  end
+
+  def getTripCo2
+
+  end
+
+  def getAvgConsumption
+    sum = 0
+    self.measurements.each do |m|
+      if m.speed == 0
+        sum = sum + 0.5
+      else
+        sum = sum + m.getFuelConsumption
+      end
+    end
+    '%.2f' % (sum / self.measurements.length)
   end
   
   def next

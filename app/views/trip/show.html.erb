@@ -24,11 +24,11 @@
 						</div>
 						<div class="span2">
 							<h4 class="muted">GAS CONSUMED</h4>
-							<p><i class="icon-fire"> </i><%= @trip.getTripLength %> Litres</p>
+							<p><i class="icon-fire"> </i><%= @trip.measurements.average(:consumption).to_f %> Litres</p>
 						</div>
 						<div class="span2">
 							<h4 class="muted">CO2 EMISSIONS</h4>
-							<p><i class="icon-leaf"></i> <%= @trip.getTripLength %> Grams</p>
+							<p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
 						</div>			
 					</div>
 					<div class="row">

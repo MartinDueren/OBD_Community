@@ -5,7 +5,7 @@
   
 %li{:class => css_class}= link_to :my_trips.l, trip_show_path
 
-- if current_page?(show_abstract_path)
+- if current_page?(trip_show_abstract_trip_path)
   - css_class = 'active'
 - else
   - css_class = 'inactive'

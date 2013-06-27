@@ -4,18 +4,12 @@ class Measurement < ActiveRecord::Base
   belongs_to :trip
   
   #validates_presence_of :trip_id
-  attr_accessible :trip_id, :lon, :lat, :rpm, :speed, :measurements_attributes, :latlon, :recorded_at, :map, :iat, :imap, :ve, :ed
+  attr_accessible :trip_id, :maf, :consumption, :co2, :lon, :lat, :rpm, :speed, :measurements_attributes, :latlon, :recorded_at, :map, :iat, :imap, :ve, :ed
 
   def getFuelConsumption
-    #TODO make this in l/100km (include speed information) (pay attention
-	#to speed=0)
-	if self.fuel_type == "Gasoline"
-		(self.maf / 14.7) / 747
-	elsif self.fuel_type == "Diesel"
-		(self.maf / 14.5) / 832
-	else
-		#TODO throw error
-	end
+  	#self.imap = self.rpm * self.map / self.iat
+  	#self.maf = (self.imap / 120.0) * (85.0 / 100.0) * 1.2 * 28.97 / 8.314
+    235.214 / (710.7 * self.speed / self.maf) #Old method: ((14.7 * 6.17 * 454 * (self.speed*0.621371)) / (3600 * self.maf))
   end
 
   def getCO2Emission
