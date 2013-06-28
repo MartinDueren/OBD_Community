@@ -1,0 +1,72 @@
+<div class="row">
+	<div class="span6">
+	  <h4 class="muted">Trip from <%= Geocoder.search(@tripA.measurements.first.latlon.y.to_s + "," + @tripA.measurements.first.latlon.x.to_s).first.address%> to <%= Geocoder.search(@tripA.measurements.last.latlon.y.to_s + "," + @tripA.measurements.last.latlon.x.to_s).first.address%></h4></h4>
+	</div>
+	<div class="span6">
+	  <h4 class="muted">Trip from <%= Geocoder.search(@tripB.measurements.first.latlon.y.to_s + "," + @tripB.measurements.first.latlon.x.to_s).first.address%> to <%= Geocoder.search(@tripB.measurements.last.latlon.y.to_s + "," + @tripB.measurements.last.latlon.x.to_s).first.address%></h4></h4>
+  </div>
+</div>
+<div class="row">
+	<div class="span6">
+		<div class="span1">
+	    <p><i class="icon-globe"> </i> <abbr title="Trip Length"><%= @tripA.getTripLength %> Km</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-time"> </i> <abbr title="Duration"><%=(@tripA.measurements.last.recorded_at.to_i - @tripA.measurements.first.recorded_at.to_i) / 60 %> min</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-fire"></i> <abbr title="Average Consumption"> <%= @tripA.measurements.average(:consumption).to_f %> L</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-pause"></i> <abbr title="Average Standing Time"><%= '%.0f' % (@tripA.measurements.where(:speed => 0).count * 5 / 60) %> min</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-leaf"></i> <abbr title="Average Speed"><%= '%.0f' % @tripA.measurements.average(:speed).to_f %> km/h</abbr></p>
+	  </div>
+	</div>
+	<div class="span6">
+		<div class="span1">
+	    <p><i class="icon-globe"> </i> <abbr title="Trip Length"><%= @tripB.getTripLength %> Km</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-time"> </i> <abbr title="Duration"><%=(@tripB.measurements.last.recorded_at.to_i - @tripB.measurements.first.recorded_at.to_i) / 60 %> min</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-fire"></i> <abbr title="Average Consumption"> <%= @tripB.measurements.average(:consumption).to_f %> L</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-pause"></i> <abbr title="Average Standing Time"><%= '%.0f' % (@tripB.measurements.where(:speed => 0).count * 5 / 60) %> min</abbr></p>
+	  </div>
+	  <div class="span1">
+	    <p><i class="icon-leaf"></i> <abbr title="Average Speed"><%= '%.0f' % @tripB.measurements.average(:speed).to_f %> km/h</abbr></p>
+	  </div>
+  </div>
+</div>
+<div class="row">
+	<div class="span6">
+		<div class="row">
+		  <div class="span6">
+		  	<div id="map1"></div>
+		  </div>
+		</div>
+		<div class="row">  	
+			<div class="span6">
+				<div id="chartContainerMap1" style="height: 250px; width: 100%;"></div>
+			</div>
+		</div>
+		<div class="row">
+		</div>
+	</div>
+	<div class="span6">
+		<div class="row">
+	  	<div class="span6">
+	  		<div id="map2"></div>
+	  	</div>
+	  </div>
+	  <div class="row">
+	  	<div class="span6">
+	  		<div id="chartContainerMap2" style="height: 250px; width: 100%;"></div>
+	  	</div>
+	  </div>
+  </div>
+</div>

@@ -1,4 +1,41 @@
+<div class="row">
+  <div class="span2">
+    <h4 class="muted">DISTANCE</h4>
+    <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> minutes</p>
+  </div>
+  <div class="span2">
+    <h4 class="muted">GAS CONSUMED</h4>
+    <p><i class="icon-fire"> </i><%= @trip.measurements.average(:consumption).to_f %> Liters</p>
+  </div>
+  <div class="span2">
+    <h4 class="muted">CO2 EMISSIONS</h4>
+    <p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
+  </div>
+  <div class="span2">
+    <h4 class="muted">STANDING TIME</h4>
+    <p><i class="icon-leaf"></i> <%= '%.0f' % (@trip.measurements.where(:speed => 0).count * 5 / 60) %> minutes</p>
+  </div>
+  <div class="span2">
+    <h4 class="muted">AVG SPEED</h4>
+    <p><i class="icon-leaf"></i> <%= '%.0f' % @trip.measurements.average(:speed).to_f %> km/h</p>
+  </div>
 
+  <div class="span2">
+  <div class="btn-group">
+    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+      Compare this trip
+      <span class="caret"></span>
+    </a>
+    <ul class="dropdown-menu">
+      <% for trip in current_user.trips do%>
+        <li>
+          <%= link_to "#{trip.getTripLength} Kilometers on #{trip.created_at.strftime("%a, %d %B %Y")}", "/trip/compare?a=#{@trip.id}&b=#{trip.id}" %>
+        </li>
+      <% end %>
+    </ul>
+  </div>
+  </div>
+</div>
 <div class="row">
   <div class="span6">
     <div id="map"></div>

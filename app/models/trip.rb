@@ -45,12 +45,10 @@ class Trip < ActiveRecord::Base
     Trip.where("id < ?", id).order("id DESC").first
   end
 
-  
+  #Check for badges and calc all relevant statistics
   def checkTripForBadges
-    @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0}
-    @tripAttrs[:length] = self.getTripLength
+    
 
-    User.find_by_id(self.user_id).update_attributes(:mileage => (User.find_by_id(self.user_id).mileage + @tripAttrs[:length].to_i))
     #remove standing time from beginning and end
     for i in (self.measurements.length-1).downto(0)
       if self.measurements[i].speed == 0
@@ -67,6 +65,10 @@ class Trip < ActiveRecord::Base
         break
       end
     end
+
+    @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0}
+    @tripAttrs[:length] = self.getTripLength
+    @current_user = User.find_by_id(self.user_id)
 
     self.measurements.each_with_index do |m, i|
       # if m.rpm >= 2500
@@ -107,6 +109,16 @@ class Trip < ActiveRecord::Base
       User.find_by_id(self.user_id).add_badge(badge[0].id)
     end
     
+    #update user statistics
+    div = 2.0
+    if User.find_by_id(self.user_id).trips.length == 1
+      div = 1.0
+    end
+    @current_user.update_attributes(:mileage => (@current_user.mileage + @tripAttrs[:length].to_i))
+    @current_user.update_attributes(:rpm => ((@current_user.rpm + self.measurements.average(:rpm).to_f) / div))
+    @current_user.update_attributes(:speed => ((@current_user.speed + self.measurements.average(:speed).to_f) / div))
+    @current_user.update_attributes(:consumption => ((@current_user.consumption + self.measurements.average(:consumption).to_f) / div))
+    @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
   end
 
   def firstTrip

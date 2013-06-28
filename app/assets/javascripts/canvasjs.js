@@ -21,11 +21,12 @@
 
 //added for global availability (used for trip chart) #Martin
 var dataHash = {};
+var searchResult;
+
 (function () {
 
     var isDebugMode = false;
-    //added these for my purposes #Martin
-    var searchResult;
+    
     
 
     //Default values for all Chart Elements that can be set by the user. VisualElement.setOptions looks into this while setting the default/user-defined values.

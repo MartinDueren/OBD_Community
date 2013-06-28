@@ -1,3 +1,31 @@
+<div class="row">
+	<h1>Overview</h1>
+	<div class="row">
+		<table class="table table-striped">
+      <thead>
+        <tr>
+          <th><h4 class="muted">TOTAL DISTANCE</h4></th>
+          <th><h4 class="muted">RECORDED TRIPS</h4></th>
+          <th><h4 class="muted">TOTAL STANDING TIME</h4></th>
+          <th><h4 class="muted">AVERAGE SPEED</h4></th>
+          <th><h4 class="muted">AVERAGE RPM</h4></th>
+          <th><h4 class="muted">AVERAGE CONSUMPTION</h4></th>
+        </tr>
+      </thead>
+      <tbody>
+        <tr class="success">
+          <td><i class="icon-globe"> </i><%= current_user.mileage %> Km</td>
+          <td><i class="icon-list"> </i><%= current_user.trips.length %></td> 
+          <td><i class="icon-pause"> </i><%= '%.2f' % (current_user.standingtime / 60.0 / 60.0) %> h</td>
+          <td><i class="icon-random"> </i><%= '%.0f' % current_user.speed %> Km/h</td>
+          <td><i class="icon-refresh"> </i><%= '%.0f' % current_user.rpm %> Rpm</td>
+          <td><i class="icon-tint"> </i><%= '%.1f' % current_user.consumption %> l/100km</td>
+        </tr>
+      </tbody>
+    </table>
+	</div>
+</div>
+
 <div class="container">
 	<h1>My recent Trips</h1>
 	<% if @trips.blank? %>
@@ -15,7 +43,7 @@
 				</div>
 				<div class="span6 listing">
 					<div class="row">
-						<%= link_to "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
+						<%= link_to "#{@trip.getTripLength} Kilometers driven from #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} to #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} on #{@trip.measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trip.measurements.first.recorded_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
 					</div>
 					<div class="row">
 						<div class="span2">

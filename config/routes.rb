@@ -34,6 +34,7 @@ OBDComm::Application.routes.draw do
   
   match "/trip/show/:id" => "trip#show_single_trip"
   
+  get "/trip/compare"
 
   get "trip/create"
   match '/trip/create' => 'trip#create', :via => :post

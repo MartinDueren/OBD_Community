@@ -11,12 +11,22 @@ class TripController < BaseController
     @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
     render :layout => "trips"
   end
+
+  def compare
+    @action = action_name
+    @tripA = Trip.find_by_id(params[:a])
+    @tripB = Trip.find_by_id(params[:b])
+    gon.measurementsMap1 = @tripA.measurements
+    gon.measurementsMap2 = @tripB.measurements
+    render :layout => "trips"
+  end
   
   #used for ..\show\trip\:id
   def show_single_trip
     @action = action_name
     if params.has_key?(:id)
-      gon.measurements = Trip.find_by_id(params[:id]).measurements
+      @trip = Trip.find_by_id(params[:id])
+      gon.measurements = @trip.measurements
       render :layout => "trips"
     end
   end

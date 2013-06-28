@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627122401) do
+ActiveRecord::Schema.define(:version => 20130627151132) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -538,6 +538,10 @@ ActiveRecord::Schema.define(:version => 20130627122401) do
     t.integer  "sash_id"
     t.integer  "level",                                :default => 0
     t.integer  "mileage",                              :default => 0
+    t.float    "rpm",                                  :default => 0.0
+    t.float    "speed",                                :default => 0.0
+    t.float    "standingtime",                         :default => 0.0
+    t.float    "consumption",                          :default => 0.0
   end
 
   add_index "users", ["activated_at"], :name => "index_users_on_activated_at"
