@@ -16,6 +16,8 @@ gem 'jquery-rails'
 gem 'gon'
 gem 'debugger'
 gem 'css3-progress-bar-rails'
+gem 'delayed_job_active_record' #bundle exec rake jobs:work
+
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'

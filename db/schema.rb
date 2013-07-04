@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130627151132) do
+ActiveRecord::Schema.define(:version => 20130704082038) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -143,6 +143,22 @@ ActiveRecord::Schema.define(:version => 20130627151132) do
     t.string "name"
   end
 
+  create_table "delayed_jobs", :force => true do |t|
+    t.integer  "priority",   :default => 0
+    t.integer  "attempts",   :default => 0
+    t.text     "handler"
+    t.text     "last_error"
+    t.datetime "run_at"
+    t.datetime "locked_at"
+    t.datetime "failed_at"
+    t.string   "locked_by"
+    t.string   "queue"
+    t.datetime "created_at",                :null => false
+    t.datetime "updated_at",                :null => false
+  end
+
+  add_index "delayed_jobs", ["priority", "run_at"], :name => "delayed_jobs_priority"
+
   create_table "events", :force => true do |t|
     t.string   "name"
     t.datetime "created_at"
@@ -222,8 +238,8 @@ ActiveRecord::Schema.define(:version => 20130627151132) do
   end
 
   create_table "measurements", :force => true do |t|
-    t.datetime "created_at",                                                              :null => false
-    t.datetime "updated_at",                                                              :null => false
+    t.datetime "created_at",                                           :null => false
+    t.datetime "updated_at",                                           :null => false
     t.integer  "trip_id"
     t.integer  "rpm"
     t.float    "speed"
@@ -235,10 +251,12 @@ ActiveRecord::Schema.define(:version => 20130627151132) do
     t.float    "imap"
     t.integer  "ve"
     t.integer  "ed"
-    t.spatial  "latlon",      :limit => {:srid=>4326, :type=>"point", :geographic=>true}
+    t.spatial  "latlon",      :limit => {:srid=>4326, :type=>"point"}
     t.float    "consumption"
     t.float    "co2"
   end
+
+  add_index "measurements", ["latlon"], :name => "index_measurements_on_latlon", :spatial => true
 
   create_table "merit_actions", :force => true do |t|
     t.integer  "user_id"
@@ -315,8 +333,15 @@ ActiveRecord::Schema.define(:version => 20130627151132) do
   end
 
   create_table "osm_lines", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                         :null => false
+    t.datetime "updated_at",                         :null => false
+    t.integer  "measurement_count", :default => 0
+    t.integer  "avg_speed",         :default => 0
+    t.integer  "avg_rpm",           :default => 0
+    t.float    "avg_co2",           :default => 0.0
+    t.float    "avg_consumption",   :default => 0.0
+    t.integer  "max_speed",         :default => 0
+    t.integer  "avg_standing_time", :default => 0
   end
 
   create_table "osm_roads", :force => true do |t|
@@ -542,6 +567,7 @@ ActiveRecord::Schema.define(:version => 20130627151132) do
     t.float    "speed",                                :default => 0.0
     t.float    "standingtime",                         :default => 0.0
     t.float    "consumption",                          :default => 0.0
+    t.integer  "measurement_count",                    :default => 0
   end
 
   add_index "users", ["activated_at"], :name => "index_users_on_activated_at"

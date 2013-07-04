@@ -1,5 +1,4 @@
 class OsmLines < ActiveRecord::Base
-  # attr_accessible :title, :body
-  set_table_name 'planet_osm_line'
-  set_primary_key 'osm_id'
+  attr_accessible :measurement_count, :avg_speed, :avg_rpm, :avg_co2, :avg_consumption, :max_speed, :avg_standing_time
+
 end

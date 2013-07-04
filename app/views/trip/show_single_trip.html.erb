@@ -5,7 +5,7 @@
   </div>
   <div class="span2">
     <h4 class="muted">GAS CONSUMED</h4>
-    <p><i class="icon-fire"> </i><%= @trip.measurements.average(:consumption).to_f %> Liters</p>
+    <p><i class="icon-fire"> </i><%= '%.2f' % @trip.measurements.average(:consumption).to_f %> Liters</p>
   </div>
   <div class="span2">
     <h4 class="muted">CO2 EMISSIONS</h4>
@@ -21,24 +21,42 @@
   </div>
 
   <div class="span2">
-  <div class="btn-group">
-    <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-      Compare this trip
-      <span class="caret"></span>
-    </a>
-    <ul class="dropdown-menu">
-      <% for trip in current_user.trips do%>
-        <li>
-          <%= link_to "#{trip.getTripLength} Kilometers on #{trip.created_at.strftime("%a, %d %B %Y")}", "/trip/compare?a=#{@trip.id}&b=#{trip.id}" %>
-        </li>
-      <% end %>
-    </ul>
-  </div>
+    <div class="btn-group">
+      <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+        Compare this trip
+        <span class="caret"></span>
+      </a>
+      <ul class="dropdown-menu">
+        <% for trip in current_user.trips do%>
+          <li>
+            <%= link_to "#{trip.getTripLength} Kilometers on #{trip.created_at.strftime("%a, %d %B %Y")}", "/trip/compare?a=#{@trip.id}&b=#{trip.id}" %>
+          </li>
+        <% end %>
+      </ul>
+    </div>
   </div>
 </div>
 <div class="row">
   <div class="span6">
-    <div id="map"></div>
+    <div class="map" id="map">
+      <div class="btn-group sensorswitch dropup">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+          Change sensor
+          <span class="caret"></span>
+        </a>
+        <ul class="dropdown-menu">
+            <li>
+              <a id="change-sensor-consumption" href="#">Consumption</a>
+            </li>
+            <li>
+              <a id="change-sensor-rpm" href="#">Rpm</a>
+            </li>
+            <li>
+              <a id="change-sensor-speed" href="#">Speed</a>
+            </li>
+        </ul>
+      </div>
+    </div>
     <!-- AddThis Button BEGIN -->
     <div class="addthis_toolbox addthis_default_style">
       <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
@@ -67,4 +85,5 @@
 </div><!-- /.row -->
 
 <hr class="featurette-divider">
+
 

@@ -80,7 +80,7 @@ function initChartMap1(){
     { //dataSeries object
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
-      axisYType: "secondary",
+      axisYType: "primary",
       type: "spline",
       name: "Consumption in l/100km",
       showInLegend: true,
@@ -307,7 +307,7 @@ function initChartMap2(){
     { //dataSeries object
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
-      axisYType: "secondary",
+      axisYType: "primary",
       type: "spline",
       name: "Consumption in l/100km",
       showInLegend: true,

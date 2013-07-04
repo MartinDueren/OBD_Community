@@ -1,0 +1,24 @@
+<table class="table table-hover">
+<thead>
+  <tr>
+    <th>#</th>
+    <th>User</th>
+    <th>Points</th>
+    <th>Mileage</th>
+    <th>Consumption</th>
+  </tr>
+</thead>
+<tbody>
+  <% top = Merit::Score.top_scored %>
+  <% for i in 0..(top.ntuples-1) do %>
+    <% user = User.find_by_id(top[i]["user_id"]) %>
+    <tr class="h">
+      <td class="vmid"><%= i + 1 %>.</td>
+      <td class="vmid"><%= link_to image_tag( user.avatar_photo_url(:medium), size: "100x100" ), user_path(user) %> <%= link_to user.login, user_path(user) %></td>
+      <td class="vmid"><i class="icon-star"> <%= user.points %></td>
+      <td class="vmid"><i class="icon-globe"> <%= user.mileage %> Km</td>
+      <td class="vmid"><i class="icon-tint"> <%= '%.2f' % user.consumption %> l/100 km</td>
+    </tr>
+  <% end %>
+</tbody>
+</table>

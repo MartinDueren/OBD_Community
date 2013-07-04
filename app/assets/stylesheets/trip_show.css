@@ -1,3 +1,10 @@
+td.vmid {
+  vertical-align: middle;
+}
+tr.h {
+  height: 116px;
+}
+
 .trip_info {
 	border-right: 1px solid #eeeeee;
 }

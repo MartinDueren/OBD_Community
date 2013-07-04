@@ -9,7 +9,7 @@
         <% trip.badges.each do |badge| %>
           <div class="row">
             <div class="span2">
-              <%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %>
+              <%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "70x70" %>
             </div>
             <div class="span7">
               <%= link_to "Granted for a trip on #{Trip.find_by_id(badge[1]).created_at.strftime("%a, %d %B %Y")} at #{Trip.find_by_id(badge[1]).created_at.strftime("%H:%M %P")}", "/trip/show/#{badge[1]}" %>
@@ -20,11 +20,13 @@
       <%end%>
     </div>
     <div class="span3 well">
-      <%= progress_bar(33, :color => 'blue', :rounded => true) %> 
-      <h4>999 Points</h4>
+      <% progress = (current_user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100) %>
+
+      <%= progress_bar(progress, :color => 'blue', :rounded => true) %> 
+      <h4><%= current_user.points %> Points</h4>
       <h2>Earned Badges:</h2>
       <% @badgesList.each do |k, v| %>
-        <h4><%= image_tag "Badges/#{Merit::Badge.get(k).custom_fields[:image]}" %> x<%= v %></h4>
+        <h4><%= image_tag "Badges/#{Merit::Badge.get(k).custom_fields[:image]}", size: "50x50" %> x<%= v %></h4>
       <%end%>
     </div>
   </div>

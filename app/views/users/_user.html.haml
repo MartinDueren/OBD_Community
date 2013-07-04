@@ -1,5 +1,5 @@
 .row.well
-  .span4= link_to image_tag( user.avatar_photo_url(:medium) ), user_path(user)
+  .span4= link_to image_tag( user.avatar_photo_url(:medium), size: "100x100" ), user_path(user)
   
   .span6
     %h4= link_to user.login, user_path(user)

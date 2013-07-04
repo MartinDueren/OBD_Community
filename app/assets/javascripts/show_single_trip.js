@@ -14,14 +14,23 @@ var style = {
   strokeOpacity: 0.8,
   strokeWidth: 5
 };
+var style2 = {
+  strokeColor: '#00ff00',
+  strokeOpacity: 0.8,
+  strokeWidth: 5
+};
 var gonPoints = [];
 var epsg4326;
 var projectTo;
+var feature;
+var vectorLayer;
+var heatmap;
 
 function init(){
  initMap();
  initChart();
  addHeatmapLayer();
+ heatmap.setVisibility(false);
 }
 
 function initChart(){
@@ -84,9 +93,9 @@ function initChart(){
     { //dataSeries object
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
-      axisYType: "secondary",
+      axisYType: "primary",
       type: "spline",
-      name: "Consumption in l/100km",
+      name: "Consumption in l/h",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[2]
@@ -110,7 +119,7 @@ function initChart(){
 function initMap() {
 
   var osm = new OpenLayers.Layer.OSM("Base Layer");
-  var vectorLayer = new OpenLayers.Layer.Vector("Driven Route");
+  vectorLayer = new OpenLayers.Layer.Vector("Driven Route");
   map.addLayers([osm, vectorLayer]);
 
   //map.addControl(new OpenLayers.Control.PanZoomBar());
@@ -126,21 +135,21 @@ function initMap() {
   var lonLat = new OpenLayers.LonLat(-0.12, 51.503 ).transform(epsg4326, projectTo);
 
   //Get the coordinates from the gon measurements
-  //var gonPoints = [];
-  for(var i=0; i<gon.measurements.length; i++) {
+  for(var i=0; i<gon.measurements.length-1; i++) {
     var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
+    var coords2 = gon.measurements[i+1].latlon.replace("(", "").replace(")","").split(" ")
     gonPoints.push(
-      new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo)
+      new OpenLayers.Feature.Vector(
+        new OpenLayers.Geometry.LineString([
+          new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo),
+          new OpenLayers.Geometry.Point( coords2[1], coords2[2] ).transform(epsg4326, projectTo)
+          ]),
+        null, style
+      )
     )
   }
 
-  var feature = new OpenLayers.Feature.Vector(
-    new OpenLayers.Geometry.LineString(gonPoints),
-    null,
-    style
-  );
-
-  vectorLayer.addFeatures(feature);
+  vectorLayer.addFeatures(gonPoints);
 
   var bounds = new OpenLayers.Bounds();
 
@@ -152,14 +161,14 @@ function initMap() {
     // Iterate over the features and extend the bounds to the bounds of the geometries
     for(var i=0; i<gonPoints.length; i++) {
       if (!bounds) {
-        bounds = gonPoints[i].getBounds();
+        bounds = vectorLayer.features[i].geometry.getBounds();
       } else {
-        bounds.extend(gonPoints[i].getBounds());
+        bounds.extend(vectorLayer.features[i].geometry.getBounds());
       }
     }
   }
   map.zoomToExtent(bounds);
-  //initGraph();
+  changeSensor("speed");
 }
 
 function addHeatmapLayer(){
@@ -175,7 +184,7 @@ function addHeatmapLayer(){
   }
 
   //create our vectorial layer using heatmap renderer
-  var heatmap = new OpenLayers.Layer.Vector("Heatmap Layer", {
+  heatmap = new OpenLayers.Layer.Vector("Heatmap Layer", {
     opacity: 0.3,
     renderers: ['Heatmap'],
     rendererOptions: {
@@ -202,7 +211,33 @@ function selectPoint(point){
   map.addLayers([marker]);
 }
 
+function changeSensor(sensor){
+    for(i = 0; i < vectorLayer.features.length; i++){
+        var style = {
+          strokeColor: getColor(sensor, gon.measurements[i][sensor]), 
+          strokeOpacity: 0.8,
+          strokeWidth: 5
+        };
+        vectorLayer.features[i].style = style;
+    }
+    vectorLayer.redraw();
+}
+
+function getColor(sensor, value){
+    var steps = gon.statistics["max_" + sensor]/5;
+    if(value < steps) return "#1BE01B";
+    else if(value < steps * 2) return "#B5E01B";
+    else if(value < steps * 3) return "#E0C61B";
+    else if(value < steps * 4) return "#E08B1B";
+    else return "#E01B1B";
+}
+
+
+
 //call init
 window.onload = init;
 
+$('a#change-sensor-speed').click(function(){ changeSensor("speed");});
+$('a#change-sensor-rpm').click(function(){ changeSensor("rpm");});
+$('a#change-sensor-consumption').click(function(){ changeSensor("consumption");});
 

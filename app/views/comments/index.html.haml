@@ -1,0 +1,13 @@
+= render :partial => 'posts/author_profile', :locals => {:user => @user} if @user
+-@page_title = :comments.l + " on " + @title
+
+- if @comments.empty?
+  = :no_comments_found.l_with_args(:type => @commentable.class.to_s.underscore)
+-else 
+  %a
+    = render :partial => 'comments/comment', :collection => @comments
+  =paginate @comments, :theme => 'bootstrap'
+
+%h3=:add_your_comment.l
+%p= render :partial => 'comments/comment_form', :locals => {:commentable => @commentable}  
+      
