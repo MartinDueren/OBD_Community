@@ -1,0 +1,29 @@
+-box do
+  = form_tag statistics_user_path(@user), :class => "form form-horizontal" do
+    .control-group
+      %label.control-label= :month.l
+      .controls
+        = select_month(@month)
+        = select_year(@month, :start_year => 1.years.ago.year, :end_year => 1.years.from_now.year)
+    .controls
+      = submit_tag :go.l, :class => 'btn btn-primary'
+
+    - if current_user.admin?
+      %p= link_to :back_to_all_statistics.l, statistics_path
+      %p
+        =:estimated_total_for_this_month.l+":"
+        %strong= "$#{@estimated_payment}"
+
+    %table.table.table-bordered.table-striped
+      - @posts.group_by(&:category).each do |category, posts|
+        %tr
+          %th
+            = "#{category.name}:" if category
+            = "#{posts.size} "+:posts.l
+          %th=:comments.l
+          %th=:view.l.pluralize
+        - posts.each do |post|
+          %tr
+            %td= post.title
+            %td= post.comments.count
+            %td= post.view_count

@@ -1,0 +1,106 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>OBDComm:osm_roads</Name>
+        <UserStyle>
+            <Title>Average Rpm</Title>
+            <FeatureTypeStyle>
+                <Rule>
+                    <Name>500-1500</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_rpm</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>500</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>1500</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#1BE01B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>1501-2000</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_rpm</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>1501</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>2000</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#B5E01B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>2001-2500</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_rpm</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>2001</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>2500</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E0C61B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>2501-3000</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_rpm</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>2501</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>3000</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E08B1B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>Above 3001</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsGreaterThan>
+                            <ogc:PropertyName>avg_rpm</ogc:PropertyName>
+                            <ogc:Literal>3001</ogc:Literal>
+                        </ogc:PropertyIsGreaterThan>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E01B1B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
+</StyledLayerDescriptor>

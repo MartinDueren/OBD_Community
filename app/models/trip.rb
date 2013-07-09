@@ -1,6 +1,7 @@
 class Trip < ActiveRecord::Base  
   acts_as_commentable
-  
+  acts_as_taggable
+
   belongs_to :user
   has_many   :measurements, :foreign_key => 'trip_id' 
   
@@ -9,6 +10,9 @@ class Trip < ActiveRecord::Base
 
   serialize :badges,Array
 
+  after_save do |trip|
+    activity = Activity.new(:action => 'Trip', :item_id => trip.id)
+  end
 
   def getTripLength
   	@trip_length = 0
@@ -48,21 +52,21 @@ class Trip < ActiveRecord::Base
   def integrateTrip
 
     #remove standing time from beginning and end
-    # for i in (self.measurements.length-1).downto(0)
-    #   if self.measurements[i].speed == 0
-    #     self.measurements[i].delete
-    #   else
-    #     break
-    #   end
-    # end
+    for i in (self.measurements.length-1).downto(0)
+      if self.measurements[i].speed == 0
+        self.measurements[i].delete
+      else
+        break
+      end
+    end
 
-    # for i in 0..self.measurements.length-1
-    #   if self.measurements[i].speed == 0
-    #     self.measurements[i].delete
-    #   else
-    #     break
-    #   end
-    # end
+    for i in 0..self.measurements.length-1
+      if self.measurements[i].speed == 0
+        self.measurements[i].delete
+      else
+        break
+      end
+    end
     ################
 
     @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0}
@@ -127,6 +131,28 @@ class Trip < ActiveRecord::Base
     @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
 
     @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
+
+    #### find nearest street for every measurement and calculate stats 
+    res = OsmRoads.find_by_sql("SELECT DISTINCT ON (pt_id) pt_id, ln_id, ST_AsText(ST_line_interpolate_point(ln_geom, ST_line_locate_point(ln_geom, pt_geom))) FROM (SELECT ln.geom AS ln_geom, pt.latlon AS pt_geom, ln.id AS ln_id, pt.id AS pt_id, ST_Distance(ln.geom, pt.latlon) AS d FROM (SELECT * FROM measurements WHERE trip_id = #{self.id}) pt, osm_roads ln WHERE ST_DWithin(pt.latlon, ln.geom, 10.0) ORDER BY pt_id,d ) AS subquery;")
+
+    res.each do |m|
+      osm_road = OsmRoads.find_by_id(m.ln_id)
+      nm = Measurement.find_by_id(m.pt_id)
+      div = osm_road.measurement_count + 1
+
+      if nm.speed > osm_road.max_speed
+        osm_road.update_attributes(:max_speed => nm.speed)
+      end
+
+      osm_road.update_attributes(:avg_speed => (((osm_road.avg_speed * osm_road.measurement_count) + nm.speed) / div))
+      osm_road.update_attributes(:avg_rpm => (((osm_road.avg_rpm * osm_road.measurement_count) + nm.rpm) / div))
+      osm_road.update_attributes(:avg_consumption => (((osm_road.avg_consumption * osm_road.measurement_count) + nm.consumption) / div))
+      osm_road.update_attributes(:avg_standing_time => (((osm_road.avg_standing_time * osm_road.measurement_count) + 5) / div))
+      osm_road.update_attributes(:avg_co2 => (((osm_road.avg_co2 * osm_road.measurement_count) + nm.co2) / div))
+
+      osm_road.update_attributes(:measurement_count => osm_road.measurement_count + 1)
+      puts("UPDATED Something....")
+    end
   end
 
 

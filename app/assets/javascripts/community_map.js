@@ -1,68 +1,66 @@
-var map, layer;
+var map, layer, format, sld;
+
 function init() {
-  // Define a new map.  We want it to be loaded into the 'map_canvas' div in the view
-  map = new OpenLayers.Map('map');
-  
-  // Add a LayerSwitcher controller
-  map.addControl(new OpenLayers.Control.LayerSwitcher());
+    var geographic = new OpenLayers.Projection("EPSG:4326");
+    var mercator = new OpenLayers.Projection("EPSG:900913");
 
-  var osm = new OpenLayers.Layer.OSM();
-  var vectorLayer = new OpenLayers.Layer.Vector("Measurements/Speed");
-    
-  map.addLayers([osm, vectorLayer]);
+    var muenster_center = new OpenLayers.LonLat(7.623718, 51.960769).transform(
+        geographic, mercator
+    );
 
-  var style = {
-    'strokeColor': 'magenta',
-    'strokeOpacity': 1.0,
-    'strokeWidth': 2
-  };
-
-  epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-  projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-
-  //Get the coordinates from the gon measurements
-  var gonPoints = [];
-  for(var i=0; i<gon.measurements.length; i++) {
-    if(gon.measurements[i].latlon != null){
-      var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
-      gonPoints.push(
-        new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo)
-    )
-    }
-  }
-  //Every Vector can have its own style: 
-  var features = [];
-  for(var i=0; i<gonPoints.length; i++) {
-     style = { 
-      pointRadius: Math.round(1 + gon.measurements[i].speed / 50),
-      'strokeColor': 'magenta',
-      'strokeOpacity': 1.0,
-      'strokeWidth': 2
+    var mapOptions = {
+        div: "map",
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        units: "m",
     };
-     features.push(
-       new OpenLayers.Feature.Vector(gonPoints[i], null, style)
-     )
-  }
-  
-  vectorLayer.addFeatures(features);
-  
-  var bounds = new OpenLayers.Bounds();
 
-  if(gonPoints) {
-    if(gonPoints.constructor != Array) {
-      gonPoints = [gonPoints];
+    map = new OpenLayers.Map('map', mapOptions);
+
+
+    var osm = new OpenLayers.Layer.OSM();
+    map.addLayers([osm]);
+
+
+    layer = new OpenLayers.Layer.WMS(
+        "Vienna Calling",
+        "http://localhost:8080/geoserver/OBDComm/wms?", {
+            layers: "OBDComm:osm_roads",
+            transparent: true   
+        }
+    );
+
+    map.addLayer(layer);
+    map.setCenter(muenster_center, 13);
+
+}
+
+
+function changeSensor(sensor){
+    switch (sensor){
+        case "avg_speed":
+            layer.mergeNewParams({styles:sensor});
+            break;
+        case "avg_rpm":
+            layer.mergeNewParams({styles:sensor});
+            break;
+        case "avg_co2": 
+            layer.mergeNewParams({styles:sensor});
+            break; 
+        case "avg_consumption": 
+            layer.mergeNewParams({styles:sensor});
+            break; 
+        case "avg_standing_time": 
+            layer.mergeNewParams({styles:sensor});
+            break; 
+        case "max_speed": 
+            layer.mergeNewParams({styles:sensor});
+            break;    
     }
+    
+    
+}
 
-    // Iterate over the features and extend the bounds to the bounds of the geometries
-    for(var i=0; i<gonPoints.length; i++) {
-      if (!bounds) {
-        bounds = gonPoints[i].getBounds();
-      } else {
-        bounds.extend(gonPoints[i].getBounds());
-      }
-    }
-  }
-  map.zoomToExtent(bounds);
-  }
+$('a#change-sensor-speed').click(function(){ changeSensor("avg_speed");});
+$('a#change-sensor-rpm').click(function(){ changeSensor("avg_rpm");});
 
-  window.onload = init;
+window.onload = init;

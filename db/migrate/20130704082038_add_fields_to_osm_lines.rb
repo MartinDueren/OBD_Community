@@ -7,5 +7,9 @@ class AddFieldsToOsmLines < ActiveRecord::Migration
     add_column :osm_lines, :avg_consumption, :float, :default => 0
     add_column :osm_lines, :max_speed, :int, :default => 0
     add_column :osm_lines, :avg_standing_time, :int, :default => 0
+    add_column :osm_lines, :geom, :geometry
+    add_column :osm_lines, :highway, :text
+    
+    add_index(:osm_lines, :geom, :spatial => true)  # spatial index
   end
 end

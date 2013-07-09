@@ -13,7 +13,6 @@
       
     = render :partial => "shared/scripts_and_styles"    
     = stylesheet_link_tag 'fullmap'
-    = javascript_include_tag "community_map"
   %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    
       =render :partial => 'facebook/fb_require'    
@@ -27,4 +26,5 @@
     = yield        
     
     = render :partial => "shared/end_javascript"
+    = javascript_include_tag "community_map"
     = yield :end_javascript

@@ -1,7 +1,7 @@
 .row.well
-  .span4= link_to image_tag( user.avatar_photo_url(:medium), size: "100x100" ), user_path(user)
+  .span2= link_to image_tag( user.avatar_photo_url(:medium), size: "100x100" ), user_path(user)
   
-  .span6
+  .span3
     %h4= link_to user.login, user_path(user)
 
     %p
@@ -12,20 +12,23 @@
 
 
     %ul
-      - if user.metro_area        
-        %li.geo
-          = :from2.l
-          =user.location
       %li.update
         %abbr.published{:title=>"#{user.created_at}"}
           =:joined.l + " #{time_ago_in_words_or_date user.created_at}"
       - if current_user and current_user.can_request_friendship_with(user)
         %li.addfriend= add_friend_link(user)
-    
 
-    -unless user.tags.empty?
-      %p=raw user.tags[0...6].compact.collect{|t| link_to( t.name, tag_url(t), :class => "tag") }.join(" ")
 
     - if current_user && current_user.admin?
       %p= button_to :assume_id.l, assume_user_path(user), :class => 'btn'
     
+  .span6
+    %h4.stats= "Statistics"
+    .span1
+      %i.icon-globe= " " + user.mileage.to_s + " km"
+    .span1
+      %i.icon-list= " " + user.trips.length.to_s + " trips"
+    .span1
+      %i.icon-random= " " + '%.0f' % user.speed.to_s + " Km/h"
+    .span2
+      %i.icon-tint= " " + '%.1f' % user.consumption.to_s + " l/100km"

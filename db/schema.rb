@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704082038) do
+ActiveRecord::Schema.define(:version => 20130704132043) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -333,21 +333,36 @@ ActiveRecord::Schema.define(:version => 20130704082038) do
   end
 
   create_table "osm_lines", :force => true do |t|
-    t.datetime "created_at",                         :null => false
-    t.datetime "updated_at",                         :null => false
-    t.integer  "measurement_count", :default => 0
-    t.integer  "avg_speed",         :default => 0
-    t.integer  "avg_rpm",           :default => 0
-    t.float    "avg_co2",           :default => 0.0
-    t.float    "avg_consumption",   :default => 0.0
-    t.integer  "max_speed",         :default => 0
-    t.integer  "avg_standing_time", :default => 0
+    t.datetime "created_at",                                                                  :null => false
+    t.datetime "updated_at",                                                                  :null => false
+    t.integer  "measurement_count",                                          :default => 0
+    t.integer  "avg_speed",                                                  :default => 0
+    t.integer  "avg_rpm",                                                    :default => 0
+    t.float    "avg_co2",                                                    :default => 0.0
+    t.float    "avg_consumption",                                            :default => 0.0
+    t.integer  "max_speed",                                                  :default => 0
+    t.integer  "avg_standing_time",                                          :default => 0
+    t.spatial  "geom",              :limit => {:srid=>0, :type=>"geometry"}
+    t.text     "highway"
   end
 
+  add_index "osm_lines", ["geom"], :name => "index_osm_lines_on_geom", :spatial => true
+
   create_table "osm_roads", :force => true do |t|
-    t.datetime "created_at", :null => false
-    t.datetime "updated_at", :null => false
+    t.datetime "created_at",                                                                  :null => false
+    t.datetime "updated_at",                                                                  :null => false
+    t.integer  "measurement_count",                                          :default => 0
+    t.integer  "avg_speed",                                                  :default => 0
+    t.integer  "avg_rpm",                                                    :default => 0
+    t.float    "avg_co2",                                                    :default => 0.0
+    t.float    "avg_consumption",                                            :default => 0.0
+    t.integer  "max_speed",                                                  :default => 0
+    t.integer  "avg_standing_time",                                          :default => 0
+    t.spatial  "geom",              :limit => {:srid=>0, :type=>"geometry"}
+    t.text     "highway"
   end
+
+  add_index "osm_roads", ["geom"], :name => "index_osm_roads_on_geom", :spatial => true
 
   create_table "pages", :force => true do |t|
     t.string   "title"
@@ -378,6 +393,329 @@ ActiveRecord::Schema.define(:version => 20130704082038) do
 
   add_index "photos", ["created_at"], :name => "index_photos_on_created_at"
   add_index "photos", ["parent_id"], :name => "index_photos_on_parent_id"
+
+  create_table "planet_osm_line", :id => false, :force => true do |t|
+    t.integer "osm_id",             :limit => 8
+    t.text    "access"
+    t.text    "addr:housename"
+    t.text    "addr:housenumber"
+    t.text    "addr:interpolation"
+    t.text    "admin_level"
+    t.text    "aerialway"
+    t.text    "aeroway"
+    t.text    "amenity"
+    t.text    "area"
+    t.text    "barrier"
+    t.text    "bicycle"
+    t.text    "brand"
+    t.text    "bridge"
+    t.text    "boundary"
+    t.text    "building"
+    t.text    "construction"
+    t.text    "covered"
+    t.text    "culvert"
+    t.text    "cutting"
+    t.text    "denomination"
+    t.text    "disused"
+    t.text    "embankment"
+    t.text    "foot"
+    t.text    "generator:source"
+    t.text    "harbour"
+    t.text    "highway"
+    t.text    "historic"
+    t.text    "horse"
+    t.text    "intermittent"
+    t.text    "junction"
+    t.text    "landuse"
+    t.text    "layer"
+    t.text    "leisure"
+    t.text    "lock"
+    t.text    "man_made"
+    t.text    "military"
+    t.text    "motorcar"
+    t.text    "name"
+    t.text    "natural"
+    t.text    "oneway"
+    t.text    "operator"
+    t.text    "population"
+    t.text    "power"
+    t.text    "power_source"
+    t.text    "place"
+    t.text    "railway"
+    t.text    "ref"
+    t.text    "religion"
+    t.text    "route"
+    t.text    "service"
+    t.text    "shop"
+    t.text    "sport"
+    t.text    "surface"
+    t.text    "toll"
+    t.text    "tourism"
+    t.text    "tower:type"
+    t.text    "tracktype"
+    t.text    "tunnel"
+    t.text    "water"
+    t.text    "waterway"
+    t.text    "wetland"
+    t.text    "width"
+    t.text    "wood"
+    t.integer "z_order"
+    t.float   "way_area"
+    t.spatial "way",                :limit => {:srid=>4326, :type=>"line_string"}
+  end
+
+  add_index "planet_osm_line", ["osm_id"], :name => "planet_osm_line_pkey"
+  add_index "planet_osm_line", ["way"], :name => "planet_osm_line_index", :spatial => true
+
+  create_table "planet_osm_nodes", :id => false, :force => true do |t|
+    t.integer "id",   :limit => 8,   :null => false
+    t.integer "lat",                 :null => false
+    t.integer "lon",                 :null => false
+    t.string  "tags", :limit => nil
+  end
+
+  create_table "planet_osm_point", :id => false, :force => true do |t|
+    t.integer "osm_id",             :limit => 8
+    t.text    "access"
+    t.text    "addr:housename"
+    t.text    "addr:housenumber"
+    t.text    "addr:interpolation"
+    t.text    "admin_level"
+    t.text    "aerialway"
+    t.text    "aeroway"
+    t.text    "amenity"
+    t.text    "area"
+    t.text    "barrier"
+    t.text    "bicycle"
+    t.text    "brand"
+    t.text    "bridge"
+    t.text    "boundary"
+    t.text    "building"
+    t.text    "capital"
+    t.text    "construction"
+    t.text    "covered"
+    t.text    "culvert"
+    t.text    "cutting"
+    t.text    "denomination"
+    t.text    "disused"
+    t.text    "ele"
+    t.text    "embankment"
+    t.text    "foot"
+    t.text    "generator:source"
+    t.text    "harbour"
+    t.text    "highway"
+    t.text    "historic"
+    t.text    "horse"
+    t.text    "intermittent"
+    t.text    "junction"
+    t.text    "landuse"
+    t.text    "layer"
+    t.text    "leisure"
+    t.text    "lock"
+    t.text    "man_made"
+    t.text    "military"
+    t.text    "motorcar"
+    t.text    "name"
+    t.text    "natural"
+    t.text    "oneway"
+    t.text    "operator"
+    t.text    "poi"
+    t.text    "population"
+    t.text    "power"
+    t.text    "power_source"
+    t.text    "place"
+    t.text    "railway"
+    t.text    "ref"
+    t.text    "religion"
+    t.text    "route"
+    t.text    "service"
+    t.text    "shop"
+    t.text    "sport"
+    t.text    "surface"
+    t.text    "toll"
+    t.text    "tourism"
+    t.text    "tower:type"
+    t.text    "tunnel"
+    t.text    "water"
+    t.text    "waterway"
+    t.text    "wetland"
+    t.text    "width"
+    t.text    "wood"
+    t.integer "z_order"
+    t.spatial "way",                :limit => {:srid=>900913, :type=>"point"}
+  end
+
+  add_index "planet_osm_point", ["osm_id"], :name => "planet_osm_point_pkey"
+  add_index "planet_osm_point", ["way"], :name => "planet_osm_point_index", :spatial => true
+
+  create_table "planet_osm_polygon", :id => false, :force => true do |t|
+    t.integer "osm_id",             :limit => 8
+    t.text    "access"
+    t.text    "addr:housename"
+    t.text    "addr:housenumber"
+    t.text    "addr:interpolation"
+    t.text    "admin_level"
+    t.text    "aerialway"
+    t.text    "aeroway"
+    t.text    "amenity"
+    t.text    "area"
+    t.text    "barrier"
+    t.text    "bicycle"
+    t.text    "brand"
+    t.text    "bridge"
+    t.text    "boundary"
+    t.text    "building"
+    t.text    "construction"
+    t.text    "covered"
+    t.text    "culvert"
+    t.text    "cutting"
+    t.text    "denomination"
+    t.text    "disused"
+    t.text    "embankment"
+    t.text    "foot"
+    t.text    "generator:source"
+    t.text    "harbour"
+    t.text    "highway"
+    t.text    "historic"
+    t.text    "horse"
+    t.text    "intermittent"
+    t.text    "junction"
+    t.text    "landuse"
+    t.text    "layer"
+    t.text    "leisure"
+    t.text    "lock"
+    t.text    "man_made"
+    t.text    "military"
+    t.text    "motorcar"
+    t.text    "name"
+    t.text    "natural"
+    t.text    "oneway"
+    t.text    "operator"
+    t.text    "population"
+    t.text    "power"
+    t.text    "power_source"
+    t.text    "place"
+    t.text    "railway"
+    t.text    "ref"
+    t.text    "religion"
+    t.text    "route"
+    t.text    "service"
+    t.text    "shop"
+    t.text    "sport"
+    t.text    "surface"
+    t.text    "toll"
+    t.text    "tourism"
+    t.text    "tower:type"
+    t.text    "tracktype"
+    t.text    "tunnel"
+    t.text    "water"
+    t.text    "waterway"
+    t.text    "wetland"
+    t.text    "width"
+    t.text    "wood"
+    t.integer "z_order"
+    t.float   "way_area"
+    t.spatial "way",                :limit => {:srid=>900913, :type=>"geometry"}
+  end
+
+  add_index "planet_osm_polygon", ["osm_id"], :name => "planet_osm_polygon_pkey"
+  add_index "planet_osm_polygon", ["way"], :name => "planet_osm_polygon_index", :spatial => true
+
+  create_table "planet_osm_rels", :id => false, :force => true do |t|
+    t.integer "id",      :limit => 8,   :null => false
+    t.integer "way_off", :limit => 2
+    t.integer "rel_off", :limit => 2
+    t.string  "parts",   :limit => 8
+    t.string  "members", :limit => nil
+    t.string  "tags",    :limit => nil
+    t.boolean "pending",                :null => false
+  end
+
+  add_index "planet_osm_rels", ["id"], :name => "planet_osm_rels_idx"
+  add_index "planet_osm_rels", ["parts"], :name => "planet_osm_rels_parts"
+
+  create_table "planet_osm_roads", :id => false, :force => true do |t|
+    t.integer "osm_id",             :limit => 8
+    t.text    "access"
+    t.text    "addr:housename"
+    t.text    "addr:housenumber"
+    t.text    "addr:interpolation"
+    t.text    "admin_level"
+    t.text    "aerialway"
+    t.text    "aeroway"
+    t.text    "amenity"
+    t.text    "area"
+    t.text    "barrier"
+    t.text    "bicycle"
+    t.text    "brand"
+    t.text    "bridge"
+    t.text    "boundary"
+    t.text    "building"
+    t.text    "construction"
+    t.text    "covered"
+    t.text    "culvert"
+    t.text    "cutting"
+    t.text    "denomination"
+    t.text    "disused"
+    t.text    "embankment"
+    t.text    "foot"
+    t.text    "generator:source"
+    t.text    "harbour"
+    t.text    "highway"
+    t.text    "historic"
+    t.text    "horse"
+    t.text    "intermittent"
+    t.text    "junction"
+    t.text    "landuse"
+    t.text    "layer"
+    t.text    "leisure"
+    t.text    "lock"
+    t.text    "man_made"
+    t.text    "military"
+    t.text    "motorcar"
+    t.text    "name"
+    t.text    "natural"
+    t.text    "oneway"
+    t.text    "operator"
+    t.text    "population"
+    t.text    "power"
+    t.text    "power_source"
+    t.text    "place"
+    t.text    "railway"
+    t.text    "ref"
+    t.text    "religion"
+    t.text    "route"
+    t.text    "service"
+    t.text    "shop"
+    t.text    "sport"
+    t.text    "surface"
+    t.text    "toll"
+    t.text    "tourism"
+    t.text    "tower:type"
+    t.text    "tracktype"
+    t.text    "tunnel"
+    t.text    "water"
+    t.text    "waterway"
+    t.text    "wetland"
+    t.text    "width"
+    t.text    "wood"
+    t.integer "z_order"
+    t.float   "way_area"
+    t.spatial "way",                :limit => {:srid=>4326, :type=>"line_string"}
+  end
+
+  add_index "planet_osm_roads", ["osm_id"], :name => "planet_osm_roads_pkey"
+  add_index "planet_osm_roads", ["way"], :name => "planet_osm_roads_index", :spatial => true
+
+  create_table "planet_osm_ways", :id => false, :force => true do |t|
+    t.integer "id",      :limit => 8,   :null => false
+    t.string  "nodes",   :limit => 8,   :null => false
+    t.string  "tags",    :limit => nil
+    t.boolean "pending",                :null => false
+  end
+
+  add_index "planet_osm_ways", ["id"], :name => "planet_osm_ways_idx"
+  add_index "planet_osm_ways", ["nodes"], :name => "planet_osm_ways_nodes"
 
   create_table "polls", :force => true do |t|
     t.string   "question"
@@ -444,6 +782,11 @@ ActiveRecord::Schema.define(:version => 20130704082038) do
 
   add_index "sb_posts", ["forum_id", "created_at"], :name => "index_sb_posts_on_forum_id"
   add_index "sb_posts", ["user_id", "created_at"], :name => "index_sb_posts_on_user_id"
+
+  create_table "segments", :id => false, :force => true do |t|
+    t.spatial "geom",    :limit => {:srid=>0, :type=>"geometry"}
+    t.text    "highway"
+  end
 
   create_table "sessions", :force => true do |t|
     t.string   "sessid"

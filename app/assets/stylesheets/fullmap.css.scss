@@ -3,7 +3,7 @@
  */
 .smallmap {
     min-height: 90%;
-    height: 90% !important;
+    height: 93% !important;
 }
 
 html, body{
@@ -17,4 +17,11 @@ html, body{
   float: none; 
   margin-left: auto; 
   margin-right: auto; 
+}
+
+.sensorswitch{
+  position:absolute; 
+  left:10px; 
+  bottom:2%; 
+  z-index:10000;  
 }

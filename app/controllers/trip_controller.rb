@@ -68,7 +68,7 @@ class TripController < BaseController
         coords_merc = RGeo::Feature.cast(coords, :factory => factory_merc, :project => true)
 
         @trip.measurements.new(
-          "recorded_at" => Time.parse(feature[:properties][:time]),
+          "recorded_at" => feature[:properties][:time],
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
           "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
           "maf" => feature[:properties][:phenomenons][:MAF][:value],

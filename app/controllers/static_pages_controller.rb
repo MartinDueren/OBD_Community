@@ -4,8 +4,6 @@ class StaticPagesController < BaseController
   #before_filter :require_group_1, :only => [:community_map]
 
   def community_map
-    @measurements = Measurement.all
-    gon.measurements = @measurements
     render :layout => "fullmap"
   end
   
