@@ -119,7 +119,7 @@ class User < ActiveRecord::Base
     :middlename, :notify_comments, :notify_community_news,
     :notify_friend_requests, :password, :password_confirmation,
     :profile_public, :state_id, :stylesheet, :time_zone, :vendor, :zip, :avatar_attributes, 
-    :birthday, :tag_list, :mileage, :rpm, :speed, :standingtime, :consumption, :measurement_count
+    :birthday, :tag_list, :mileage, :rpm, :speed, :standingtime, :consumption, :measurement_count, :co2, :total_co2, :total_consumption
 
   attr_accessor :authorizing_from_omniauth
 

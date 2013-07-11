@@ -1,78 +1,45 @@
-<div class="container">
-	<h1>My recent Trips</h1>
-	<% if @trips.blank? %>
-		<p>No trips to display</p>
-	<% else %>
-		<%= paginate @trips %>
-		<hr class="featurette-divider">
-		<!--Loop through all the trips and printem-->
-		<% for @trip in @trips do%>
-			<div class="row well">
-				<div id="myCarousel_<%= @trip.id %>" class="carousel slide">
-		      <div class="carousel-inner">
-						<div class="item active">
-			        <div class="container">
-			        	<div class="span6">
-									<div class="trip_info">
-										<%= image_tag "/assets/trips/#{@trip.id}.png" %>
-									</div>
-								</div>
-								<div class="span6 listing">
-									<div class="row">
-										<%= "#{@trip.getTripLength} Kilometers driven on #{@trip.created_at.strftime("%a, %d %B %Y")} at #{@trip.created_at.strftime("%H:%M %P")}" %>
-									</div>
-									<div class="row">
-										<div class="span2">
-											<h4 class="muted">DISTANCE</h4>
-											<p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
-										</div>
-										<div class="span2">
-											<h4 class="muted">GAS CONSUMED</h4>
-											<p><i class="icon-fire"> </i><%= @trip.getTripLength %> Litres</p>
-										</div>
-										<div class="span2">
-											<h4 class="muted">CO2 EMISSIONS</h4>
-											<p><i class="icon-leaf"></i> <%= @trip.getTripLength %> Grams</p>
-										</div>			
-									</div>
-									<div class="row">
-										<div class="span6">
-											<% @trip.badges.each do |badge|%>
-												<%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %>
-											<%end%>
-										</div>	
-									</div>	
-								</div>
-			        </div>
-			      </div>
-			      <div class="item">
-			        <div class="container">
-			        	<div class="span4 listing"> 
-			        		<%= image_tag "beef.jpg" %>
-			        	</div>
-			        	<div class="span8">
-			        		<h4>Lorem Ipsum</h4>
-									<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-			        	</div>
-			        </div>
-			      </div>
-			      <div class="item">
-			        <div class="container">
-			        	<div class="span4 listing"> 
-			        		<%= image_tag "tree.png" %>
-			        	</div>
-			        	<div class="span8">
-			        		<h4>Lorem Ipsum</h4>
-									<p>Duis mollis, est non commodo luctus, nisi erat porttitor ligula, eget lacinia odio sem nec elit. Cras mattis consectetur purus sit amet fermentum. Fusce dapibus, tellus ac cursus commodo, tortor mauris condimentum nibh, ut fermentum massa justo sit amet risus.</p>
-			        	</div>
-			        </div>
-			      </div>
-		      </div>
-		      <a class="left carousel-control" href="#myCarousel_<%= @trip.id %>" data-slide="prev">&lsaquo;</a>
-			  	<a class="right carousel-control" href="#myCarousel_<%= @trip.id %>" data-slide="next">&rsaquo;</a>
-		    </div>
-			</div><!-- /.carousel -->
-			<hr class="featurette-divider">	
-    <%end%>
-	<%end%>	
-</div> <!-- end container -->
+<div class="row">
+  <div class="span2">
+    <h4 class="muted">DISTANCE</h4><br>
+    <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> minutes</p>
+  </div>
+  <div class="span2">
+    <h4 class="muted">AVERAGE CONSUMPTION</h4>
+    <p><i class="icon-fire"> </i><%= '%.2f' % @trip.measurements.average(:consumption).to_f %> Liters</p>
+  </div>
+  <div class="span2">
+    <h4 class="muted">AVERAGE CO2 EMISSIONS</h4>
+    <p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
+  </div>
+
+</div>
+<div class="row">
+  <div class="span6">
+    <div class="map" id="map"></div>
+  </div>
+  <div class="span6">
+    <div id="chartContainer" style="height: 100%; width: 100%;"></div>
+  </div>
+</div>
+
+<hr class="featurette-divider">
+
+<div class="row">
+  <div class="span6">
+    <h2 class="featurette-heading">Carbon Footprint</h2>
+    <p class="lead">You have produced <strong><%= @trip.measurements.sum(:co2) %> kg</strong> of CO2 while consuming approximately <strong><%= '%.0f' % @trip.measurements.sum(:consumption) %> liters</strong> of fuel.</p>
+    <img src="/assets/footprint.jpg" class="img-rounded">
+  </div><!-- /.span6 -->
+  <div class="span6">
+    <h2 class="featurette-heading">In Other Terms</h2>
+    <p class="lead">Producing 1 kg of beef causes about 13.3 kg of CO2. So this ride is the equivalent of producing <strong><%= '%.2f' % (@trip.measurements.sum(:co2) / 13.3) %></strong> kg of beef.</p>
+    <p class="lead"><strong>OR<strong></p>
+    <p class="lead">
+    	A large sugar maple tree can remove up to 205 kg of carbon dioxide from the atmosphere each year! So for this ride the tree would need <strong><%= '%.0f' % (@trip.measurements.sum(:co2) / (205.0 / 360.0)) %></strong> days to absorb the produced CO2.
+    </p>
+  </div><!-- /.span6 -->
+</div><!-- /.row -->
+
+<hr class="featurette-divider">
+
+

@@ -1,48 +1,24 @@
 %div{:id => "comment-#{comment.id}"}
-  -if comment.user
-    .clearfix
-      .span2.pull-right
-        %ul.nav.nav-list
-          %li= link_to image_tag(comment.user.avatar_photo_url(:medium), :alt => "#{comment.user.login}"), user_path(comment.user), :rel => 'bookmark', :class => 'photo', :title => :users_profile.l(:user => comment.user.login), :class => 'thumbnail'
-          %li
-            = icon_link_to 'icon-hand-right', comment.user.login, user_path(comment.user)
-          %li
-            %a{"href"=> commentable_url(comment), "rel"=>"bookmark"}
-              %i.icon-calendar.pull-left
-              %abbr.published{"title"=>"#{comment.created_at}"}
-                = I18n.l(comment.created_at, :format => :short_literal_date)
-          -if logged_in? && (current_user.admin? || current_user.moderator?)
-            %li
-              =link_to '<i class="icon-edit"></i>'.html_safe + :edit.l, edit_commentable_comment_path(comment.commentable_type, comment.commentable_id, comment), :class => 'edit-via-ajax'
-          -if ( comment.can_be_deleted_by(current_user) )
-            %li.delete
-              =link_to '<i class="icon-trash"></i>'.html_safe + :delete.l, commentable_comment_path(comment.commentable_type, comment.commentable_id, comment), :method => :delete, 'data-manual-confirm' => :are_you_sure_you_want_to_permanently_delete_this_comment.l, :class => 'delete-via-ajax'
+  .row.well
+    .span9
       = comment.comment.html_safe
-  
-  -else
-    .clearfix
-      .span3.pull-right
-        %ul.nav.nav-list
+    .span3
+      %ul
+        %li
+          = link_to image_tag(comment.user.avatar_photo_url(:thumb), :alt => "#{comment.user.login}"), user_path(comment.user), :class => 'thumbnail'
+        %li
+          = icon_link_to 'icon-hand-right', comment.user.login, user_path(comment.user)
+        %li
+          %a{"href"=> commentable_url(comment), "rel"=>"bookmark"}
+            %i.icon-calendar.pull-left
+            %abbr.published{"title"=>"#{comment.created_at}"}
+              = I18n.l(comment.created_at, :format => :short_literal_date)
+        -if logged_in? && (current_user.admin? || current_user.moderator?)
           %li
-            %a{:href => '#', :rel => 'bookmark', :class => 'photo', :onclick => 'return false;'}
-              = image_tag(configatron.photo.missing_thumb, :height => '50', :width => '50')
-          %li
-            -if comment.author_url.blank?
-              = h comment.username
-            -else
-              =icon_link_to 'icon-hand-right', h(comment.username), h(comment.author_url)
-          %li
-            %a{"href"=> commentable_url(comment), "rel"=>"bookmark"}
-              %i.icon-calendar.pull-left
-              %abbr.published{"title"=>"#{comment.created_at}"}
-                = I18n.l(comment.created_at, :format => :short_literal_date)
-          -if logged_in? && (current_user.admin? || current_user.moderator?)
-            %li
-              =link_to '<i class="icon-edit"></i>'.html_safe + :edit.l, edit_commentable_comment_path(comment.commentable_type, comment.commentable_id, comment), :class => 'edit-via-ajax'
-          -if ( comment.can_be_deleted_by(current_user) )
-            %li
-              =link_to '<i class="icon-trash"></i>'.html_safe + :delete.l, commentable_comment_path(comment.commentable_type, comment.commentable_id, comment), :method => :delete, 'data-manual-confirm' => :are_you_sure_you_want_to_permanently_delete_this_comment.l, :class => 'delete-via-ajax'
+            =link_to '<i class="icon-edit"></i>'.html_safe + :edit.l, edit_commentable_comment_path(comment.commentable_type, comment.commentable_id, comment), :class => 'edit-via-ajax'
+        -if ( comment.can_be_deleted_by(current_user) )
+          %li.delete
+            =link_to '<i class="icon-trash"></i>'.html_safe + :delete.l, commentable_comment_path(comment.commentable_type, comment.commentable_id, comment), :method => :delete, 'data-manual-confirm' => :are_you_sure_you_want_to_permanently_delete_this_comment.l, :class => 'delete-via-ajax'
       
-      = comment.comment.html_safe
   
   %hr

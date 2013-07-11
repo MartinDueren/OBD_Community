@@ -61,8 +61,12 @@
 					</div>
 					<div class="row">
 						<div class="span6">
+							<strong>Badges earned this trip</strong>
 							<% @trip.badges.each do |badge|%>
-								<a data-toggle="tooltip" title="<%= badge[0].description %>"><%= image_tag "Badges/#{badge[0].custom_fields[:image]}" %></a>
+								<p>
+									<a rel="tooltip" data-placement="left" title="Grants you <%= badge[0].custom_fields[:points] %> points!"><%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28" %></a>
+									<%= "Earned for: " + badge[0].description %>
+								</p>
 							<%end%>
 						</div>	
 					</div>	

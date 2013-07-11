@@ -1,3 +1,13 @@
+.affix {
+    top: 30%;
+}
+
+a { display: inline-block; }
+
+.progress {
+  margin: 0px;
+}
+
 td.vmid {
   vertical-align: middle;
 }

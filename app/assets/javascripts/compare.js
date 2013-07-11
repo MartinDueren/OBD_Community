@@ -241,10 +241,10 @@ var projectTo;
 function init(){
  initMap1();
  initChartMap1();
- addHeatmapLayerMap1();
+ //addHeatmapLayerMap1();
  initMap2();
  initChartMap2();
- addHeatmapLayerMap2();
+ //addHeatmapLayerMap2();
 }
 
 function initChartMap2(){

@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130704132043) do
+ActiveRecord::Schema.define(:version => 20130711105936) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -911,6 +911,9 @@ ActiveRecord::Schema.define(:version => 20130704132043) do
     t.float    "standingtime",                         :default => 0.0
     t.float    "consumption",                          :default => 0.0
     t.integer  "measurement_count",                    :default => 0
+    t.float    "total_co2"
+    t.float    "total_consumption"
+    t.float    "co2"
   end
 
   add_index "users", ["activated_at"], :name => "index_users_on_activated_at"

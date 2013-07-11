@@ -89,12 +89,16 @@ class Trip < ActiveRecord::Base
       #braking
       if m.speed < self.measurements[i-1].speed
         @diff = self.measurements[i-1].speed - m.speed
-        @tripAttrs[:braking] += (@tripAttrs[:braking] + @diff) / 2
+        if @diff > 30
+          @tripAttrs[:braking] += 1
+        end
       end
       #acceleration
       if m.speed > self.measurements[i-1].speed
         @diff =  m.speed - self.measurements[i-1].speed
-        @tripAttrs[:acceleration] += (@tripAttrs[:acceleration] + @diff) / 2
+        if @diff > 30
+          @tripAttrs[:acceleration] += 1
+        end
       end
     end
 
@@ -129,7 +133,9 @@ class Trip < ActiveRecord::Base
     @current_user.update_attributes(:speed => (((@current_user.speed * @current_user.measurement_count) + (self.measurements.average(:speed).to_f * self.measurements.length)) / div))
     @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.measurement_count) + (self.measurements.average(:consumption).to_f * self.measurements.length)) / div))
     @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
-
+    @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
+    @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.measurements.sum(:co2))))
+    @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (self.measurements.sum(:consumption))))
     @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 
     #### find nearest street for every measurement and calculate stats 
@@ -166,9 +172,7 @@ class Trip < ActiveRecord::Base
     mileage = 0
     User.find_by_id(self.user_id).trips.each { |t|
       mileage += t.getTripLength.to_f
-
     }
-
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(2) and mileage >= 50 
       self.badges << [Merit::Badge.get(2), self.id]  
     end
@@ -192,27 +196,30 @@ class Trip < ActiveRecord::Base
   end
 
   def shifting
-    if @tripAttrs[:rpmAbove2500] <= 2*self.measurements.length/100
+    #if less than 1% of measurements is below 2500/3000 rpm
+    if @tripAttrs[:rpmAbove2500] <= 1*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(13), self.id]
-    elsif @tripAttrs[:rpmAbove3000] <= 2*self.measurements.length/100
+    elsif @tripAttrs[:rpmAbove3000] <= 1*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(12), self.id]
     end
   end
 
   def goodRoute
-    if @tripAttrs[:standingTime] <= 10*self.measurements.length/100
+    if @tripAttrs[:standingTime] <= 10*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(14), self.id]
     end
   end
 
   def smoothBraking
-    if @tripAttrs[:braking] >= 20
+    #if less than 2% of brakings were less than 30 km/h diff between measurements
+    if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(15), self.id]
     end
   end
 
   def smoothAcceleration
-    if @tripAttrs[:braking] >= 20
+    #if less than 2% of brakings were less than 30 km/h diff between measurements
+    if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(16), self.id]
     end
   end
@@ -221,6 +228,7 @@ class Trip < ActiveRecord::Base
     #TODO
   end
 
+  #TODO test if works
   def consecutiveTrips
     @consecutive = 1
     if User.find_by_id(self.user_id).trips.length > 1

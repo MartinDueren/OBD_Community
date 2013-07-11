@@ -1,0 +1,3 @@
+%dl.vcard.clear
+  = link_to image_tag(user.avatar_photo_url(:thumb), size: "50x50", :alt => "#{user.login}"), user_path(user)
+  =link_to user.login, user_path(user), :class => 'url'

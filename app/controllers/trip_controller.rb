@@ -8,7 +8,21 @@ class TripController < BaseController
   end
 
   def show
-    @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+    if params.has_key?(:user)
+      @trips = User.find_by_id(params[:user]).trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+    else
+      @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+    end
+    @action = "trip_" + action_name
+    render :layout => "trips"
+  end
+
+  def abstract
+    if params.has_key?(:user)
+      @trips = User.find_by_id(params[:user]).trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+    else
+      @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+    end
     render :layout => "trips"
   end
 
@@ -33,8 +47,13 @@ class TripController < BaseController
   end
   
   def show_abstract_trip
-    @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
-    render :layout => "trips"
+    @action = action_name
+    if params.has_key?(:id)
+      @trip = Trip.find_by_id(params[:id])
+      gon.measurements = @trip.measurements
+      gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
+      render :layout => "trips"
+    end
   end
 
   #used for making a map snapshot

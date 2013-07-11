@@ -1,31 +1,111 @@
 <?xml version="1.0" encoding="ISO-8859-1"?>
-<StyledLayerDescriptor version="1.0.0" 
-    xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" 
-    xmlns="http://www.opengis.net/sld" 
-    xmlns:ogc="http://www.opengis.net/ogc" 
-    xmlns:xlink="http://www.w3.org/1999/xlink" 
-    xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
-  <NamedLayer>
-    <Name>OBDComm:osm_roads</Name>
-    <UserStyle>
-      <Title>SLD Cook Book: Attribute-based line</Title>
-      <FeatureTypeStyle>
-        <Rule>
-          <Name>speed</Name>
-          <ogc:Filter>
-            <ogc:PropertyIsGreaterThan>
-              <ogc:PropertyName>avg_speed</ogc:PropertyName>
-              <ogc:Literal>0</ogc:Literal>
-            </ogc:PropertyIsGreaterThan>
-          </ogc:Filter>
-          <LineSymbolizer>
-            <Stroke>
-              <CssParameter name="stroke">#009933</CssParameter>
-              <CssParameter name="stroke-width">2</CssParameter>
-            </Stroke>
-          </LineSymbolizer>
-        </Rule>
-      </FeatureTypeStyle>
-    </UserStyle>
-  </NamedLayer>
+<StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>OBDComm:osm_roads</Name>
+        <UserStyle>
+            <Title>Maximum Speed</Title>
+            <FeatureTypeStyle>
+                <Rule>
+                    <Name>1-50 km/h</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>max_speed</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>1</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>50</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#1BE01B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>51-80 km/h</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>max_speed</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>51</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>80</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#B5E01B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>81-110 km/h</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>max_speed</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>81</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>110</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E0C61B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>111-150 km/h</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>max_speed</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>111</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>150</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E08B1B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>Above 150 km/h</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsGreaterThan>
+                            <ogc:PropertyName>max_speed</ogc:PropertyName>
+                            <ogc:Literal>150</ogc:Literal>
+                        </ogc:PropertyIsGreaterThan>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E01B1B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
 </StyledLayerDescriptor>

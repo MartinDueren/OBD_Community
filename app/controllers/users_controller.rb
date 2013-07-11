@@ -68,7 +68,7 @@ class UsersController < BaseController
     @accepted_friendships       = @user.accepted_friendships.find(:all, :limit => 5).collect{|f| f.friend }
     @pending_friendships_count  = @user.pending_friendships.count()
 
-    @comments       = @user.comments.find(:all, :limit => 10, :order => 'created_at DESC')
+    @comments       = @user.comments.find(:all, :limit => 5, :order => 'created_at DESC')
     @photo_comments = Comment.find_photo_comments_for(@user)    
     @users_comments = Comment.find_comments_by_user(@user).limit(5)
 
@@ -76,10 +76,26 @@ class UsersController < BaseController
     @clippings      = @user.clippings.find(:all, :limit => 5)
     @photos         = @user.photos.find(:all, :limit => 5)
     @comment        = Comment.new(params[:comment])
-    
+    @trips          = @user.trips
+    @mileage        = @user.mileage
+    @speed          = @user.speed
+    @consumption    = @user.consumption
+    @rpm            = @user.rpm
+    @standing_time  = @user.standingtime.to_f
+    @num_trips      = @user.trips.length
+
     @my_activity = Activity.recent.by_users([@user.id]).find(:all, :limit => 10) 
+    @action = "profile"
+
+    @better = []
+    User.all.each do |u|
+      @better << u if (u.points > User.find_by_id(2).points)
+    end
+
+
 
     update_view_count(@user) unless current_user && current_user.eql?(@user)
+    render :layout => "profile"
   end
   
   def new

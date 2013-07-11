@@ -1,0 +1,58 @@
+!!!
+%html
+  %head
+    %link{:rel=>"shortcut icon", :href=>"#{home_url}favicon.ico"}
+    %meta{"http-equiv"=>"Content-Type", :content=>"text/html;charset=utf-8"}
+    = csrf_meta_tag
+    = include_gon    
+      
+    %title= page_title
+    %meta{'http-equiv' => 'X-UA-Compatible', :content => 'IE=Edge,chrome=1'}
+    -if @meta
+      -@meta.each do |key|
+        %meta{:name=>key[0], :content=>key[1]}
+
+    - if @rss_title && @rss_url
+      = auto_discovery_link_tag(:rss, @rss_url, {:title => @rss_title})
+      
+    = render :partial => "shared/scripts_and_styles"      
+    = stylesheet_link_tag 'trip_single'
+    = stylesheet_link_tag 'trip_show'
+    
+  %body{ :onload => @onload, "data-spy" => "scroll", "data-target" => ".sidebar" }
+    -unless configatron.auth_providers.facebook.key.blank?    
+      =render :partial => 'facebook/fb_require'    
+      
+    .navbar.navbar-fixed-top
+      .navbar-inner
+        .container.clearfix
+          .row
+            = render :partial => "shared/header"
+            
+    .container
+      .row
+        = render :partial => "shared/messages"
+    
+    .row
+      = yield
+
+          
+      
+      -if show_footer_content?    
+        .row#footer-content
+          = image_tag 'spinner.gif', :plugin => 'community_engine'
+          =:loading_recent_content.l  
+              
+      .row
+        .span12
+          = render :partial => 'shared/footer_links'
+  
+          %p= :community_tagline.l
+          
+    = render :partial => "shared/end_javascript"
+    = javascript_include_tag "heatmap"
+    = javascript_include_tag "heatmap-openlayers-renderer"
+    = javascript_include_tag "canvasjs"
+    -if defined? @action
+      = javascript_include_tag @action
+    = yield :end_javascript

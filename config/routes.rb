@@ -28,9 +28,10 @@ OBDComm::Application.routes.draw do
   get "trip/show"
 
   get "trip/show_abstract_trip"
-  match "/trip/abstract" => "trip#show_abstract_trip"
+  match "/trip/abstract" => "trip#abstract"
   
   get "trip/abstract"
+  match "/trip/abstract/:id" => "trip#show_abstract_trip"
   
   match "/trip/show/:id" => "trip#show_single_trip"
   
@@ -88,6 +89,7 @@ OBDComm::Application.routes.draw do
 
   # You can have the root of your site routed with "root"
   # just remember to delete public/index.html.
+
   root :to => 'static_pages#landing'
 
   # See how all your routes lay out with "rake routes"
