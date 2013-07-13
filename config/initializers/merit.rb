@@ -26,31 +26,31 @@ end
 Merit::Badge.create! ({
   id: 1,
   name: "first-trip",
-  description: "Uploaded a trip!",
+  description: "Uploading first trip!",
   custom_fields: { image: 'plus.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 2,
   name: "50-km",
-  description: "You have driven 50 Km using OBDComm!",
+  description: "Driving 50 Km using OBDComm!",
   custom_fields: { image: '50.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 3,
   name: "100-km",
-  description: "You have driven 100 Km using OBDComm!",
+  description: "Driving 100 Km using OBDComm!",
   custom_fields: { image: '100.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 4,
   name: "500-km",
-  description: "You have driven 500 Km using OBDComm!",
+  description: "Driving 500 Km using OBDComm!",
   custom_fields: { image: '500.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 5,
   name: "1000-km",
-  description: "You have driven 1000 Km using OBDComm!",
+  description: "Driving 1000 Km using OBDComm!",
   custom_fields: { image: '1000.png', points: '5' }
 })
 Merit::Badge.create! ({
@@ -92,85 +92,85 @@ Merit::Badge.create! ({
 Merit::Badge.create! ({
   id: 12,
   name: "good-shifting",
-  description: "Good gear shifting.",
+  description: "Good gear shifting (No RPM above 3000).",
   custom_fields: { image: 'stumble.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 13,
   name: "awesome-shifting",
-  description: "Awesome gear shifting!",
+  description: "Awesome gear shifting! (No RPM above 2500)",
   custom_fields: { image: 'star.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 14,
   name: "good-route",
-  description: "Awesome you choose great routes without much standing time.",
+  description: "Great route without much standing time.",
   custom_fields: { image: 'linegraph.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 15,
   name: "smooth-braking",
-  description: "Did not waste energy by braking too hard.",
+  description: "Not wasting energy by braking too hard.",
   custom_fields: { image: 'wheel.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 16,
   name: "smooth-acceleration",
-  description: "Did not waste energy by accelerating too hard.",
+  description: "Not wasting energy by accelerating too hard.",
   custom_fields: { image: 'barchart.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 17,
   name: "shared-trip",
-  description: "Shared a trip.",
+  description: "Sharing a trip.",
   custom_fields: { image: 'facebook.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 18,
   name: "consecutive-trips-2",
-  description: "Logged trips on two consecutive days.",
+  description: "Logging trips on two consecutive days.",
   custom_fields: { image: 'calendar-2.png', points: '2' }
 })
 Merit::Badge.create! ({
   id: 19,
   name: "consecutive-trips-3",
-  description: "Logged trips on three consecutive days.",
+  description: "Logging trips on three consecutive days.",
   custom_fields: { image: 'calendar-3.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 20,
   name: "consecutive-trips-4",
-  description: "Logged trips on four consecutive days.",
+  description: "Logging trips on four consecutive days.",
   custom_fields: { image: 'calendar-4.png', points: '4' }
 })
 Merit::Badge.create! ({
   id: 21,
   name: "consecutive-trips-5",
-  description: "Logged trips on five consecutive days.",
+  description: "Logging trips on five consecutive days.",
   custom_fields: { image: 'calendar-5.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 22,
   name: "consecutive-trips-6",
-  description: "Logged trips on six consecutive days.",
+  description: "Logging trips on six consecutive days.",
   custom_fields: { image: 'calendar-6.png', points: '6' }
 })
 Merit::Badge.create! ({
   id: 23,
   name: "consecutive-trips-7",
-  description: "Logged trips on seven consecutive days.",
+  description: "Logging trips on seven consecutive days.",
   custom_fields: { image: 'calendar-7.png', points: '7' }
 })
 Merit::Badge.create! ({
   id: 24,
   name: "first-friend",
-  description: "Added a friend.",
+  description: "Adding a friend.",
   custom_fields: { image: 'adduser.png', points: '2' }
 })
 Merit::Badge.create! ({
   id: 25,
   name: "first-comment",
-  description: "Commented on something.",
+  description: "Commenting on something.",
   custom_fields: { image: 'pencil.png', points: '2' }
 })
 Merit::Badge.create! ({

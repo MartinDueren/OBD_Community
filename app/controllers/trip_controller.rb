@@ -30,8 +30,8 @@ class TripController < BaseController
     @action = action_name
     @tripA = Trip.find_by_id(params[:a])
     @tripB = Trip.find_by_id(params[:b])
-    gon.measurementsMap1 = @tripA.measurements
-    gon.measurementsMap2 = @tripB.measurements
+    gon.measurementsMap1 = @tripA.measurements.order("recorded_at ASC")
+    gon.measurementsMap2 = @tripB.measurements.order("recorded_at ASC")
     render :layout => "trips"
   end
   
@@ -40,7 +40,7 @@ class TripController < BaseController
     @action = action_name
     if params.has_key?(:id)
       @trip = Trip.find_by_id(params[:id])
-      gon.measurements = @trip.measurements
+      gon.measurements = @trip.measurements.order("recorded_at ASC")
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
     end
@@ -82,11 +82,12 @@ class TripController < BaseController
     unless params[:import].nil?
       @trip.user_id = current_user.id
 
+
+      measurements = []
       params[:features].each { |feature| 
         coords = wgs84_factory.point(feature[:geometry][:coordinates][0],feature[:geometry][:coordinates][1])
-        coords_merc = RGeo::Feature.cast(coords, :factory => factory_merc, :project => true)
 
-        @trip.measurements.new(
+        measurements << Measurement.new(
           "recorded_at" => feature[:properties][:time],
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
           "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
@@ -96,9 +97,26 @@ class TripController < BaseController
           "consumption" => feature[:properties][:phenomenons][:Consumption][:value],
           "co2" => feature[:properties][:phenomenons][:CO2][:value],
           "latlon" => coords,
-          #"trip_id" => @trip.id
           )
       }
+
+      measurements.sort! { |a,b| a.recorded_at <=> b.recorded_at }
+      debugger
+      measurements.each do  |m|
+        @trip.measurements.new(
+          "recorded_at" => m.recorded_at,
+          "speed" => m.speed,
+          "rpm" => m.rpm,
+          "maf" => m.maf,
+          "iat" => m.iat,
+          "map" => m.map,
+          "consumption" => m.consumption,
+          "co2" => m.co2,
+          "latlon" => m.latlon
+          )
+      end
+      debugger
+
       respond_to do |format|
         if @trip.save
           format.html { redirect_to @trip, notice: 'Trip successfully created.' }

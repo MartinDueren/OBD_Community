@@ -42,11 +42,11 @@ class StaticPagesController < BaseController
   end
   
   def landing
-    if logged_in?
-      redirect_to "#{config.root}/users/#{current_user.login}/dashboard"
-    else
-      render :layout => "landing"
-    end
+    #if logged_in?
+      #redirect_to "#{config.root}/trip/show"
+    #else
+    render :layout => "landing"
+    #end
   end
   
   private

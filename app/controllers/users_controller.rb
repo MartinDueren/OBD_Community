@@ -61,6 +61,7 @@ class UsersController < BaseController
     @user = current_user
     @network_activity = @user.network_activity
     @recommended_posts = @user.recommended_posts
+    redirect_to "#{config.root}/trip/show"
   end
   
   def show  
@@ -89,9 +90,8 @@ class UsersController < BaseController
 
     @better = []
     User.all.each do |u|
-      @better << u if (u.points > User.find_by_id(2).points)
+      @better << u if (u.points > @user.points)
     end
-
 
 
     update_view_count(@user) unless current_user && current_user.eql?(@user)

@@ -4,7 +4,7 @@
   .icon-bar
   .icon-bar
 - if logged_in?
-  = link_to "/users/#{current_user.login}/dashboard", :class => 'brand' do 
+  = link_to home_path, :class => 'brand' do 
     #{configatron.community_name[0..2]}
     %span.am_brand #{configatron.community_name[3..6]}
 - else

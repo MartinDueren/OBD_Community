@@ -43,6 +43,30 @@
         - when 'Trip'
           = "uploaded a trip"
           = link_to image_tag("/assets/trips/#{activity.item.id}.png"), "/trip/show/#{activity.item.id}"
+          %div.span6
+            %div.trip_info
+              = link_to image_tag("/assets/trips/#{activity.item.id}.png"), "/trip/show/#{activity.item.id}"
+              - @trip = Trip.find_by_id(activity.item.id)
+          %div.span6.listing
+            %div.row
+              = link_to "#{@trip.getTripLength} Kilometers driven from #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} to #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} on #{@trip.measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trip.measurements.first.recorded_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}"
+            %div.row
+              %div.span2
+                %h4.muted="DISTANCE"
+                %p
+                  %i.icon-fire
+                    = ('%.2f' % @trip.measurements.average(:consumption).to_f).to_s + " Liters"
+            %div.row
+              %div.span6
+                %p
+                  %strong
+                    = "Badges earned this trip"
+                  - @trip.badges.each do |badge|
+                    %p
+                      %a{"rel" => "tooltip", "data-placement" => "left", "title" => "Grants you #{badge[0].custom_fields[:points]} points!"}
+                        = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
+
+
         -else
           =render :partial => 'activities/unhandled_item', :locals => {:activity => activity}
     - else

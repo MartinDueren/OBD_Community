@@ -16,8 +16,9 @@ class Trip < ActiveRecord::Base
 
   def getTripLength
   	@trip_length = 0
-   	for i in 1..(self.measurements.length-1)
-		 	@trip_length += self.measurements[i-1].latlon.distance(self.measurements[i].latlon)
+    measurements = self.measurements.order("recorded_at ASC")
+   	for i in 1..(measurements.length-1)
+		 	@trip_length += measurements[i-1].latlon.distance(measurements[i].latlon)
   	end
   	#Convert to km and round to two decimal places
     @trip_length = @trip_length/1000
@@ -50,30 +51,31 @@ class Trip < ActiveRecord::Base
 
   #Check for badges and calc all relevant statistics
   def integrateTrip
+    measurements = self.measurements.order("recorded_at ASC")
 
     #remove standing time from beginning and end
-    for i in (self.measurements.length-1).downto(0)
-      if self.measurements[i].speed == 0
-        self.measurements[i].delete
+    for i in (measurements.length-1).downto(0)
+      if measurements[i].speed == 0
+        measurements[i].destroy
       else
         break
       end
     end
 
-    for i in 0..self.measurements.length-1
-      if self.measurements[i].speed == 0
-        self.measurements[i].delete
+    for i in 0..measurements.length-1
+      if measurements[i].speed == 0
+        measurements[i].destroy
       else
         break
       end
     end
     ################
 
-    @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0}
+    @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0, :measurements => measurements}
     @tripAttrs[:length] = self.getTripLength
     @current_user = User.find_by_id(self.user_id)
 
-    self.measurements.each_with_index do |m, i|
+    measurements.each_with_index do |m, i|
       if m.rpm >= 2500
         @tripAttrs[:rpmAbove2500] += 1
       end
@@ -87,15 +89,15 @@ class Trip < ActiveRecord::Base
       end
 
       #braking
-      if m.speed < self.measurements[i-1].speed
-        @diff = self.measurements[i-1].speed - m.speed
+      if m.speed < measurements[i-1].speed
+        @diff = measurements[i-1].speed - m.speed
         if @diff > 30
           @tripAttrs[:braking] += 1
         end
       end
       #acceleration
-      if m.speed > self.measurements[i-1].speed
-        @diff =  m.speed - self.measurements[i-1].speed
+      if m.speed > measurements[i-1].speed
+        @diff =  m.speed - measurements[i-1].speed
         if @diff > 30
           @tripAttrs[:acceleration] += 1
         end
@@ -157,7 +159,6 @@ class Trip < ActiveRecord::Base
       osm_road.update_attributes(:avg_co2 => (((osm_road.avg_co2 * osm_road.measurement_count) + nm.co2) / div))
 
       osm_road.update_attributes(:measurement_count => osm_road.measurement_count + 1)
-      puts("UPDATED Something....")
     end
   end
 
