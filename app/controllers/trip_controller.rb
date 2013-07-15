@@ -1,5 +1,7 @@
 class TripController < BaseController
 
+  before_filter :track_action
+
   before_filter :login_required, :only => [:show]
   before_filter :login_with_access_token, :only => [:create]
   
@@ -165,6 +167,10 @@ class TripController < BaseController
   end
 
   private
+    def track_action
+      Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/trip/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+    end
+
     def login_with_access_token
       if params[:token].nil?
         access_denied

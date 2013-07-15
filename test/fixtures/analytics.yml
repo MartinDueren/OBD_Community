@@ -1,0 +1,19 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/Fixtures.html
+
+one:
+  user_id: 
+  group: 
+  time: 2013-07-15 16:04:12
+  action: MyString
+  description: MyString
+  url: MyString
+  category: MyString
+
+two:
+  user_id: 
+  group: 
+  time: 2013-07-15 16:04:12
+  action: MyString
+  description: MyString
+  url: MyString
+  category: MyString

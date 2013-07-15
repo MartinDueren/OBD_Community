@@ -11,7 +11,7 @@
 #
 # It's strongly recommended to check this file into your version control system.
 
-ActiveRecord::Schema.define(:version => 20130711105936) do
+ActiveRecord::Schema.define(:version => 20130715140412) do
 
   create_table "activities", :force => true do |t|
     t.integer  "user_id"
@@ -45,6 +45,18 @@ ActiveRecord::Schema.define(:version => 20130711105936) do
     t.datetime "created_at",  :null => false
     t.datetime "updated_at",  :null => false
     t.integer  "view_count"
+  end
+
+  create_table "analytics", :force => true do |t|
+    t.integer  "user_id"
+    t.integer  "group"
+    t.datetime "time"
+    t.string   "action"
+    t.string   "description"
+    t.string   "url"
+    t.string   "category"
+    t.datetime "created_at",  :null => false
+    t.datetime "updated_at",  :null => false
   end
 
   create_table "assets", :force => true do |t|
