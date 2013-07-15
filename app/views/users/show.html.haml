@@ -4,6 +4,7 @@
 
 %div.container-fluid
 
+
   %div.span3.sidebar
     %ul.nav.nav-list.well.affix{"data-offset-top" => "30%"}
       %li.nav-header
@@ -67,26 +68,24 @@
                   %td
                     %i.icon-tint
                     = ('%.1f' % @consumption).to_s + " l/100km"
-
-        .row
-          %p.lead.muted
-            = "Ranked " + (@better.length + 1).to_s + ". place with " + @user.points.to_s + " Points"
-          %p 
-            
-          %p
-            - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
-            = progress_bar(progress, :color => 'blue', :rounded => true)
-            = icon_link_to 'icon-plus-sign',  "Show badges", "/badges"
-
-
-
+        - if current_user.group == 3
+          .row
+            %p.lead.muted
+              = "Ranked " + (@better.length + 1).to_s + ". place with " + @user.points.to_s + " Points"
+            %p 
+              
+            %p
+              - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
+              = progress_bar(progress, :color => 'blue', :rounded => true)
+              = icon_link_to 'icon-plus-sign',  "Show badges", "/badges"
 
 
         - unless @trips.empty?
           .row
             %h2#trip-list="My recent trips"
-            = icon_link_to 'icon-plus-sign',  "Show all trips", "/trip/show?user=#{@user.id}"
-            - for i in 1..6 
+            - if current_user.group == 1
+              = icon_link_to 'icon-plus-sign',  "Show all trips", "/trip/show?user=#{@user.id}"
+            - for i in 1..10 
               .row.well
                 %div.span6
                   %div.trip_info
@@ -107,6 +106,22 @@
                         %li
                           %i.icon-leaf
                           = ('%.2f' % @trips[@trips.length-i].measurements.average(:co2)).to_s + " g/s"
+                  - if current_user.group == 3
+                    %div.row
+                      %div
+                        %p
+                          %strong
+                            = "Badges earned this trip:"
+                        %table.table.table-striped
+                          %tbody
+                            - @trips[i].badges.each do |badge|
+                              %tr
+                                %td
+                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Grants you #{badge[0].custom_fields[:points]} points!"}
+                                    = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
+                                %td
+                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Grants you #{badge[0].custom_fields[:points]} points!"}
+                                    = "Earned for: " + badge[0].description
 
         - unless @users_comments.empty?
           .row

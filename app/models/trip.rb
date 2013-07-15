@@ -26,19 +26,11 @@ class Trip < ActiveRecord::Base
   end
 
   def getTripCo2
-
+    self.measurements.average(:co2).to_f
   end
 
   def getAvgConsumption
-    sum = 0
-    self.measurements.each do |m|
-      if m.speed == 0
-        sum = sum + 0.5
-      else
-        sum = sum + m.getFuelConsumption
-      end
-    end
-    '%.2f' % (sum / self.measurements.length)
+    self.measurements.average(:consumption).to_f
   end
   
   def next

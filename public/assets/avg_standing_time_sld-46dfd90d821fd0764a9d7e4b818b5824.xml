@@ -1,0 +1,111 @@
+<?xml version="1.0" encoding="ISO-8859-1"?>
+<StyledLayerDescriptor version="1.0.0" xsi:schemaLocation="http://www.opengis.net/sld StyledLayerDescriptor.xsd" xmlns="http://www.opengis.net/sld" xmlns:ogc="http://www.opengis.net/ogc" xmlns:xlink="http://www.w3.org/1999/xlink" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance">
+    <NamedLayer>
+        <Name>OBDComm:osm_roads</Name>
+        <UserStyle>
+            <Title>Average Standing Time</Title>
+            <FeatureTypeStyle>
+                <Rule>
+                    <Name>0-10 Seconds</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_standing_time</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>0</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>10</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#1BE01B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>11-20 Seconds</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_standing_time</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>11</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>20</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#B5E01B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>21-40 Seconds</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_standing_time</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>21</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>40</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E0C61B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>41-60 Seconds</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsBetween>
+                            <ogc:PropertyName>avg_standing_time</ogc:PropertyName>
+                            <ogc:LowerBoundary>
+                                <ogc:Literal>41</ogc:Literal>
+                            </ogc:LowerBoundary>
+                            <ogc:UpperBoundary>
+                                <ogc:Literal>60</ogc:Literal>
+                            </ogc:UpperBoundary>
+                        </ogc:PropertyIsBetween>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E08B1B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+                <Rule>
+                    <Name>Above 60 Seconds</Name>
+                    <ogc:Filter>
+                        <ogc:PropertyIsGreaterThan>
+                            <ogc:PropertyName>avg_standing_time</ogc:PropertyName>
+                            <ogc:Literal>60</ogc:Literal>
+                        </ogc:PropertyIsGreaterThan>
+                    </ogc:Filter>
+                    <LineSymbolizer>
+                        <Stroke>
+                            <CssParameter name="stroke">#E01B1B</CssParameter>
+                            <CssParameter name="stroke-width">6</CssParameter>
+                            <CssParameter name="stroke-linecap">round</CssParameter>
+                        </Stroke>
+                    </LineSymbolizer>
+                </Rule>
+            </FeatureTypeStyle>
+        </UserStyle>
+    </NamedLayer>
+</StyledLayerDescriptor>

@@ -28,13 +28,15 @@ class StaticPagesController < BaseController
   end
   
   def badges
-    #All Measurements of that user, now do something with it!
-    @measurements = Measurement.where(:trip_id => Trip.where("user_id = ?", current_user.id).select(:id).pluck(:id))
-    @badgesList = Hash.new(0)
-    current_user.badges.each do |v|
-      @badgesList[v.id] += 1
+    if current_user.group == 3
+      @badgesList = Hash.new(0)
+      current_user.badges.each do |v|
+        @badgesList[v.id] += 1
+      end
+      render :layout => "trips"
+    else
+      redirect_to login_url
     end
-    render :layout => "trips"
   end
 
   def scoreboard

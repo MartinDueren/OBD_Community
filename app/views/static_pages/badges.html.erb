@@ -1,3 +1,24 @@
+<!-- Modal -->
+<div id="badgesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
+  <div class="modal-header">
+    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
+    <h3 id="myModalLabel">Available Badges</h3>
+  </div>
+  <div class="modal-body">
+    <ul>
+      <% Merit::Badge.all.each do |b| %>
+        <li>
+          <a rel="tooltip" data-placement="right" title="Grants you <%= b.custom_fields[:points] %> points!"><%= image_tag "Badges/#{b.custom_fields[:image]}", size: "28x28" %>
+          <%= b.description %></a>
+        </li>
+      <% end %>
+  </ul>
+  </div>
+  <div class="modal-footer">
+    <button class="btn" data-dismiss="modal" aria-hidden="true">Close</button>
+  </div>
+</div>
+
 <h1>My recent Badges</h1>
 <% if current_user.badges.empty? %>
     <p>No Badges to show</p>
@@ -25,6 +46,7 @@
       <%= progress_bar(progress, :color => 'blue', :rounded => true) %> 
       <h4><%= current_user.points %> Points</h4>
       <h2>Earned Badges:</h2>
+      <a href="#badgesModal" data-toggle="modal"><i class="icon-plus-sign"></i> Available badges</a>
       <% @badgesList.each do |k, v| %>
         <h4><%= image_tag "Badges/#{Merit::Badge.get(k).custom_fields[:image]}", size: "50x50" %> x<%= v %></h4>
       <%end%>
