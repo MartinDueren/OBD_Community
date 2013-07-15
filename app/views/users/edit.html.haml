@@ -16,12 +16,6 @@
     %label=:choose_a_photo_for_your_profile.l
     = avatar_form.file_field :photo, :size => '15'
     
-  %h2= :location.l
-  .control-group
-    %label.control-label= :location.l
-    .controls= render :partial => 'shared/location_chooser', :locals => {:selected_country => @user.country_id, :selected_state => @user.state_id, :selected_metro_area => @user.metro_area_id, :states => @states, :metro_areas => @metro_areas}
-
-  = f.text_field :zip, :label => :zippostal_code.l
 
   %h2=:birthday_gender.l
   %fieldset.control-group
@@ -40,27 +34,5 @@
   %h2=:about_me.l
   = f.text_area :description, :class => "rich_text_editor"
   
-  %h2= :tags.l
-  #user_tags
-    = f.text_field :tag_list, {:autocomplete => "off"}
-    #tag_list_auto_complete.auto_complete
-    -content_for :end_javascript do
-      = tag_auto_complete_field 'user_tag_list', {:url => { :controller => "tags", :action => 'auto_complete_for_tag_name'}, :tokens => [','] }
-    
-    %label.controls
-      %em
-        =:you_could_tag_yourself.l
-        - if @user.vendor?
-          =:custom_friendly_local.l
-        - else
-          = configatron.meta_keywords.split(",")[0..3].join(", ")
-        %br
-        =:tags_are_comma_separated_keywords_that_describe_you.l
-        %br
-        =:you_can_browse_all_content_and_users_on.l
-        = configatron.community_name
-        =:by_looking_at_the.l
-        = link_to :tags_page.l, tags_path
-
   .controls
     = f.submit :save_changes.l

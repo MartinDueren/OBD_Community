@@ -1,7 +1,9 @@
 class StaticPagesController < BaseController
   
   #before_filter force_ssl, :only => [:auth]
-  #before_filter :require_group_1, :only => [:community_map]
+  before_filter :require_group_2, :only => [:community_map]
+  before_filter :require_group_3, :only => [:badges]
+  before_filter :require_group_3, :only => [:scoreboard]
 
   def community_map
     render :layout => "fullmap"
@@ -50,25 +52,14 @@ class StaticPagesController < BaseController
   end
   
   private
-  def require_group_1
-    debugger
-    if current_user.group = 1
-      redirect_to login_path
+    def require_group_2
+      unless current_user.group == 2
+        redirect_to login_url
+      end
     end
-  end
-  def require_group_2
-    if current_user.group = 2
-      redirect_to login_url
+    def require_group_3
+      unless current_user.group == 3
+        redirect_to login_url
+      end
     end
-  end
-  def require_group_3
-    if current_user.group = 3
-      redirect_to login_url
-    end
-  end
-  def require_group_4
-    if current_user.group = 4
-      redirect_to login_url
-    end
-  end
 end

@@ -1,85 +1,82 @@
-!function ($) {
-    $(function(){
+var map, layer, format, sld;
 
-        var $root = $('html, body');
-
-        $('a').click(function() {
-            var href = $.attr(this, 'href');
-            $root.animate({
-                scrollTop: $(href).offset().top
-            }, 500, function () {
-                window.location.hash = href;
-            });
-            return false;
-        });
-    })
-}(window.jQuery)
-
-
-
-var map, layer;
 function init() {
-  // Define a new map.  We want it to be loaded into the 'map_canvas' div in the view
-  map = new OpenLayers.Map('map', {controls:[]});
-  
-  // Add a LayerSwitcher controller
-  map.addControl(new OpenLayers.Control.LayerSwitcher());
+    var geographic = new OpenLayers.Projection("EPSG:4326");
+    var mercator = new OpenLayers.Projection("EPSG:900913");
 
-  var osm = new OpenLayers.Layer.OSM();
-  var vectorLayer = new OpenLayers.Layer.Vector("Measurements/Speed");
-    
-  map.addLayers([osm, vectorLayer]);
+    var muenster_center = new OpenLayers.LonLat(7.623718, 51.960769).transform(
+        geographic, mercator
+    );
 
-  var style = {
-    'strokeColor': 'magenta',
-    'strokeOpacity': 1.0,
-    'strokeWidth': 2
-  };
-
-  epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
-  projectTo = map.getProjectionObject(); //The map projection (Spherical Mercator)
-
-  //Get the coordinates from the gon measurements
-  var gonPoints = [];
-  for(var i=0; i<gon.measurements.length; i++) {
-    var measurement = gon.measurements[i];
-    gonPoints.push(
-        new OpenLayers.Geometry.Point( measurement.lat, measurement.lon ).transform(epsg4326, projectTo)
-    )
-  }
-  //Every Vector can have its own style: 
-  var features = [];
-  for(var i=0; i<gonPoints.length; i++) {
-     style = { 
-      pointRadius: Math.round(1 + gon.measurements[i].speed / 50),
-      'strokeColor': 'magenta',
-      'strokeOpacity': 1.0,
-      'strokeWidth': 2
+    var mapOptions = {
+        div: "map",
+        projection: new OpenLayers.Projection("EPSG:900913"),
+        units: "m",
     };
-     features.push(
-       new OpenLayers.Feature.Vector(gonPoints[i], null, style)
-     )
-  }
-  
-  vectorLayer.addFeatures(features);
-  
-  var bounds = new OpenLayers.Bounds();
 
-  if(gonPoints) {
-    if(gonPoints.constructor != Array) {
-      gonPoints = [gonPoints];
+    map = new OpenLayers.Map('map', mapOptions);
+
+
+    var osm = new OpenLayers.Layer.OSM();
+    map.addLayers([osm]);
+
+
+    layer = new OpenLayers.Layer.WMS(
+        "Community Statistics",
+        "http://localhost:8080/geoserver/OBDComm/wms?", {
+            layers: "OBDComm:osm_roads",
+            transparent: true   
+        }
+    );
+
+    map.addLayer(layer);
+    map.setCenter(muenster_center, 13);
+
+}
+
+
+function changeSensor(sensor){
+    switch (sensor){
+        case "avg_speed":
+            document.getElementById("legend_description").innerHTML="Showing average speed";
+            document.getElementById("legend_image").src="http://localhost:8080/geoserver/OBDComm/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_speed&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
+            layer.mergeNewParams({styles:sensor});
+            break;
+        case "avg_rpm":
+            document.getElementById("legend_description").innerHTML="Showing average rpm";
+            document.getElementById("legend_image").src="http://localhost:8080/geoserver/OBDComm/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_rpm&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
+            layer.mergeNewParams({styles:sensor});
+            break;
+        case "avg_co2": 
+            document.getElementById("legend_description").innerHTML="Showing average co2";
+            document.getElementById("legend_image").src="http://localhost:8080/geoserver/OBDComm/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_co2&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
+            layer.mergeNewParams({styles:sensor});
+            break; 
+        case "avg_consumption": 
+            document.getElementById("legend_description").innerHTML="Showing average consumption";
+            document.getElementById("legend_image").src="http://localhost:8080/geoserver/OBDComm/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_consumption&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
+            layer.mergeNewParams({styles:sensor});
+            break; 
+        case "avg_standing_time": 
+            document.getElementById("legend_description").innerHTML="Showing average standing time";
+            document.getElementById("legend_image").src="http://localhost:8080/geoserver/OBDComm/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_standing_time&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
+            layer.mergeNewParams({styles:sensor});
+            break; 
+        case "max_speed":
+            document.getElementById("legend_description").innerHTML="Showing max speed"; 
+            document.getElementById("legend_image").src="http://localhost:8080/geoserver/OBDComm/wms?REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=max_speed&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
+            layer.mergeNewParams({styles:sensor});
+            break;    
     }
+    
+    
+}
 
-    // Iterate over the features and extend the bounds to the bounds of the geometries
-    for(var i=0; i<gonPoints.length; i++) {
-      if (!bounds) {
-        bounds = gonPoints[i].getBounds();
-      } else {
-        bounds.extend(gonPoints[i].getBounds());
-      }
-    }
-  }
-  map.zoomToExtent(bounds);
-  }
+$('a#change-sensor-avg-speed').click(function(){ changeSensor("avg_speed");});
+$('a#change-sensor-avg-rpm').click(function(){ changeSensor("avg_rpm");});
+$('a#change-sensor-avg-co2').click(function(){ changeSensor("avg_co2");});
+$('a#change-sensor-avg-consumption').click(function(){ changeSensor("avg_consumption");});
+$('a#change-sensor-avg-standing-time').click(function(){ changeSensor("avg_standing_time");});
+$('a#change-sensor-max-speed').click(function(){ changeSensor("max_speed");});
 
-  window.onload = init;
+window.onload = init;

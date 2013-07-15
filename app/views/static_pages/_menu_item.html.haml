@@ -1,23 +1,26 @@
-- if current_page?(map_path)
-  - css_class = 'active'
-- else
-  - css_class = 'inactive'
-  
-%li{:class => css_class}= link_to :community_map.l, map_path
+- if current_user.group == 2
+  - if current_page?(map_path)
+    - css_class = 'active'
+  - else
+    - css_class = 'inactive'
+    
+  %li{:class => css_class}= link_to :community_map.l, map_path
 
-- if current_page?(badges_path)
-  - css_class = 'active'
-- else
-  - css_class = 'inactive'
-  
-%li{:class => css_class}= link_to :badges.l, badges_path
+- if current_user.group == 3
+  - if current_page?(badges_path)
+    - css_class = 'active'
+  - else
+    - css_class = 'inactive'
+    
+  %li{:class => css_class}= link_to :badges.l, badges_path
 
-- if current_page?(scoreboard_path)
-  - css_class = 'active'
-- else
-  - css_class = 'inactive'
-  
-%li{:class => css_class}= link_to :scoreboard.l, scoreboard_path
+- if current_user.group == 3
+  - if current_page?(scoreboard_path)
+    - css_class = 'active'
+  - else
+    - css_class = 'inactive'
+    
+  %li{:class => css_class}= link_to :scoreboard.l, scoreboard_path
 
 - if current_page?(help_path)
   - css_class = 'active'

@@ -2,6 +2,12 @@ class TripController < BaseController
 
   before_filter :login_required, :only => [:show]
   before_filter :login_with_access_token, :only => [:create]
+  
+  before_filter :require_group_1, :only => [:show_single_trip]
+  before_filter :require_group_1, :only => [:show]
+  before_filter :require_group_1_or_2, :only => [:compare]
+  before_filter :require_group_4, :only => [:show_abstract_trip]
+  before_filter :require_group_4, :only => [:abstract]
 
   uses_tiny_mce do
     {:only => [:show], :options => configatron.default_mce_options}
@@ -159,16 +165,32 @@ class TripController < BaseController
   end
 
   private
-  def login_with_access_token
-    if params[:token].nil?
-      access_denied
-    else
-      user = User.find_by_single_access_token(params[:token])
-      if user.nil?
+    def login_with_access_token
+      if params[:token].nil?
         access_denied
       else
-        UserSession.create(user) if(user.present?)
+        user = User.find_by_single_access_token(params[:token])
+        if user.nil?
+          access_denied
+        else
+          UserSession.create(user) if(user.present?)
+        end
       end
     end
-  end
+
+    def require_group_1
+      unless current_user.group == 1
+        redirect_to login_url
+      end
+    end
+    def require_group_1_or_2
+      unless current_user.group == 1 || current_user.group == 2
+        redirect_to login_url
+      end
+    end
+    def require_group_4
+      unless current_user.group == 4
+        redirect_to login_path
+      end
+    end
 end

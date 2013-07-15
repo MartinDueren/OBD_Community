@@ -11,15 +11,13 @@
   = link_to home_path, :class => 'brand' do 
     #{configatron.community_name[0..2]}
     %span.am_brand #{configatron.community_name[3..6]}
-
 -#= link_to configatron.community_name[3..6], home_path, :class => 'am_brand'
 .nav-collapse
   %ul.nav
     -#= render 'categories/menu_item'
     - if logged_in?
-      -# user group validation - if current_user.group == 0
-      = render 'trip/menu_item'
       = render 'users/menu_item'
+      = render 'trip/menu_item'  
       = render 'static_pages/menu_item'
     - if @header_tabs.any?
       - for tab in @header_tabs

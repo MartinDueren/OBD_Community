@@ -22,7 +22,7 @@ class UsersController < BaseController
                                                 :welcome_photo, :welcome_about, :welcome_invite, :deactivate, 
                                                 :crop_profile_photo, :upload_profile_photo]
   before_filter :admin_required, :only => [:assume, :destroy, :featured, :toggle_featured, :toggle_moderator]
-  before_filter :admin_or_current_user_required, :only => [:statistics]  
+  before_filter :admin_or_current_user_required, :only => [:statistics]
 
   def activate
     redirect_to signup_path and return if params[:id].blank?
@@ -47,7 +47,6 @@ class UsersController < BaseController
 
   def index
     @users, @search, @metro_areas, @states = User.search_conditions_with_metros_and_states(params)
-    
     @users = @users.active.recent.includes(:tags).page(params[:page]).per(20)
     
     @metro_areas, @states = User.find_country_and_state_from_search_params(params)
@@ -59,12 +58,12 @@ class UsersController < BaseController
   
   def dashboard
     @user = current_user
-    @network_activity = @user.network_activity
-    @recommended_posts = @user.recommended_posts
+    #@network_activity = @user.network_activity
+    #@recommended_posts = @user.recommended_posts
     redirect_to "#{config.root}/trip/show"
   end
   
-  def show  
+  def show
     @friend_count               = @user.accepted_friendships.count
     @accepted_friendships       = @user.accepted_friendships.find(:all, :limit => 5).collect{|f| f.friend }
     @pending_friendships_count  = @user.pending_friendships.count()
@@ -440,6 +439,13 @@ class UsersController < BaseController
 
     def admin_or_current_user_required
       current_user && (current_user.admin? || @is_current_user) ? true : access_denied     
+    end
+
+  private
+    def require_group_2
+      unless current_user.group == 2
+        redirect_to login_url
+      end
     end
 
 end

@@ -22,7 +22,7 @@ function init() {
 
 
     layer = new OpenLayers.Layer.WMS(
-        "Vienna Calling",
+        "Community Statistics",
         "http://localhost:8080/geoserver/OBDComm/wms?", {
             layers: "OBDComm:osm_roads",
             transparent: true   

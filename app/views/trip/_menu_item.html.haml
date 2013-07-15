@@ -1,13 +1,15 @@
-- if current_page?(trip_show_path)
-  - css_class = 'active'
-- else
-  - css_class = 'inactive'
-  
-%li{:class => css_class}= link_to :my_trips.l, trip_show_path
+- if current_user.group == 1
+  - if current_page?(trip_show_path)
+    - css_class = 'active'
+  - else
+    - css_class = 'inactive'
+    
+  %li{:class => css_class}= link_to :my_trips.l, trip_show_path
 
-- if current_page?(trip_show_abstract_trip_path)
-  - css_class = 'active'
-- else
-  - css_class = 'inactive'
-  
-%li{:class => css_class}= link_to :trips.l, trip_abstract_path
+- if current_user.group == 4
+  - if current_page?(trip_show_abstract_trip_path)
+    - css_class = 'active'
+  - else
+    - css_class = 'inactive'
+    
+  %li{:class => css_class}= link_to :trips.l, trip_abstract_path
