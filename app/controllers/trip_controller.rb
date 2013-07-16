@@ -16,6 +16,8 @@ class TripController < BaseController
   end
 
   def show
+    gon.user_id = current_user.id
+    gon.params = params
     if params.has_key?(:user)
       @trips = User.find_by_id(params[:user]).trips.scoped.page(params[:page]).per(5).order('created_at DESC')
     else
@@ -26,6 +28,9 @@ class TripController < BaseController
   end
 
   def abstract
+    gon.user = current_user.id
+
+    gon.params = params
     if params.has_key?(:user)
       @trips = User.find_by_id(params[:user]).trips.scoped.page(params[:page]).per(5).order('created_at DESC')
     else
@@ -38,6 +43,8 @@ class TripController < BaseController
     @action = action_name
     @tripA = Trip.find_by_id(params[:a])
     @tripB = Trip.find_by_id(params[:b])
+    gon.user = current_user.id
+    gon.params = params
     gon.measurementsMap1 = @tripA.measurements.order("recorded_at ASC")
     gon.measurementsMap2 = @tripB.measurements.order("recorded_at ASC")
     render :layout => "trips"
@@ -48,6 +55,9 @@ class TripController < BaseController
     @action = action_name
     if params.has_key?(:id)
       @trip = Trip.find_by_id(params[:id])
+      gon.user = current_user.id
+      gon.user_group = current_user.group
+      gon.params = params
       gon.measurements = @trip.measurements.order("recorded_at ASC")
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
@@ -58,6 +68,8 @@ class TripController < BaseController
     @action = action_name
     if params.has_key?(:id)
       @trip = Trip.find_by_id(params[:id])
+      gon.user = current_user.id
+      gon.params = params
       gon.measurements = @trip.measurements
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
@@ -166,6 +178,7 @@ class TripController < BaseController
     #@trip.integrateTrip
   end
 
+
   private
     def track_action
       Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/trip/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
@@ -185,17 +198,17 @@ class TripController < BaseController
     end
 
     def require_group_1
-      unless current_user.group == 1
+      unless current_user.group == 1 || current_user.group == 0
         redirect_to login_url
       end
     end
     def require_group_1_or_2
-      unless current_user.group == 1 || current_user.group == 2
+      unless current_user.group == 1 || current_user.group == 2 || current_user.group == 0
         redirect_to login_url
       end
     end
     def require_group_4
-      unless current_user.group == 4
+      unless current_user.group == 4 || current_user.group == 0
         redirect_to login_path
       end
     end

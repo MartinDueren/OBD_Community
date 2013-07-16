@@ -1,4 +1,9 @@
 OBDComm::Application.routes.draw do
+  get "analytics/create"
+  match "analytics/create" => "analytics#create", :via => :post
+  
+  get "analytics/show"
+
   get "static_pages/community_map"
   match "/map" => "static_pages#community_map"
   

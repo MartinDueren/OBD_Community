@@ -4,8 +4,11 @@ class StaticPagesController < BaseController
   before_filter :require_group_2, :only => [:community_map]
   before_filter :require_group_3, :only => [:badges]
   before_filter :require_group_3, :only => [:scoreboard]
+  before_filter :track_action
 
   def community_map
+    gon.user = current_user.id
+    gon.params = params
     render :layout => "fullmap"
   end
   
@@ -28,6 +31,8 @@ class StaticPagesController < BaseController
   end
   
   def badges
+    gon.user = current_user.id
+      gon.params = params
     if current_user.group == 3
       @badgesList = Hash.new(0)
       current_user.badges.each do |v|
@@ -40,6 +45,8 @@ class StaticPagesController < BaseController
   end
 
   def scoreboard
+    gon.user = current_user.id
+      gon.params = params
     #All Measurements, now do something with it!
     @measurements = Measurement.all
     render :layout => "trips"
@@ -54,13 +61,17 @@ class StaticPagesController < BaseController
   end
   
   private
+    def track_action
+      Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/static_pages/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+    end
+
     def require_group_2
-      unless current_user.group == 2
+      unless current_user.group == 2 || current_user.group == 0
         redirect_to login_url
       end
     end
     def require_group_3
-      unless current_user.group == 3
+      unless current_user.group == 3 || current_user.group == 0
         redirect_to login_url
       end
     end

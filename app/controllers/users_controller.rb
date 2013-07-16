@@ -443,7 +443,7 @@ class UsersController < BaseController
 
   private
     def require_group_2
-      unless current_user.group == 2
+      unless current_user.group == 2 || current_user.group == 0
         redirect_to login_url
       end
     end

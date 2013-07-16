@@ -198,7 +198,14 @@ function addHeatmapLayer(){
   map.addLayers([heatmap]);
 }
 
+var lastSelect = new Date().getTime();
 function selectPoint(point){
+  if(lastSelect != 0 && (new Date().getTime() - lastSelect) > 3000){
+    $.post("http://localhost:3000/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
+
+    lastSelect = new Date().getTime();
+    console.log("anal");
+  }
   if(map.getLayersByName("Marker").length > 0){
     map.removeLayer(marker);
   }
@@ -209,6 +216,7 @@ function selectPoint(point){
   var markers = [new OpenLayers.Feature.Vector(point, null, highlightStyle)];
   marker.addFeatures(markers);
   map.addLayers([marker]);
+
 }
 
 function changeSensor(sensor){
@@ -240,4 +248,6 @@ window.onload = init;
 $('a#change-sensor-speed').click(function(){ changeSensor("speed");});
 $('a#change-sensor-rpm').click(function(){ changeSensor("rpm");});
 $('a#change-sensor-consumption').click(function(){ changeSensor("consumption");});
+
+
 
