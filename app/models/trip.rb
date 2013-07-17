@@ -63,94 +63,97 @@ class Trip < ActiveRecord::Base
     end
     ################
 
-    @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0, :measurements => measurements}
-    @tripAttrs[:length] = self.getTripLength
-    @current_user = User.find_by_id(self.user_id)
+    if measurements.length > 0
 
-    measurements.each_with_index do |m, i|
-      if m.rpm >= 2500
-        @tripAttrs[:rpmAbove2500] += 1
+      @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0, :measurements => measurements}
+      @tripAttrs[:length] = self.getTripLength
+      @current_user = User.find_by_id(self.user_id)
+
+      measurements.each_with_index do |m, i|
+        if m.rpm >= 2500
+          @tripAttrs[:rpmAbove2500] += 1
+        end
+
+        if m.rpm >= 3000
+          @tripAttrs[:rpmAbove3000] += 1
+        end
+        
+        if m.speed == 0
+          @tripAttrs[:standingTime] += 1
+        end
+
+        #braking
+        if m.speed < measurements[i-1].speed
+          @diff = measurements[i-1].speed - m.speed
+          if @diff > 30
+            @tripAttrs[:braking] += 1
+          end
+        end
+        #acceleration
+        if m.speed > measurements[i-1].speed
+          @diff =  m.speed - measurements[i-1].speed
+          if @diff > 30
+            @tripAttrs[:acceleration] += 1
+          end
+        end
       end
 
-      if m.rpm >= 3000
-        @tripAttrs[:rpmAbove3000] += 1
+
+      #### Check for individual badges
+      firstTrip
+      km
+      co2
+      fuelConsumption
+      shifting
+      goodRoute
+      smoothBraking
+      smoothAcceleration
+      consecutiveTrips
+      firstFriend
+      firstComment
+      gotComment
+      mostMiles
+
+      self.save
+
+      #### Grant Badges
+      self.badges.each do |badge|
+        User.find_by_id(self.user_id).add_badge(badge[0].id)
+        User.find_by_id(self.user_id).add_points(badge[0].custom_fields[:points], "#{badge[0].custom_fields[:points]} Points granted #{badge[0].description}")
       end
       
-      if m.speed == 0
-        @tripAttrs[:standingTime] += 1
-      end
+      #update user statistics
+      div = self.measurements.length + @current_user.measurement_count
+      @current_user.update_attributes(:mileage => (@current_user.mileage + @tripAttrs[:length].to_i))
+      @current_user.update_attributes(:rpm => (((@current_user.rpm * @current_user.measurement_count) + (self.measurements.average(:rpm).to_f * self.measurements.length)) / div))
+      @current_user.update_attributes(:speed => (((@current_user.speed * @current_user.measurement_count) + (self.measurements.average(:speed).to_f * self.measurements.length)) / div))
+      @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.measurement_count) + (self.measurements.average(:consumption).to_f * self.measurements.length)) / div))
+      @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
+      @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
+      @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.measurements.sum(:co2))))
+      @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (self.measurements.sum(:consumption))))
+      @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 
-      #braking
-      if m.speed < measurements[i-1].speed
-        @diff = measurements[i-1].speed - m.speed
-        if @diff > 30
-          @tripAttrs[:braking] += 1
+      #### find nearest street for every measurement and calculate stats 
+      res = OsmRoads.find_by_sql("SELECT DISTINCT ON (pt_id) pt_id, ln_id, ST_AsText(ST_line_interpolate_point(ln_geom, ST_line_locate_point(ln_geom, pt_geom))) FROM (SELECT ln.geom AS ln_geom, pt.latlon AS pt_geom, ln.id AS ln_id, pt.id AS pt_id, ST_Distance(ln.geom, pt.latlon) AS d FROM (SELECT * FROM measurements WHERE trip_id = #{self.id}) pt, osm_roads ln WHERE ST_DWithin(pt.latlon, ln.geom, 10.0) ORDER BY pt_id,d ) AS subquery;")
+
+      res.each do |m|
+        osm_road = OsmRoads.find_by_id(m.ln_id)
+        nm = Measurement.find_by_id(m.pt_id)
+        div = osm_road.measurement_count + 1
+
+        if nm.speed > osm_road.max_speed
+          osm_road.update_attributes(:max_speed => nm.speed)
         end
+
+        osm_road.update_attributes(:avg_speed => (((osm_road.avg_speed * osm_road.measurement_count) + nm.speed) / div))
+        osm_road.update_attributes(:avg_rpm => (((osm_road.avg_rpm * osm_road.measurement_count) + nm.rpm) / div))
+        osm_road.update_attributes(:avg_consumption => (((osm_road.avg_consumption * osm_road.measurement_count) + nm.consumption) / div))
+        osm_road.update_attributes(:avg_standing_time => (((osm_road.avg_standing_time * osm_road.measurement_count) + 5) / div))
+        osm_road.update_attributes(:avg_co2 => (((osm_road.avg_co2 * osm_road.measurement_count) + nm.co2) / div))
+
+        osm_road.update_attributes(:measurement_count => osm_road.measurement_count + 1)
       end
-      #acceleration
-      if m.speed > measurements[i-1].speed
-        @diff =  m.speed - measurements[i-1].speed
-        if @diff > 30
-          @tripAttrs[:acceleration] += 1
-        end
-      end
-    end
-
-
-    #### Check for individual badges
-    firstTrip
-    km
-    co2
-    fuelConsumption
-    shifting
-    goodRoute
-    smoothBraking
-    smoothAcceleration
-    consecutiveTrips
-    firstFriend
-    firstComment
-    gotComment
-    mostMiles
-
-    self.save
-
-    #### Grant Badges
-    self.badges.each do |badge|
-      User.find_by_id(self.user_id).add_badge(badge[0].id)
-      User.find_by_id(self.user_id).add_points(badge[0].custom_fields[:points], "#{badge[0].custom_fields[:points]} Points granted #{badge[0].description}")
-    end
-    
-    #update user statistics
-    div = self.measurements.length + @current_user.measurement_count
-    @current_user.update_attributes(:mileage => (@current_user.mileage + @tripAttrs[:length].to_i))
-    @current_user.update_attributes(:rpm => (((@current_user.rpm * @current_user.measurement_count) + (self.measurements.average(:rpm).to_f * self.measurements.length)) / div))
-    @current_user.update_attributes(:speed => (((@current_user.speed * @current_user.measurement_count) + (self.measurements.average(:speed).to_f * self.measurements.length)) / div))
-    @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.measurement_count) + (self.measurements.average(:consumption).to_f * self.measurements.length)) / div))
-    @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
-    @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
-    @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.measurements.sum(:co2))))
-    @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (self.measurements.sum(:consumption))))
-    @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
-
-    #### find nearest street for every measurement and calculate stats 
-    res = OsmRoads.find_by_sql("SELECT DISTINCT ON (pt_id) pt_id, ln_id, ST_AsText(ST_line_interpolate_point(ln_geom, ST_line_locate_point(ln_geom, pt_geom))) FROM (SELECT ln.geom AS ln_geom, pt.latlon AS pt_geom, ln.id AS ln_id, pt.id AS pt_id, ST_Distance(ln.geom, pt.latlon) AS d FROM (SELECT * FROM measurements WHERE trip_id = #{self.id}) pt, osm_roads ln WHERE ST_DWithin(pt.latlon, ln.geom, 10.0) ORDER BY pt_id,d ) AS subquery;")
-
-    res.each do |m|
-      osm_road = OsmRoads.find_by_id(m.ln_id)
-      nm = Measurement.find_by_id(m.pt_id)
-      div = osm_road.measurement_count + 1
-
-      if nm.speed > osm_road.max_speed
-        osm_road.update_attributes(:max_speed => nm.speed)
-      end
-
-      osm_road.update_attributes(:avg_speed => (((osm_road.avg_speed * osm_road.measurement_count) + nm.speed) / div))
-      osm_road.update_attributes(:avg_rpm => (((osm_road.avg_rpm * osm_road.measurement_count) + nm.rpm) / div))
-      osm_road.update_attributes(:avg_consumption => (((osm_road.avg_consumption * osm_road.measurement_count) + nm.consumption) / div))
-      osm_road.update_attributes(:avg_standing_time => (((osm_road.avg_standing_time * osm_road.measurement_count) + 5) / div))
-      osm_road.update_attributes(:avg_co2 => (((osm_road.avg_co2 * osm_road.measurement_count) + nm.co2) / div))
-
-      osm_road.update_attributes(:measurement_count => osm_road.measurement_count + 1)
     end
   end
 

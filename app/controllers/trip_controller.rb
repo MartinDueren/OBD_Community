@@ -1,6 +1,6 @@
 class TripController < BaseController
 
-  before_filter :track_action
+  before_filter :track_action, :only => [:show, :abstract, :compare, :show_single_trip, :show_abstract_trip]
 
   before_filter :login_required, :only => [:show]
   before_filter :login_with_access_token, :only => [:create]
@@ -94,9 +94,6 @@ class TripController < BaseController
 
 
     wgs84_factory = RGeo::Cartesian.factory(:srid => 4326)
-    factory_merc = RGeo::Geographic.simple_mercator_factory
-    
-    factory = RGeo::Geographic.projected_factory(:projection_proj4 => '+proj=merc +a=6378137 +b=6378137 +lat_ts=0.0 +lon_0=0.0 +x_0=0.0 +y_0=0 +k=1.0 +units=m +nadgrids=@null +wktext  +no_defs')
 
     #debugger
     unless params[:import].nil?

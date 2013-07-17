@@ -86,6 +86,7 @@
             - if current_user.group == 1
               = icon_link_to 'icon-plus-sign',  "Show all trips", "/trip/show?user=#{@user.id}"
             - for i in 1..10 
+              - break if @trips[@trips.length-i] == nil
               .row.well
                 %div.span6
                   %div.trip_info
