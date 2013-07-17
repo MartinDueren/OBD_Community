@@ -86,6 +86,8 @@ class TripController < BaseController
 
 
   def create
+    Rails.logger.info "My info message"
+    Rails.logger.error('asdf...............................')
     #create empty trip to get an id to pass on to measurements
     @trip = Trip.new
     #@trip.save
@@ -96,6 +98,7 @@ class TripController < BaseController
     wgs84_factory = RGeo::Cartesian.factory(:srid => 4326)
 
     #debugger
+    Rails.logger.info "vor unless"
     unless params[:import].nil?
       @trip.user_id = current_user.id
 
@@ -108,7 +111,7 @@ class TripController < BaseController
           "recorded_at" => feature[:properties][:time],
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
           "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
-          "maf" => feature[:properties][:phenomenons][:MAF][:value],
+          "maf" => feature[:properties][:phenomenons][:'Calculated MAF'][:value],
           "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
           "map" => feature[:properties][:phenomenons][:'Intake Pressure'][:value],
           "consumption" => feature[:properties][:phenomenons][:Consumption][:value],
@@ -118,7 +121,7 @@ class TripController < BaseController
       }
 
       measurements.sort! { |a,b| a.recorded_at <=> b.recorded_at }
-      debugger
+      Rails.logger.info "nach sort"
       measurements.each do  |m|
         @trip.measurements.new(
           "recorded_at" => m.recorded_at,
@@ -132,7 +135,7 @@ class TripController < BaseController
           "latlon" => m.latlon
           )
       end
-      debugger
+      Rails.logger.info "vor respond to"
 
       respond_to do |format|
         if @trip.save
