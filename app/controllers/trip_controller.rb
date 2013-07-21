@@ -86,8 +86,6 @@ class TripController < BaseController
 
 
   def create
-    Rails.logger.info "My info message"
-    Rails.logger.error('asdf...............................')
     #create empty trip to get an id to pass on to measurements
     @trip = Trip.new
     #@trip.save
@@ -97,7 +95,6 @@ class TripController < BaseController
 
     wgs84_factory = RGeo::Cartesian.factory(:srid => 4326)
 
-    #debugger
     Rails.logger.info "vor unless"
     unless params[:import].nil?
       @trip.user_id = current_user.id
@@ -168,7 +165,7 @@ class TripController < BaseController
     @exec = "/usr/bin/phantomjs/bin/phantomjs " +
           "./app/assets/javascripts/phantom_snapshot.js " +
           "http://" + configatron.app_host + "/trip/show_static_trip?id=#{@trip.id} " +
-          "./public/assets/trips/#{@trip.id}.png '#map'"
+          "./public/assets/trips/#{@trip.id}.jpg '#map'"
     thread = Thread.new{
       system(@exec)
     }
@@ -181,7 +178,9 @@ class TripController < BaseController
 
   private
     def track_action
-      Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/trip/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+      if current_user != nil
+	Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/trip/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+      end
     end
 
     def login_with_access_token

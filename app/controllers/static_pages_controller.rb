@@ -62,7 +62,9 @@ class StaticPagesController < BaseController
   
   private
     def track_action
-      Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/static_pages/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+      if current_user != nil      
+        Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/static_pages/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+      end
     end
 
     def require_group_2
