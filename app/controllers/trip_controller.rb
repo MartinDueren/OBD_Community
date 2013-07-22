@@ -3,7 +3,7 @@ class TripController < BaseController
   before_filter :track_action, :only => [:show, :abstract, :compare, :show_single_trip, :show_abstract_trip]
 
   before_filter :login_required, :only => [:show]
-  before_filter :login_with_access_token, :only => [:create]
+  before_filter :basic_auth, :only => [:create]
   
   before_filter :require_group_1, :only => [:show_single_trip]
   before_filter :require_group_1, :only => [:show]
@@ -192,6 +192,20 @@ class TripController < BaseController
           access_denied
         else
           UserSession.create(user) if(user.present?)
+        end
+      end
+    end
+
+    def basic_auth
+
+      authenticate_or_request_with_http_basic do |username, password|
+        debugger
+        if user = User.find_by_login(username)
+          if user.valid_password?(password)
+            UserSession.create(user) if(user.present?)
+          end
+        else
+          access_denied
         end
       end
     end

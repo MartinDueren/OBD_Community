@@ -59,6 +59,7 @@ class StaticPagesController < BaseController
     render :layout => "landing"
     #end
   end
+
   
   private
     def track_action
