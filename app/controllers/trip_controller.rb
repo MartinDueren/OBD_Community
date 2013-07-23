@@ -3,7 +3,7 @@ class TripController < BaseController
   before_filter :track_action, :only => [:show, :abstract, :compare, :show_single_trip, :show_abstract_trip]
 
   before_filter :login_required, :only => [:show]
-  before_filter :basic_auth, :only => [:create]
+  #before_filter :basic_auth, :only => [:create]
   
   before_filter :require_group_1, :only => [:show_single_trip]
   before_filter :require_group_1, :only => [:show]
@@ -97,7 +97,7 @@ class TripController < BaseController
 
     Rails.logger.info "vor unless"
     unless params[:import].nil?
-      @trip.user_id = current_user.id
+      @trip.user_id = User.find_by_login_or_email(params[:user]).id
 
 
       measurements = []
@@ -146,7 +146,7 @@ class TripController < BaseController
     else
       #create real trip from json here
       @trip = Trip.new(params[:trip])
-      @trip.user_id = current_user.id
+      @trip.user_id = User.find_by_login_or_email(params[:user]).id
       #change trip_id in measurements
       @trip.measurements.each { |x|
         x.trip_id = @trip.id

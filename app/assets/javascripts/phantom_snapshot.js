@@ -40,7 +40,7 @@ if (system.args.length < 4 || system.args.length > 6) {
                 console.log("Rendering to file...");
                 page.render(output);
                 phantom.exit();
-            }, 200);
+            }, 2000);
         }
     });
 }
