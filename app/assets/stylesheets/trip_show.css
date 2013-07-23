@@ -1,5 +1,10 @@
+.legend {
+  width: 20px;
+  height: 20px;
+}
+
 .affix {
-    top: 30%;
+    top: 60%;
 }
 
 a { display: inline-block; }

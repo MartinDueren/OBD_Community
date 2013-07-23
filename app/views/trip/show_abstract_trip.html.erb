@@ -9,7 +9,7 @@
   </div>
   <div class="span2">
     <h4 class="muted">AVERAGE CO2 EMISSIONS</h4>
-    <p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
+    <p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
   </div>
 
 </div>

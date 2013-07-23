@@ -43,7 +43,7 @@ function initChart(){
   for(var i = 0; i < gon.measurements.length; i++) {
     var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
     var date = new Date(gon.measurements[i].recorded_at).getTime();
-    //speed
+    //co2
     seriesData[0][i] = {
       x: date,
       y: gon.measurements[i].co2,
@@ -71,13 +71,20 @@ function initChart(){
         includeZero: false
     },
     axisY: {
-        valueFormatString: " "
+        title: "CO2",
+        titleFontSize: 15
+        //valueFormatString: " "
+    },
+    axisY2: {
+        title: "Consumption",
+        titleFontSize: 15
+        //valueFormatString: " "
     },
     data: [//array of dataSeries
     { //dataSeries object
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
-      
+      axisYType: "secondary",
       type: "spline",
       name: "CO2 in g/s",
       showInLegend: true,

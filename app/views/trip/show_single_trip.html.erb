@@ -9,7 +9,7 @@
   </div>
   <div class="span2">
     <h4 class="muted">CO2 EMISSIONS</h4>
-    <p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
+    <p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
   </div>
   <div class="span2">
     <h4 class="muted">STANDING TIME</h4>
@@ -57,14 +57,11 @@
         </ul>
       </div>
     </div>
-    <!-- AddThis Button BEGIN -->
-    <div class="addthis_toolbox addthis_default_style">
-      <a class="addthis_button_facebook_like" fb:like:layout="button_count"></a>
-      <a class="addthis_button_tweet"></a>
-      <a class="addthis_button_google_plusone" g:plusone:size="medium"></a>
-    </div>
-    <script type="text/javascript" src="//s7.addthis.com/js/300/addthis_widget.js#pubid=undefined"></script>
-    <!-- AddThis Button END -->
+    <img src="/assets/legend_green.png" class="legend"><p style="display:inline" id="legend1"></p></img>
+    <img src="/assets/legend_dark_green.png" class="legend"><p style="display:inline" id="legend2"></p></img>
+    <img src="/assets/legend_orange.png" class="legend"><p style="display:inline" id="legend3"></p></img>
+    <img src="/assets/legend_light_red.png" class="legend"><p style="display:inline" id="legend4"></p></img>
+    <img src="/assets/legend_red.png" class="legend"><p style="display:inline" id="legend5"></p></img>
   </div>
   <div class="span6">
     <div id="chartContainer" style="height: 100%; width: 100%;"></div>

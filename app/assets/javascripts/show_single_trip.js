@@ -77,7 +77,14 @@ function initChart(){
         includeZero: false
     },
     axisY: {
-        valueFormatString: " "
+        title: "Speed",
+        titleFontSize: 15
+        //valueFormatString: " "
+    },
+    axisY2: {
+        title: "RPM",
+        titleFontSize: 15
+        //valueFormatString: " "
     },
     data: [//array of dataSeries
     { //dataSeries object
@@ -229,6 +236,26 @@ function changeSensor(sensor){
         vectorLayer.features[i].style = style;
     }
     vectorLayer.redraw();
+
+    var steps = gon.statistics["max_" + sensor]/5;
+    var unit = "";
+    switch (sensor) {
+      case "speed":
+          unit = " km/h";
+          break;
+      case "rpm":
+          unit = " rpm";
+          break;
+      case "consumption":
+          unit = " l/100km";
+          break;
+    }
+  
+    document.getElementById("legend1").innerHTML = "0" + "-" + Math.round(steps) + unit
+    document.getElementById("legend2").innerHTML = Math.round(steps) + "-" + Math.round(2*steps) + unit
+    document.getElementById("legend3").innerHTML = Math.round(2*steps) + "-" + Math.round(3*steps) + unit
+    document.getElementById("legend4").innerHTML = Math.round(3*steps) + "-" + Math.round(4*steps) + unit
+    document.getElementById("legend5").innerHTML = Math.round(4*steps) + "-" + Math.round(5*steps) + unit
 }
 
 function getColor(sensor, value){
