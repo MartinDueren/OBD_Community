@@ -165,7 +165,7 @@ class TripController < BaseController
     @exec = "/usr/bin/phantomjs/bin/phantomjs " +
           "./app/assets/javascripts/phantom_snapshot.js " +
           "http://" + configatron.app_host + "/trip/show_static_trip?id=#{@trip.id} " +
-          "./public/assets/trips/#{@trip.id}.jpg '#map'"
+          "./public/assets/trips/#{@trip.id}.png '#map'"
     thread = Thread.new{
       system(@exec)
     }
