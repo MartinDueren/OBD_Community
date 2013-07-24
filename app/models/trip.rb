@@ -142,7 +142,7 @@ class Trip < ActiveRecord::Base
       @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
       @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
       @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.measurements.sum(:co2))))
-      @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption / 1000))
+      @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption / 1000)))
       @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 
       #### find nearest street for every measurement and calculate stats 
