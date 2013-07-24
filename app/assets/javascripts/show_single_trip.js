@@ -26,11 +26,36 @@ var feature;
 var vectorLayer;
 var heatmap;
 
+var tour = new Tour();
+
 function init(){
  initMap();
  initChart();
  addHeatmapLayer();
  heatmap.setVisibility(false);
+
+ 
+
+ tour.addSteps([
+    {
+        element: "#map", // string (jQuery selector) - html element next to which the step popover should be shown
+        title: "Title of my popover", // string - title of the popover
+        content: "Content of my popover" // string - content of the popover
+    },
+    {
+        element: "#sensorswitch",
+        title: "Title of my popover",
+        content: "Content of my popover"
+    },
+    {
+        element: "#chartContainer",
+        title: "Title of my popover",
+        content: "Content of my popover"
+    }
+  ]);
+
+ tour.start();
+
 }
 
 function initChart(){
@@ -211,7 +236,6 @@ function selectPoint(point){
     $.post("http://localhost:3000/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
 
     lastSelect = new Date().getTime();
-    console.log("anal");
   }
   if(map.getLayersByName("Marker").length > 0){
     map.removeLayer(marker);

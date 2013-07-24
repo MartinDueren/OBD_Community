@@ -18,6 +18,7 @@
     = render :partial => "shared/scripts_and_styles"      
     = stylesheet_link_tag 'trip_single'
     = stylesheet_link_tag 'trip_show'
+    = stylesheet_link_tag 'bootstrap-tour.css'
     
   %body{ :onload => @onload }
     -unless configatron.auth_providers.facebook.key.blank?    
@@ -51,6 +52,8 @@
     = javascript_include_tag "heatmap"
     = javascript_include_tag "heatmap-openlayers-renderer"
     = javascript_include_tag "canvasjs"
+    = javascript_include_tag "jquery.cookie"
+    = javascript_include_tag "bootstrap-tour"
     -if defined? @action
       = javascript_include_tag @action
     = yield :end_javascript

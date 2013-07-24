@@ -27,7 +27,7 @@
 <div class="row">
   <div class="span6">
     <h2 class="featurette-heading">Carbon Footprint</h2>
-    <p class="lead">You have produced <strong><%= @trip.measurements.sum(:co2) %> kg</strong> of CO2 while consuming approximately <strong><%= '%.0f' % @trip.measurements.sum(:consumption) %> liters</strong> of fuel.</p>
+    <p class="lead">You have produced <strong><%= @trip.measurements.sum(:co2) %> kg</strong> of CO2 while consuming approximately <strong><%= '%.0f' % (@trip.getTotalConsumption / 1000) %> liters</strong> of fuel.</p>
     <img src="/assets/footprint.jpg" class="img-rounded">
   </div><!-- /.span6 -->
   <div class="span6">

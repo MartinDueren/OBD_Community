@@ -5,7 +5,7 @@
   </div>
   <div class="span2">
     <h4 class="muted">GAS CONSUMED</h4>
-    <p><i class="icon-fire"> </i><%= '%.2f' % @trip.measurements.average(:consumption).to_f %> Liters</p>
+    <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters</p>
   </div>
   <div class="span2">
     <h4 class="muted">CO2 EMISSIONS</h4>
@@ -40,7 +40,7 @@
   <div class="span6">
     <div class="map" id="map">
       <div class="btn-group sensorswitch dropup">
-        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
+        <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" id="sensorswitch">
           Change sensor
           <span class="caret"></span>
         </a>

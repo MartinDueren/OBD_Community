@@ -32,6 +32,17 @@ class Trip < ActiveRecord::Base
   def getAvgConsumption
     self.measurements.average(:consumption).to_f
   end
+
+  def getTotalConsumption
+    sum = 0
+    self.measurements.each_with_index do |m,i|
+      unless i == 0
+        seconds = m.recorded_at - self.measurements[i-1].recorded_at
+        sum += seconds * (m.maf / 14.7) #should be changed for diesel
+      end
+    end
+    sum
+  end
   
   def next
     Trip.where("id > ?", id).order("id ASC").first
@@ -41,7 +52,7 @@ class Trip < ActiveRecord::Base
     Trip.where("id < ?", id).order("id DESC").first
   end
 
-  #Check for badges and calc all relevant statistics
+  #Check for badges and calc all relevant statistics, watch out for the spaghetti monster!!
   def integrateTrip
     measurements = self.measurements.order("recorded_at ASC")
 
@@ -131,7 +142,7 @@ class Trip < ActiveRecord::Base
       @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
       @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
       @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.measurements.sum(:co2))))
-      @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (self.measurements.sum(:consumption))))
+      @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption / 1000))
       @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 
       #### find nearest street for every measurement and calculate stats 

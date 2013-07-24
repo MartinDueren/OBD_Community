@@ -99,23 +99,33 @@ class TripController < BaseController
     unless params[:import].nil?
       @trip.user_id = User.find_by_login_or_email(params[:user]).id
 
-
       measurements = []
       params[:features].each { |feature| 
         coords = wgs84_factory.point(feature[:geometry][:coordinates][0],feature[:geometry][:coordinates][1])
 
-        measurements << Measurement.new(
+        maf = 0
+        if feature[:properties][:phenomenons][:'MAF'][:value] != nil
+          maf = feature[:properties][:phenomenons][:'MAF'][:value]
+        else
+          maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
+        end
+
+        m = Measurement.new(
           "recorded_at" => feature[:properties][:time],
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
           "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
-          "maf" => feature[:properties][:phenomenons][:'Calculated MAF'][:value],
+          "maf" => maf, #is in g/s
           "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
           "map" => feature[:properties][:phenomenons][:'Intake Pressure'][:value],
-          "consumption" => feature[:properties][:phenomenons][:Consumption][:value],
+          "consumption" => feature[:properties][:phenomenons][:Consumption][:value] , #is in l/s
           "co2" => feature[:properties][:phenomenons][:CO2][:value],
           "latlon" => coords,
           )
+
+        measurements << m
       }
+
+
 
       measurements.sort! { |a,b| a.recorded_at <=> b.recorded_at }
       Rails.logger.info "nach sort"
