@@ -76,7 +76,7 @@ class UsersController < BaseController
     @clippings      = @user.clippings.find(:all, :limit => 5)
     @photos         = @user.photos.find(:all, :limit => 5)
     @comment        = Comment.new(params[:comment])
-    @trips          = @user.trips
+    @trips          = @user.trips.sort_by { |i| i.created_at }
     @mileage        = @user.mileage
     @speed          = @user.speed
     @consumption    = @user.consumption

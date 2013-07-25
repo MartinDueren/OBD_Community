@@ -90,7 +90,7 @@
               .row.well
                 %div.span6
                   %div.trip_info
-                    = link_to image_tag("/assets/trips/#{@trips[@trips.length-i].id}.jpg", size: "300x300"), "/trip/show/#{@trips[@trips.length-i].id}"
+                    = link_to image_tag("/assets/trips/#{@trips[@trips.length-i].id}.png", size: "300x300"), "/trip/show/#{@trips[@trips.length-i].id}"
                 %div.span6.listing
                   .row
                     = link_to "#{@trips[@trips.length-i].getTripLength} Kilometers driven on #{@trips[@trips.length-i].measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trips[@trips.length-i].measurements.first.recorded_at.strftime("%H:%M %P")}", "/trip/show/#{@trips[@trips.length-i].id}"

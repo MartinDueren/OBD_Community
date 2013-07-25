@@ -38,7 +38,7 @@
 			<div class="row well">
 				<div class="span6">
 					<div class="trip_info">
-						<%= link_to image_tag("/assets/trips/#{@trip.id}.jpg"), "/trip/show/#{@trip.id}" %>
+						<%= link_to image_tag("/assets/trips/#{@trip.id}.png"), "/trip/show/#{@trip.id}" %>
 					</div>
 				</div>
 				<div class="span6 listing">
@@ -52,11 +52,11 @@
 						</div>
 						<div class="span2">
 							<h4 class="muted">GAS CONSUMED</h4>
-							<p><i class="icon-fire"> </i><%= '%.2f' % @trip.measurements.average(:consumption).to_f %> Liters</p>
+							<p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters</p>
 						</div>
 						<div class="span2">
 							<h4 class="muted">CO2 EMISSIONS</h4>
-							<p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
+							<p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
 						</div>			
 					</div>
 				</div>
