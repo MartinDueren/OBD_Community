@@ -104,7 +104,7 @@ class TripController < BaseController
         coords = wgs84_factory.point(feature[:geometry][:coordinates][0],feature[:geometry][:coordinates][1])
 
         maf = 0
-        if feature[:properties][:phenomenons][:'MAF'][:value] != nil
+        if feature[:properties][:phenomenons][:'MAF'] != nil
           maf = feature[:properties][:phenomenons][:'MAF'][:value]
         else
           maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
