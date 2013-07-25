@@ -713,7 +713,7 @@ ActiveRecord::Schema.define(:version => 20130715140412) do
     t.text    "wood"
     t.integer "z_order"
     t.float   "way_area"
-    t.spatial "way",                :limit => {:srid=>4326, :type=>"line_string"}
+    t.spatial "way",                :limit => {:srid=>900913, :type=>"line_string"}
   end
 
   add_index "planet_osm_roads", ["osm_id"], :name => "planet_osm_roads_pkey"
@@ -794,11 +794,6 @@ ActiveRecord::Schema.define(:version => 20130715140412) do
 
   add_index "sb_posts", ["forum_id", "created_at"], :name => "index_sb_posts_on_forum_id"
   add_index "sb_posts", ["user_id", "created_at"], :name => "index_sb_posts_on_user_id"
-
-  create_table "segments", :id => false, :force => true do |t|
-    t.spatial "geom",    :limit => {:srid=>0, :type=>"geometry"}
-    t.text    "highway"
-  end
 
   create_table "sessions", :force => true do |t|
     t.string   "sessid"
@@ -923,9 +918,9 @@ ActiveRecord::Schema.define(:version => 20130715140412) do
     t.float    "standingtime",                         :default => 0.0
     t.float    "consumption",                          :default => 0.0
     t.integer  "measurement_count",                    :default => 0
-    t.float    "total_co2"
-    t.float    "total_consumption"
-    t.float    "co2"
+    t.float    "total_co2",                            :default => 0.0
+    t.float    "total_consumption",                    :default => 0.0
+    t.float    "co2",                                  :default => 0.0
   end
 
   add_index "users", ["activated_at"], :name => "index_users_on_activated_at"
