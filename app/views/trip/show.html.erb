@@ -52,11 +52,11 @@
 						</div>
 						<div class="span2">
 							<h4 class="muted">GAS CONSUMED</h4>
-							<p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters</p>
+							<p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters = <%= '%.2f' % (@trip.getTotalConsumption/1000 * @fuel_prices[0].to_f) %>€</p>
 						</div>
 						<div class="span2">
 							<h4 class="muted">CO2 EMISSIONS</h4>
-							<p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
+							<p><i class="icon-leaf"></i> <%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</p>
 						</div>			
 					</div>
 				</div>

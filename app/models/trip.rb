@@ -29,6 +29,18 @@ class Trip < ActiveRecord::Base
     self.measurements.average(:co2).to_f
   end
 
+  #outputs grams
+  def getTotalCo2
+    sum = 0
+    self.measurements.each_with_index do |m,i|
+      unless i == 0
+        seconds = m.recorded_at - self.measurements[i-1].recorded_at
+        sum += seconds * (m.co2) #should be changed for diesel
+      end
+    end
+    sum
+  end
+
   def getAvgConsumption
     self.measurements.average(:consumption).to_f
   end
@@ -141,7 +153,7 @@ class Trip < ActiveRecord::Base
       @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.measurement_count) + (self.measurements.average(:consumption).to_f * self.measurements.length)) / div))
       @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
       @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
-      @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.measurements.sum(:co2))))
+      @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.getTotalCo2 / 1000)))
       @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption / 1000)))
       @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 

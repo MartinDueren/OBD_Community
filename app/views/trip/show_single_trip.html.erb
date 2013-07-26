@@ -5,11 +5,11 @@
   </div>
   <div class="span2">
     <h4 class="muted">GAS CONSUMED</h4>
-    <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters</p>
+    <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters = <%= '%.2f' % (@trip.getTotalConsumption/1000 * @fuel_prices[0].to_f) %>€</p>
   </div>
   <div class="span2">
     <h4 class="muted">CO2 EMISSIONS</h4>
-    <p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
+    <p><i class="icon-leaf"></i> <%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</p>
   </div>
   <div class="span2">
     <h4 class="muted">STANDING TIME</h4>
@@ -72,12 +72,12 @@
 
 <div class="row">
   <div class="span6">
-    <h2 class="featurette-heading">Trip Listing <span class="muted">It'll blow your mind.</span></h2>
-    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    <h2 class="featurette-heading">Genauigkeit <span class="muted"></span></h2>
+    <p class="lead">Die Berechnung der Werte ist sehr genau. Da allerdings nur alle 5 Sekunden gemessen wird können die Ergebnisse leicht von der Anzeige des Autos selber abweichen. So kann es z.B. auch sein, dass kurze Beschleunigungsvorgänge nicht mit eingerechnet werden.</p>
   </div><!-- /.span6 -->
   <div class="span6">
-    <h2 class="featurette-heading">Trip Listing <span class="muted">It'll blow your mind.</span></h2>
-    <p class="lead">Donec ullamcorper nulla non metus auctor fringilla. Vestibulum id ligula porta felis euismod semper. Praesent commodo cursus magna, vel scelerisque nisl consectetur. Fusce dapibus, tellus ac cursus commodo.</p>
+    <h2 class="featurette-heading">Graph: <span class="muted">Zoomen und Scrollen</span></h2>
+    <p class="lead">Fahre mit der Maus über den Graphen, um auf der Karte zu sehen wo die Messung liegt. Zoomen und Scrollen im Graphen und in der Karte sind auch möglich!</p>
   </div><!-- /.span6 -->
 </div><!-- /.row -->
 

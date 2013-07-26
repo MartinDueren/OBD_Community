@@ -16,6 +16,9 @@ class TripController < BaseController
   end
 
   def show
+    url = URI.parse('http://export.benzinpreis-aktuell.de/exportdata.txt?code=dCd47e7y1f6a43z')
+    @fuel_prices = Net::HTTP.get(url).split(';')[2..5]
+
     gon.user_id = current_user.id
     gon.params = params
     if params.has_key?(:user)
@@ -53,6 +56,10 @@ class TripController < BaseController
   #used for ..\show\trip\:id
   def show_single_trip
     @action = action_name
+
+    url = URI.parse('http://export.benzinpreis-aktuell.de/exportdata.txt?code=dCd47e7y1f6a43z')
+    @fuel_prices = Net::HTTP.get(url).split(';')[2..5]
+
     if params.has_key?(:id)
       @trip = Trip.find_by_id(params[:id])
       gon.user = current_user.id
@@ -110,6 +117,11 @@ class TripController < BaseController
           maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
         end
 
+        consumption = feature[:properties][:phenomenons][:Consumption][:value] #is in l/s
+        if consumption > 50
+          consumption = 50
+        end
+
         m = Measurement.new(
           "recorded_at" => feature[:properties][:time],
           "speed" => feature[:properties][:phenomenons][:Speed][:value],
@@ -117,7 +129,7 @@ class TripController < BaseController
           "maf" => maf, #is in g/s
           "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
           "map" => feature[:properties][:phenomenons][:'Intake Pressure'][:value],
-          "consumption" => feature[:properties][:phenomenons][:Consumption][:value] , #is in l/s
+          "consumption" => consumption,
           "co2" => feature[:properties][:phenomenons][:CO2][:value],
           "latlon" => coords,
           )

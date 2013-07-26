@@ -1,15 +1,15 @@
 <div class="row">
-	<h1>Overview</h1>
+	<h1>Übersicht</h1>
 	<div class="row">
 		<table class="table table-striped">
       <thead>
         <tr>
-          <th><h4 class="muted">TOTAL DISTANCE</h4></th>
-          <th><h4 class="muted">RECORDED TRIPS</h4></th>
-          <th><h4 class="muted">TOTAL CO2 EMISSIONS</h4></th>
-          <th><h4 class="muted">AVERAGE CO2</h4></th>
-          <th><h4 class="muted">TOTAL CONSUMPTION</h4></th>
-          <th><h4 class="muted">AVERAGE CONSUMPTION</h4></th>
+          <th><h4 class="muted">DISTANZ GESAMT</h4></th>
+          <th><h4 class="muted">ANZAHL FAHRTEN</h4></th>
+          <th><h4 class="muted">CO2 EMISSIONEN GESAMT</h4></th>
+          <th><h4 class="muted">DURCHSCHNITTL. CO2</h4></th>
+          <th><h4 class="muted">BENZINVERBRAUCH GESAMT</h4></th>
+          <th><h4 class="muted">DURCHSCHNITTL. VERBRAUCH</h4></th>
         </tr>
       </thead>
       <tbody>
@@ -27,9 +27,9 @@
 </div>
 
 <div class="container">
-	<h1>My recent Trips</h1>
+	<h1>Zuletzt hochgeladene Fahrten</h1>
 	<% if @trips.blank? %>
-		<p>No trips to display</p>
+		<p>Keine Fahrten zum Anzeigen vorhanden.</p>
 	<% else %>
 		<%= paginate @trips %>
 		<hr class="featurette-divider">
@@ -47,16 +47,16 @@
 					</div>
 					<div class="row">
 						<div class="span2">
-							<h4 class="muted">DISTANCE</h4>
+							<h4 class="muted">ENTFERNUNG</h4>
 							<p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
 						</div>
 						<div class="span2">
-							<h4 class="muted">GAS CONSUMED</h4>
+							<h4 class="muted">BENZINVERBRAUCH</h4>
 							<p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters</p>
 						</div>
 						<div class="span2">
-							<h4 class="muted">AVERAGE CO2 EMISSIONS</h4>
-							<p><i class="icon-leaf"></i> <%= @trip.measurements.average(:co2).to_f %> g/s</p>
+							<h4 class="muted">CO2 AUSSTOSS</h4>
+							<p><i class="icon-leaf"></i> <%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</p>
 						</div>			
 					</div>
 					<div class="row">
@@ -70,20 +70,20 @@
 							<%= 
 								if overall_avg_co2 > 0 && trip_avg_co2 > 0
 									if trip_avg_co2 < (overall_avg_co2 - (25 * avg_co2_per))
-										smilie_text = "Congrats: This trip's CO2 emissions are 25% better than the average."
-										image_tag "/assets/smilies/1.png", size: "100x100"
+										smilie_text = "Wow! Die CO2 Werte dieser Fahrt sind um 25% besser als der Durchschnitt."
+										image_tag "/assets/smilies/1.png", size: "70x70"
 									elsif (overall_avg_co2 - (5 * avg_co2_per)) > trip_avg_co2 && trip_avg_co2 > (overall_avg_co2 - (15 * avg_co2_per))
-										smilie_text = "Super! This trip's CO2 emissions are 15% better than the average."
-										image_tag "/assets/smilies/2.png", size: "100x100"
+										smilie_text = "Toll! Die CO2 Werte dieser Fahrt sind um 15% besser als der Durchschnitt."
+										image_tag "/assets/smilies/2.png", size: "70x70"
 									elsif (overall_avg_co2 + (5 * avg_co2_per)) > trip_avg_co2 && trip_avg_co2 > (overall_avg_co2 - (5 * avg_co2_per))
-										smilie_text = "This trip's CO2 emissions are average."
-										image_tag "/assets/smilies/3.png", size: "100x100"
+										smilie_text = "Die CO2 Werte dieser Fahrt sind super!"
+										image_tag "/assets/smilies/3.png", size: "70x70"
 									elsif (overall_avg_co2 + (5 * avg_co2_per)) < trip_avg_co2 && trip_avg_co2 < (overall_avg_co2 + (15 * avg_co2_per))
-										smilie_text = "Oh no! This trip's CO2 emissions are 15% worse than the average."
-										image_tag "/assets/smilies/4.png", size: "100x100"
+										smilie_text = "Ups! Die CO2 Werte dieser Fahrt sind um 15% schlechter als der Durchschnitt."
+										image_tag "/assets/smilies/4.png", size: "70x70"
 									elsif trip_avg_co2 < (overall_avg_co2 + (25 * avg_co2_per))
-										smilie_text = "Do something! This trip's CO2 emissions are 25% worse than the average."
-										image_tag "/assets/smilies/6.png", size: "100x100"
+										smilie_text = "Oh nein! Die CO2 Werte dieser Fahrt sind um 25% schlechter als der Durchschnitt."
+										image_tag "/assets/smilies/6.png", size: "70x70"
 									end		
 								end				
 							%>

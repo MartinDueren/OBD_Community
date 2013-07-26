@@ -33,7 +33,7 @@ class StaticPagesController < BaseController
   def badges
     gon.user = current_user.id
       gon.params = params
-    if current_user.group == 3
+    if current_user.group == 3 || current_user.group == 0
       @badgesList = Hash.new(0)
       current_user.badges.each do |v|
         @badgesList[v.id] += 1

@@ -251,6 +251,48 @@ function selectPoint(point){
 }
 
 function changeSensor(sensor){
+    var unit = "";
+    switch (sensor) {
+      case "speed":
+          unit = " km/h";
+          break;
+      case "rpm":
+          unit = " rpm";
+          break;
+      case "consumption":
+          unit = " l/100km";
+
+          for(i = 0; i < vectorLayer.features.length; i++){
+            var color;
+            if(gon.measurements[i][sensor] < 5){
+              color = "#1BE01B";
+            }else if(gon.measurements[i][sensor] < 9){
+              color = "#B5E01B";
+            }else if(gon.measurements[i][sensor] < 13){
+              color = "#E0C61B";
+            }else if(gon.measurements[i][sensor] < 20){
+              color = "#E08B1B";
+            }else if(gon.measurements[i][sensor] >= 20){
+              color = "#E01B1B";
+            }
+            var style = {
+              strokeColor: color, 
+              strokeOpacity: 0.8,
+              strokeWidth: 5
+            };
+            vectorLayer.features[i].style = style;
+          }
+          vectorLayer.redraw();          
+
+          document.getElementById("legend1").innerHTML = "0-5 l/100km"
+          document.getElementById("legend2").innerHTML = "5-9 l/100km"
+          document.getElementById("legend3").innerHTML = "9-13 l/100km"
+          document.getElementById("legend4").innerHTML = "13-20 l/100km"
+          document.getElementById("legend5").innerHTML = ">20 l/100km"
+
+          return;
+    }
+
     for(i = 0; i < vectorLayer.features.length; i++){
         var style = {
           strokeColor: getColor(sensor, gon.measurements[i][sensor]), 
@@ -262,18 +304,6 @@ function changeSensor(sensor){
     vectorLayer.redraw();
 
     var steps = gon.statistics["max_" + sensor]/5;
-    var unit = "";
-    switch (sensor) {
-      case "speed":
-          unit = " km/h";
-          break;
-      case "rpm":
-          unit = " rpm";
-          break;
-      case "consumption":
-          unit = " l/100km";
-          break;
-    }
   
     document.getElementById("legend1").innerHTML = "0" + "-" + Math.round(steps) + unit
     document.getElementById("legend2").innerHTML = Math.round(steps) + "-" + Math.round(2*steps) + unit
