@@ -1,14 +1,14 @@
 <div class="row">
   <div class="span2">
-    <h4 class="muted">DISTANCE</h4><br>
+    <h4 class="muted">DISTANZ</h4><br>
     <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> minutes</p>
   </div>
   <div class="span2">
-    <h4 class="muted">AVERAGE CONSUMPTION</h4>
+    <h4 class="muted">DURCHSCHNITTL. VERBRAUCH</h4>
     <p><i class="icon-fire"> </i><%= '%.2f' % @trip.measurements.average(:consumption).to_f %> Liters</p>
   </div>
   <div class="span2">
-    <h4 class="muted">AVERAGE CO2 EMISSIONS</h4>
+    <h4 class="muted">DURCHSCHNITTL. CO2</h4>
     <p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
   </div>
 
@@ -26,16 +26,16 @@
 
 <div class="row">
   <div class="span6">
-    <h2 class="featurette-heading">Carbon Footprint</h2>
-    <p class="lead">You have produced <strong><%= @trip.measurements.sum(:co2) %> kg</strong> of CO2 while consuming approximately <strong><%= '%.0f' % (@trip.getTotalConsumption / 1000) %> liters</strong> of fuel.</p>
+    <h2 class="featurette-heading">CO2 Fußabdruck</h2>
+    <p class="lead">Bei dieser Fahrt wurden ca. <strong><%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</strong> CO2 ausgetoßen und <strong><%= '%.0f' % (@trip.getTotalConsumption / 1000) %> Liter</strong> Benzin verbraucht.</p>
     <img src="/assets/footprint.jpg" class="img-rounded">
   </div><!-- /.span6 -->
   <div class="span6">
-    <h2 class="featurette-heading">In Other Terms</h2>
-    <p class="lead">Producing 1 kg of beef causes about 13.3 kg of CO2. So this ride is the equivalent of producing <strong><%= '%.2f' % (@trip.measurements.sum(:co2) / 13.3) %></strong> kg of beef.</p>
-    <p class="lead"><strong>OR<strong></p>
+    <h2 class="featurette-heading">In anderen Worten</h2>
+    <p class="lead">Bei der Produktion von 1 kg Rindfleisch werden 13.3 kg CO2 produziert. Diese Fahrt ist also Equivalent zur Produktion von <strong><%= '%.2f' % ((@trip.getTotalCo2 / 1000) / 13.3) %></strong> kg Rindfleisch.</p>
+    <p class="lead"><strong>ODER<strong></p>
     <p class="lead">
-    	A large sugar maple tree can remove up to 205 kg of carbon dioxide from the atmosphere each year! So for this ride the tree would need <strong><%= '%.0f' % (@trip.measurements.sum(:co2) / (205.0 / 360.0)) %></strong> days to absorb the produced CO2.
+    	Ein großer Ahorn-Baum kann bis zu 205 kg CO2 jährlich aus der Atmosphäre aufnehmen. Für diese Fahrt würde der selbe Baum ca. <strong><%= '%.0f' % ((@trip.getTotalCo2 / 1000) / (205.0 / 360.0)) %></strong> Tage benötigen, um das produzierte CO2 aufzunehmen.
     </p>
   </div><!-- /.span6 -->
 </div><!-- /.row -->
