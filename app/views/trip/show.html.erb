@@ -4,12 +4,12 @@
 		<table class="table table-striped">
       <thead>
         <tr>
-          <th><h4 class="muted">TOTAL DISTANCE</h4></th>
-          <th><h4 class="muted">RECORDED TRIPS</h4></th>
-          <th><h4 class="muted">TOTAL STANDING TIME</h4></th>
-          <th><h4 class="muted">AVERAGE SPEED</h4></th>
-          <th><h4 class="muted">AVERAGE RPM</h4></th>
-          <th><h4 class="muted">AVERAGE CONSUMPTION</h4></th>
+          <th><h4 class="muted">DISTANZ</h4></th>
+          <th><h4 class="muted">FAHRTEN</h4></th>
+          <th><h4 class="muted">STANDZEIT</h4></th>
+          <th><h4 class="muted">DURCHSCHNITTL. GESCHWINDIGKEIT</h4></th>
+          <th><h4 class="muted">DURCHSCHNITTL. UMDREHUNGEN</h4></th>
+          <th><h4 class="muted">DURCHSCHNITTL. VERBRAUCH</h4></th>
         </tr>
       </thead>
       <tbody>
@@ -27,9 +27,9 @@
 </div>
 
 <div class="container">
-	<h1>My recent Trips</h1>
+	<h1>Zuletzt hochgeladene Fahrten</h1>
 	<% if @trips.blank? %>
-		<p>No trips to display. Go and record some trips! </p>
+		<p>Keine Fahrten zum Anzeigen vorhanden.</p>
 	<% else %>
 		<%= paginate @trips %>
 		<hr class="featurette-divider">
@@ -43,19 +43,19 @@
 				</div>
 				<div class="span6 listing">
 					<div class="row">
-						<%= link_to "#{@trip.getTripLength} Kilometers driven from #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} to #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} on #{@trip.measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trip.measurements.first.recorded_at.strftime("%H:%M %P")}", "/trip/show/#{@trip.id}" %>
+						<%= link_to "#{@trip.getTripLength} Kilometer von #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} nach #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} am #{I18n.l @trip.measurements.first.recorded_at, format: :literal_date} um #{I18n.l @trip.measurements.first.recorded_at, format: :time_ago}", "/trip/show/#{@trip.id}" %>
 					</div>
 					<div class="row">
 						<div class="span2">
-							<h4 class="muted">DISTANCE</h4>
+							<h4 class="muted">DISTANZ</h4>
 							<p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
 						</div>
 						<div class="span2">
-							<h4 class="muted">GAS CONSUMED</h4>
+							<h4 class="muted">BENZINVERBRAUCH</h4>
 							<p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters = <%= '%.2f' % (@trip.getTotalConsumption/1000 * @fuel_prices[0].to_f) %>€</p>
 						</div>
 						<div class="span2">
-							<h4 class="muted">CO2 EMISSIONS</h4>
+							<h4 class="muted">CO2</h4>
 							<p><i class="icon-leaf"></i> <%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</p>
 						</div>			
 					</div>

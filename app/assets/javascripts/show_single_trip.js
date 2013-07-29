@@ -54,7 +54,7 @@ function init(){
     }
   ]);
 
- tour.start();
+ //tour.start();
 
 }
 
@@ -78,13 +78,13 @@ function initChart(){
     seriesData[1][i] = {
       x: date,
       y: gon.measurements[i].rpm,
-      label: "rpm/10"
+      label: "U/min"
     }
     //consumption
     seriesData[2][i] = {
       x: date,
       y: gon.measurements[i].consumption,
-      label: "l/100km"
+      label: "l/100 km"
     }
     dataHash[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
@@ -102,12 +102,12 @@ function initChart(){
         includeZero: false
     },
     axisY: {
-        title: "Speed",
+        title: "Geschwindigkeit",
         titleFontSize: 15
         //valueFormatString: " "
     },
     axisY2: {
-        title: "RPM",
+        title: "U/min",
         titleFontSize: 15
         //valueFormatString: " "
     },
@@ -117,7 +117,7 @@ function initChart(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       
       type: "spline",
-      name: "Speed in Km/h",
+      name: "Geschwindigkeit in Km/h",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[0]
@@ -127,7 +127,7 @@ function initChart(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "primary",
       type: "spline",
-      name: "Consumption in l/h",
+      name: "Verbrauch in l/100 km",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[2]
@@ -137,7 +137,7 @@ function initChart(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
       type: "spline",
-      name: "rpm",
+      name: "U/min",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[1]

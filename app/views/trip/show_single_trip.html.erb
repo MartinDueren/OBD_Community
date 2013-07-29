@@ -1,35 +1,35 @@
 <div class="row">
   <div class="span2">
-    <h4 class="muted">DISTANCE</h4>
-    <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> minutes</p>
+    <h4 class="muted">DISTANZ</h4><br>
+    <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> Minuten</p>
   </div>
   <div class="span2">
-    <h4 class="muted">GAS CONSUMED</h4>
+    <h4 class="muted">BENZINVERBRAUCH</h4><br>
     <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption / 1000) %> Liters = <%= '%.2f' % (@trip.getTotalConsumption/1000 * @fuel_prices[0].to_f) %>€</p>
   </div>
   <div class="span2">
-    <h4 class="muted">CO2 EMISSIONS</h4>
+    <h4 class="muted">DURCHSCHNITTL. CO2</h4>
     <p><i class="icon-leaf"></i> <%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</p>
   </div>
   <div class="span2">
-    <h4 class="muted">STANDING TIME</h4>
+    <h4 class="muted">STANDZEIT</h4><br>
     <p><i class="icon-leaf"></i> <%= '%.0f' % (@trip.measurements.where(:speed => 0).count * 5 / 60) %> minutes</p>
   </div>
   <div class="span2">
-    <h4 class="muted">AVG SPEED</h4>
+    <h4 class="muted">DURCHSCHNITTL. GESCHWINDIGKEIT</h4>
     <p><i class="icon-leaf"></i> <%= '%.0f' % @trip.measurements.average(:speed).to_f %> km/h</p>
   </div>
 
   <div class="span2">
     <div class="btn-group">
       <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#">
-        Compare with my trip
+        Vergleichen mit...
         <span class="caret"></span>
       </a>
       <ul class="dropdown-menu">
         <% for trip in current_user.trips do%>
           <li>
-            <%= link_to "#{trip.getTripLength} Kilometers on #{trip.created_at.strftime("%a, %d %B %Y")}", "/trip/compare?a=#{@trip.id}&b=#{trip.id}" %>
+            <%= link_to "#{trip.getTripLength} Kilometer am #{trip.created_at.strftime("%a, %d %B %Y")}", "/trip/compare?a=#{@trip.id}&b=#{trip.id}" %>
           </li>
         <% end %>
       </ul>
@@ -41,18 +41,18 @@
     <div class="map" id="map">
       <div class="btn-group sensorswitch dropup">
         <a class="btn btn-primary dropdown-toggle" data-toggle="dropdown" href="#" id="sensorswitch">
-          Change sensor
+          Sensor
           <span class="caret"></span>
         </a>
         <ul class="dropdown-menu">
             <li>
-              <a id="change-sensor-consumption" href="#">Consumption</a>
+              <a id="change-sensor-consumption" href="#">Verbrauch</a>
             </li>
             <li>
-              <a id="change-sensor-rpm" href="#">Rpm</a>
+              <a id="change-sensor-rpm" href="#">U/min</a>
             </li>
             <li>
-              <a id="change-sensor-speed" href="#">Speed</a>
+              <a id="change-sensor-speed" href="#">Geschwindigkeit</a>
             </li>
         </ul>
       </div>

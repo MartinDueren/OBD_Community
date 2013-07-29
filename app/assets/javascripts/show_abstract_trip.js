@@ -76,7 +76,7 @@ function initChart(){
         //valueFormatString: " "
     },
     axisY2: {
-        title: "Consumption",
+        title: "Verbrauch",
         titleFontSize: 15
         //valueFormatString: " "
     },
@@ -96,7 +96,7 @@ function initChart(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "primary",
       type: "spline",
-      name: "Consumption in l/h",
+      name: "Verbrauch in l/100 km",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[1]

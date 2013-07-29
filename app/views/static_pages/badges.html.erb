@@ -2,13 +2,13 @@
 <div id="badgesModal" class="modal hide fade" tabindex="-1" role="dialog" aria-labelledby="myModalLabel" aria-hidden="true">
   <div class="modal-header">
     <button type="button" class="close" data-dismiss="modal" aria-hidden="true">×</button>
-    <h3 id="myModalLabel">Available Badges</h3>
+    <h3 id="myModalLabel">Verfügbare Badges</h3>
   </div>
   <div class="modal-body">
     <ul>
       <% Merit::Badge.all.each do |b| %>
         <li>
-          <a rel="tooltip" data-placement="right" title="Grants you <%= b.custom_fields[:points] %> points!"><%= image_tag "Badges/#{b.custom_fields[:image]}", size: "28x28" %>
+          <a rel="tooltip" data-placement="right" title="Du erhältst <%= b.custom_fields[:points] %> Punkte!"><%= image_tag "Badges/#{b.custom_fields[:image]}", size: "28x28" %>
           <%= b.description %></a>
         </li>
       <% end %>
@@ -19,34 +19,66 @@
   </div>
 </div>
 
-<h1>My recent Badges</h1>
-<% if current_user.badges.empty? %>
-    <p>No Badges to show</p>
+<h1>Zuletzt hochgeladene Fahrten</h1>
+<% if @trips.blank? %>
+    <p>Keine Fahrten zum Anzeigen vorhanden.</p>
 <% else %>
-  <hr class="featurette-divider">
   <div class="row">
-    <div class="span9">
-      <% current_user.trips.each do |trip|%>
-        <% trip.badges.each do |badge| %>
-          <div class="row">
-            <div class="span2">
-              <%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "70x70" %>
+    <div class="span10">
+      <%= paginate @trips %>
+        <!--Loop through all the trips and printem-->
+        <% for @trip in @trips do%>
+          <div class="row well">
+            <div class="span4">
+              <%= image_tag("/assets/trips/#{@trip.id}.png", size: "300x300") %>
+              
             </div>
-            <div class="span7">
-              <%= link_to "Granted for a trip on #{Trip.find_by_id(badge[1]).created_at.strftime("%a, %d %B %Y")} at #{Trip.find_by_id(badge[1]).created_at.strftime("%H:%M %P")}", "/trip/show/#{badge[1]}" %>
+            <div class="span6 listing">
+              <div class="row">
+                <%= "#{@trip.getTripLength} Kilometers driven from #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} to #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} on #{@trip.measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trip.measurements.first.recorded_at.strftime("%H:%M %P")}" %>
+              </div>
+              <div class="row">
+                <div class="span">
+                  <h4 class="muted">DISTANZ</h4>
+                  <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km</p>
+                </div>
+                <div class="span">
+                  <h4 class="muted">Standzeit</h4>
+                  <p><i class="icon-fire"> </i><%= '%.0f' % (@trip.measurements.where(:speed => 0).count * 5 / 60) %> min</p>
+                </div> 
+                <div class="span">
+                  <h4 class="muted">MAX U/MIN</h4>
+                  <p><i class="icon-fire"> </i><%= '%.0f' % (@trip.measurements.maximum(:rpm)) %></p>
+                </div>
+                <div class="span">
+                  <h4 class="muted">Verbrauch</h4>
+                  <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.measurements.average(:consumption)) %> l/100 km</p>
+                </div>
+                <div class="span">
+                  <h4 class="muted">CO2</h4>
+                  <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.measurements.average(:co2)) %> g/s</p>
+                </div>   
+              </div>
+              <div class="row">
+                <h4>Verdiente Badges: </h4>
+                <ul>
+                  <% @trip.badges.each do |badge| %>
+                    <li><%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "30x30" %> <%= badge[0].name %></li>
+                  <%end%>
+                </ul>
+              </div>
             </div>
-          </div>
-          <hr class="featurette-divider">
-        <%end%>
-      <%end%>
+          </div>     
+        <%end%> 
     </div>
-    <div class="span3 well">
-      <% progress = (current_user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100) %>
-
+    <div class="span2">
+      <% unless Merit::Score.top_scored.to_json.length == 2 %>
+        <% progress = (current_user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100) %>
+      <% end %>
       <%= progress_bar(progress, :color => 'blue', :rounded => true) %> 
       <h4><%= current_user.points %> Points</h4>
-      <h2>Earned Badges:</h2>
-      <a href="#badgesModal" data-toggle="modal"><i class="icon-plus-sign"></i> Available badges</a>
+      <h2>Verdiente Badges:</h2>
+      <a href="#badgesModal" data-toggle="modal"><i class="icon-plus-sign"></i> Verfügbare Badges</a>
       <% @badgesList.each do |k, v| %>
         <h4><%= image_tag "Badges/#{Merit::Badge.get(k).custom_fields[:image]}", size: "50x50" %> x<%= v %></h4>
       <%end%>

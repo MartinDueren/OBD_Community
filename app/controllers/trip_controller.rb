@@ -1,10 +1,10 @@
 class TripController < BaseController
 
-  before_filter :track_action, :only => [:show, :abstract, :compare, :show_single_trip, :show_abstract_trip]
-
+  
   before_filter :login_required, :only => [:show]
   #before_filter :basic_auth, :only => [:create]
-  
+  before_filter :track_action, :only => [:show, :abstract, :compare, :show_single_trip, :show_abstract_trip]
+
   before_filter :require_group_1, :only => [:show_single_trip]
   before_filter :require_group_1, :only => [:show]
   before_filter :require_group_1_or_2, :only => [:compare]
@@ -201,7 +201,7 @@ class TripController < BaseController
   private
     def track_action
       if current_user != nil
-	Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/trip/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+        Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/trip/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
       end
     end
 

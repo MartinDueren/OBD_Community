@@ -12,7 +12,7 @@ configuration = {
   
   # Comment this out if you want to infer the locale
   # off of the http headers
-  :community_locale => "en",
+  :community_locale => "de",
   
   :allow_anonymous_commenting => false,
   :allow_anonymous_forum_posting => false,

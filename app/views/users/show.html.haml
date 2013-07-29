@@ -8,14 +8,14 @@
   %div.span3.sidebar
     %ul.nav.nav-list.well.affix{"data-offset-top" => "30%"}
       %li.nav-header
-        = "Jump to ..."
+        = "Springen zu ..."
       %li.divider
       %li
-        = link_to "Recent Trips", "#trip-list"
+        = link_to "Letzte Fahrten", "#trip-list"
       %li
-        = link_to "Comments", "#comments-list"
+        = link_to "Eigene Kommentare", "#comments-list"
       %li
-        = link_to "Profile comments", "#received-list" 
+        = link_to "Erhaltene Kommentare", "#received-list" 
 
   .container
     .row
@@ -25,29 +25,29 @@
       %div.span8
         %div.row
           %h1
-            = "Statistics Overview"
+            = "Übersicht"
           %div.row
             %table.table.table-striped
               %thead
                 %tr
                   %th
                     %h4.muted
-                      = "TOTAL DISTANCE"
+                      = "DISTANZ"
                   %th
                     %h4.muted
-                      = "RECORDED TRIPS"
+                      = "FAHRTEN"
                   %th
                     %h4.muted
-                      = "TOTAL STANDING TIME"
+                      = "STANDZEIT"
                   %th
                     %h4.muted
-                      = "AVERAGE SPEED"
+                      = "DURCHSCHNITTL. GESCHWINDIGKEIT"
                   %th
                     %h4.muted
-                      = "AVERAGE RPM"
+                      = "DURCHSCHNITTL. UMDREHUNGEN"
                   %th
                     %h4.muted
-                      = "AVERAGE CONSUMPTION"
+                      = "DURCHSCHNITTL. VERBRAUCH"
               %tbody
                 %tr.success
                   %td
@@ -64,27 +64,27 @@
                     = ('%.0f' % @speed).to_s + " Km/h"
                   %td
                     %i.icon-refresh
-                    = ('%.0f' % @rpm).to_s + " Rpm"
+                    = ('%.0f' % @rpm).to_s + " U/min"
                   %td
                     %i.icon-tint
-                    = ('%.1f' % @consumption).to_s + " l/100km"
-        - if current_user.group == 3
+                    = ('%.1f' % @consumption).to_s + " l/100 km"
+        - if current_user.group == 3 || current_user.group == 0
           .row
             %p.lead.muted
-              = "Ranked " + (@better.length + 1).to_s + ". place with " + @user.points.to_s + " Points"
+              = "" + (@better.length + 1).to_s + ". Platz mit " + @user.points.to_s + " Punkten"
             %p 
               
             %p
               - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
               = progress_bar(progress, :color => 'blue', :rounded => true)
-              = icon_link_to 'icon-plus-sign',  "Show badges", "/badges"
+              = icon_link_to 'icon-plus-sign',  "Zeige Badges", "/badges?user=#{@user.id}"
 
 
         - unless @trips.empty?
           .row
-            %h2#trip-list="My recent trips"
+            %h2#trip-list="Zuletzte hochgeladene Fahrten"
             - if current_user.group == 1
-              = icon_link_to 'icon-plus-sign',  "Show all trips", "/trip/show?user=#{@user.id}"
+              = icon_link_to 'icon-plus-sign',  "Zeige alle Fahrten", "/trip/show?user=#{@user.id}"
             - for i in 1..10 
               - break if @trips[@trips.length-i] == nil
               .row.well
@@ -93,7 +93,7 @@
                     = link_to image_tag("/assets/trips/#{@trips[@trips.length-i].id}.png", size: "300x300"), "/trip/show/#{@trips[@trips.length-i].id}"
                 %div.span6.listing
                   .row
-                    = link_to "#{@trips[@trips.length-i].getTripLength} Kilometers driven on #{@trips[@trips.length-i].measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trips[@trips.length-i].measurements.first.recorded_at.strftime("%H:%M %P")}", "/trip/show/#{@trips[@trips.length-i].id}"
+                    = link_to "#{@trips[@trips.length-i].getTripLength} Kilometer am #{I18n.l @trips[@trips.length-i].measurements.first.recorded_at, format: :literal_date} um #{I18n.l @trips[@trips.length-i].measurements.first.recorded_at, format: :time_ago} Uhr", "/trip/show/#{@trips[@trips.length-i].id}"
                   %div.row
                     %p
                     %p
@@ -103,7 +103,7 @@
                           = ('%.2f' % @trips[@trips.length-i].getTripLength).to_s + " Km"
                         %li
                           %i.icon-fire
-                          = ('%.2f' % @trips[@trips.length-i].measurements.average(:consumption)).to_s + " Liters"
+                          = ('%.2f' % @trips[@trips.length-i].measurements.average(:consumption)).to_s + " Liter"
                         %li
                           %i.icon-leaf
                           = ('%.2f' % @trips[@trips.length-i].measurements.average(:co2)).to_s + " g/s"
@@ -112,17 +112,17 @@
                       %div
                         %p
                           %strong
-                            = "Badges earned this trip:"
+                            = "Verdiente Badges:"
                         %table.table.table-striped
                           %tbody
                             - @trips[i].badges.each do |badge|
                               %tr
                                 %td
-                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Grants you #{badge[0].custom_fields[:points]} points!"}
+                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
                                     = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
                                 %td
-                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Grants you #{badge[0].custom_fields[:points]} points!"}
-                                    = "Earned for: " + badge[0].description
+                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
+                                    = "Verdient für: " + badge[0].description
 
         - unless @users_comments.empty?
           .row
@@ -163,10 +163,9 @@
               %p= @user.description.html_safe
             %hr.featurette-divider
           %ul.nav.nav-list
-            %li.nav-header="Friends (" + @friend_count.to_s + ")"
-            %li=icon_link_to 'icon-plus-sign', :see_all.l, accepted_user_friendships_path(@user)
-            %li= link_to "#{:invite_a_friend.l :site => configatron.community_name}", invite_user_path(@user) if @is_current_user
-            %li= link_to "#{:view_all_my_friend_requests.l} (#{@pending_friendships_count})", pending_user_friendships_path(@user) if @is_current_user
+            %li.nav-header="Freunde (" + @friend_count.to_s + ")"
+            %li=icon_link_to 'icon-plus-sign', "Zeige alle", accepted_user_friendships_path(@user)
+            %li= link_to "#{"Zeige alle Freundschaftsanfragen"} (#{@pending_friendships_count})", pending_user_friendships_path(@user) if @is_current_user
             %hr.featurette-divider
             - @accepted_friendships.each do |user|
               =render :partial => "users/sidebar_user", :locals => {:user => user}

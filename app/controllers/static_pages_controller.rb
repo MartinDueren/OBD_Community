@@ -35,9 +35,20 @@ class StaticPagesController < BaseController
       gon.params = params
     if current_user.group == 3 || current_user.group == 0
       @badgesList = Hash.new(0)
-      current_user.badges.each do |v|
-        @badgesList[v.id] += 1
+      
+
+      if params.has_key?(:user)
+        @trips = User.find_by_id(params[:user]).trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+        User.find_by_id(params[:user]).badges.each do |v|
+          @badgesList[v.id] += 1
+        end
+      else
+        @trips = current_user.trips.scoped.page(params[:page]).per(5).order('created_at DESC')
+        current_user.badges.each do |v|
+          @badgesList[v.id] += 1
+        end
       end
+      
       render :layout => "trips"
     else
       redirect_to login_url

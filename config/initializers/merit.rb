@@ -25,50 +25,50 @@ end
 
 Merit::Badge.create! ({
   id: 1,
-  name: "first-trip",
-  description: "Uploading first trip!",
+  name: "Erste Fahrt",
+  description: "Erste hochgeladene Fahrt.",
   custom_fields: { image: 'plus.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 2,
-  name: "50-km",
-  description: "Driving 50 Km using OBDComm!",
+  name: "50 km",
+  description: "Für 50 km Fahren mit OBDComm.",
   custom_fields: { image: '50.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 3,
-  name: "100-km",
-  description: "Driving 100 Km using OBDComm!",
+  name: "100 km",
+  description: "Für 100 km Fahren mit OBDComm.",
   custom_fields: { image: '100.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 4,
-  name: "500-km",
-  description: "Driving 500 Km using OBDComm!",
+  name: "500 km",
+  description: "Für 500 km Fahren mit OBDComm.",
   custom_fields: { image: '500.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 5,
-  name: "1000-km",
-  description: "Driving 1000 Km using OBDComm!",
+  name: "1000 km",
+  description: "Für 1000 km Fahren mit OBDComm.",
   custom_fields: { image: '1000.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 6,
-  name: "co2-75",
-  description: "CO2 emissions lower than 75% of other users.",
+  name: "CO2 beste 25%",
+  description: "CO2 Emissionen sind niedriger als die von 75% der anderen Fahrer.",
   custom_fields: { image: 'shoot.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 7,
-  name: "co2-50",
-  description: "CO2 emissions lower than 50% of other users.",
+  name: "CO2 beste 50%",
+  description: "CO2 Emissionen sind niedriger als die von 50% der anderen Fahrer.",
   custom_fields: { image: 'nut.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 8,
-  name: "co2-lowest",
-  description: "Lowest CO2 emissions from all drivers this week.",
+  name: "CO2 Bester",
+  description: "Die niedrigsten CO2 Emissionen diese Woche.",
   custom_fields: { image: 'tree.png', points: '8' }
 })
 Merit::Badge.create! ({
