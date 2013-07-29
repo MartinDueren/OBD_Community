@@ -32,25 +32,25 @@ Merit::Badge.create! ({
 Merit::Badge.create! ({
   id: 2,
   name: "50 km",
-  description: "Für 50 km Fahren mit OBDComm.",
+  description: "50 km Fahren mit OBDComm.",
   custom_fields: { image: '50.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 3,
   name: "100 km",
-  description: "Für 100 km Fahren mit OBDComm.",
+  description: "100 km Fahren mit OBDComm.",
   custom_fields: { image: '100.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 4,
   name: "500 km",
-  description: "Für 500 km Fahren mit OBDComm.",
+  description: "500 km Fahren mit OBDComm.",
   custom_fields: { image: '500.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 5,
   name: "1000 km",
-  description: "Für 1000 km Fahren mit OBDComm.",
+  description: "1000 km Fahren mit OBDComm.",
   custom_fields: { image: '1000.png', points: '5' }
 })
 Merit::Badge.create! ({
