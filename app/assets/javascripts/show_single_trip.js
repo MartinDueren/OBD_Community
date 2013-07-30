@@ -68,6 +68,11 @@ function initChart(){
   for(var i = 0; i < gon.measurements.length; i++) {
     var coords = gon.measurements[i].latlon.replace("(", "").replace(")","").split(" ")
     var date = new Date(gon.measurements[i].recorded_at).getTime();
+    var speed = 1;
+    if(gon.measurements[i].speed > 0){
+      speed = gon.measurements[i].speed;
+    }
+    var consumption = gon.measurements[i].consumption * 3600 / speed
     //speed
     seriesData[0][i] = {
       x: date,
@@ -83,7 +88,7 @@ function initChart(){
     //consumption
     seriesData[2][i] = {
       x: date,
-      y: gon.measurements[i].consumption,
+      y: consumption,
       label: "l/100 km"
     }
     dataHash[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
