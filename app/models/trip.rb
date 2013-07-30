@@ -52,13 +52,9 @@ class Trip < ActiveRecord::Base
   def getTotalConsumption
     sum = 0
     self.measurements.each_with_index do |m,i|
-      speed = 1
-      if m.speed > 0 
-        speed = m.speed
-      end
       unless i == 0
         seconds = m.recorded_at - self.measurements[i-1].recorded_at
-        sum += seconds * (m.consumption / speed) 
+        sum += seconds * m.consumption 
       end
     end
     sum

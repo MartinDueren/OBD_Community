@@ -50,6 +50,29 @@ class TripController < BaseController
     gon.params = params
     gon.measurementsMap1 = @tripA.measurements.order("recorded_at ASC")
     gon.measurementsMap2 = @tripB.measurements.order("recorded_at ASC")
+
+    speed = 1
+    @tripA.measurements.each_with_index do |m, i|
+      if m.speed > 0
+        speed = m.speed
+      else
+        speed = 1
+      end
+      gon.measurementsMap1[i].consumption = m.consumption * 3600 / speed
+    end
+
+    speed = 1
+    @tripB.measurements.each_with_index do |m, i|
+      if m.speed > 0
+        speed = m.speed
+      else
+        speed = 1
+      end
+      gon.measurementsMap2[i].consumption = m.consumption * 3600 / speed
+    end
+
+
+
     render :layout => "trips"
   end
   
@@ -68,7 +91,6 @@ class TripController < BaseController
       gon.measurements = @trip.measurements.order("recorded_at ASC")
 
       speed = 1
-
       @trip.measurements.each_with_index do |m, i|
         if m.speed > 0
           speed = m.speed
@@ -91,6 +113,17 @@ class TripController < BaseController
       gon.user = current_user.id
       gon.params = params
       gon.measurements = @trip.measurements
+
+      speed = 1
+      @trip.measurements.each_with_index do |m, i|
+        if m.speed > 0
+          speed = m.speed
+        else
+          speed = 1
+        end
+        gon.measurements[i].consumption = m.consumption * 3600 / speed
+      end
+
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
     end
