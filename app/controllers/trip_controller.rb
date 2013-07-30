@@ -67,8 +67,15 @@ class TripController < BaseController
       gon.params = params
       gon.measurements = @trip.measurements.order("recorded_at ASC")
 
+      speed = 1
+
       @trip.measurements.each_with_index do |m, i|
-        gon.measurements[i].consumption = m.consumption * 3600 / m.speed
+        if m.speed > 0
+          speed = m.speed
+        else
+          speed = 1
+        end
+        gon.measurements[i].consumption = m.consumption * 3600 / speed
       end
 
 
