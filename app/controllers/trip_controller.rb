@@ -58,7 +58,7 @@ class TripController < BaseController
       else
         speed = 1
       end
-      gon.measurementsMap1[i].consumption = m.consumption * 3600 / speed
+      gon.measurementsMap1[i].consumption = m.consumption * 3600 / speed * 100
     end
 
     speed = 1
@@ -68,7 +68,7 @@ class TripController < BaseController
       else
         speed = 1
       end
-      gon.measurementsMap2[i].consumption = m.consumption * 3600 / speed
+      gon.measurementsMap2[i].consumption = m.consumption * 3600 / speed * 100
     end
 
 
@@ -97,7 +97,7 @@ class TripController < BaseController
         else
           speed = 1
         end
-        gon.measurements[idx].consumption = m.consumption * 3600 / speed
+        gon.measurements[idx].consumption = m.consumption * 3600 / speed * 100
       end
 
 
