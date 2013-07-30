@@ -91,13 +91,13 @@ class TripController < BaseController
       gon.measurements = @trip.measurements.order("recorded_at ASC")
 
       speed = 1
-      @trip.measurements.each_with_index do |m, i|
+      @trip.measurements.order("recorded_at ASC").each_with_index do |m, idx|
         if m.speed > 0
           speed = m.speed
         else
           speed = 1
         end
-        gon.measurements[i].consumption = m.consumption * 3600 / speed
+        gon.measurements[idx].consumption = m.consumption * 3600 / speed
       end
 
 
@@ -121,7 +121,7 @@ class TripController < BaseController
         else
           speed = 1
         end
-        gon.measurements[i].consumption = m.consumption * 3600 / speed
+        gon.measurements[i].consumption = m.consumption * 3600 / speed * 100 
       end
 
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
