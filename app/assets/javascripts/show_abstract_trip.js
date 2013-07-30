@@ -52,7 +52,7 @@ function initChart(){
     //consumption
     seriesData[1][i] = {
       x: date,
-      y: gon.measurements[i].consumption,
+      y: gon.measurements[i].consumption * 3600 / gon.measurements[i].speed,
       label: "l/100km"
     }
     dataHash[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);

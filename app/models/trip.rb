@@ -35,22 +35,30 @@ class Trip < ActiveRecord::Base
     self.measurements.each_with_index do |m,i|
       unless i == 0
         seconds = m.recorded_at - self.measurements[i-1].recorded_at
-        sum += seconds * (m.co2) #should be changed for diesel
+        sum += seconds * (m.co2)
       end
     end
     sum
   end
 
   def getAvgConsumption
-    self.measurements.average(:consumption).to_f
+    avg = 0
+    self.measurements.each do |m|
+      avg += m.consumption / m.speed
+    end
+    avg / self.measurements.length
   end
 
   def getTotalConsumption
     sum = 0
     self.measurements.each_with_index do |m,i|
+      speed = 1
+      if m.speed > 0 
+        speed = m.speed
+      end
       unless i == 0
         seconds = m.recorded_at - self.measurements[i-1].recorded_at
-        sum += seconds * (m.maf / 14.7) #should be changed for diesel
+        sum += seconds * (m.consumption / speed) 
       end
     end
     sum
@@ -122,20 +130,22 @@ class Trip < ActiveRecord::Base
       end
 
 
-      #### Check for individual badges
-      firstTrip
-      km
-      co2
-      fuelConsumption
-      shifting
-      goodRoute
-      smoothBraking
-      smoothAcceleration
-      consecutiveTrips
-      firstFriend
-      firstComment
-      gotComment
-      mostMiles
+      #### Check for individual badges if trip longer than 1 km
+      if self.getTripLength > 1
+        firstTrip
+        km
+        co2
+        fuelConsumption
+        shifting
+        goodRoute
+        smoothBraking
+        smoothAcceleration
+        consecutiveTrips
+        firstFriend
+        firstComment
+        gotComment
+        mostMiles
+      end
 
       self.save
 

@@ -62,9 +62,13 @@
               <div class="row">
                 <h4>Verdiente Badges: </h4>
                 <ul>
-                  <% @trip.badges.each do |badge| %>
-                    <li><%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "30x30" %> <%= badge[0].name %></li>
-                  <%end%>
+                  <% if @trip.badges.empty? %>
+                    <% @trip.badges.each do |badge| %>
+                      <li><%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "30x30" %> <%= badge[0].name %></li>
+                    <%end%>
+                  <% else %>
+                    <p>Keine Badges erhalten diese Fahrt.</p>
+                  <% end %>
                 </ul>
               </div>
             </div>

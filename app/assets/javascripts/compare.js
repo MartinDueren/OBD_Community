@@ -45,7 +45,7 @@ function initChartMap1(){
     //consumption
     seriesData[2][i] = {
       x: date,
-      y: gon.measurementsMap1[i].consumption,
+      y: gon.measurementsMap1[i].consumption * 3600 / gon.measurementsMap1[i].speed,
       label: "l/100km"
     }
     dataHash1[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
@@ -272,7 +272,7 @@ function initChartMap2(){
     //consumption
     seriesData[2][i] = {
       x: date,
-      y: gon.measurementsMap2[i].consumption,
+      y: gon.measurementsMap2[i].consumption * 3600 / gon.measurementsMap2[i].speed,
       label: "l/100km"
     }
     dataHash2[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
