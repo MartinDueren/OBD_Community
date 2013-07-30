@@ -68,126 +68,126 @@ Merit::Badge.create! ({
 Merit::Badge.create! ({
   id: 8,
   name: "CO2 Bester",
-  description: "Die niedrigsten CO2 Emissionen diese Woche.",
+  description: "Die niedrigsten CO2 Emissionen aller Fahrer diese Woche.",
   custom_fields: { image: 'tree.png', points: '8' }
 })
 Merit::Badge.create! ({
   id: 9,
-  name: "fuel-75",
-  description: "Fuel consumption lower than 75% of other users.",
+  name: "Verbrauch beste 25%",
+  description: "Benzinverbrauch niedriger als bei 75% der anderen Fahrer.",
   custom_fields: { image: 'silver.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 10,
-  name: "fuel-50",
-  description: "Fuel consumption lower than 50% of other users.",
+  name: "Verbrauch beste 50%",
+  description: "Benzinverbrauch niedriger als bei 50% der anderen Fahrer.",
   custom_fields: { image: 'bronze.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 11,
-  name: "fuel-lowest",
-  description: "Lowest fuel consumtpion of all users this week.",
+  name: "Verbrauch Bester",
+  description: "Niedrigster Benzinverbrauch aller Fahrer diese Woche.",
   custom_fields: { image: 'gold.png', points: '8' }
 })
 Merit::Badge.create! ({
   id: 12,
-  name: "good-shifting",
-  description: "Good gear shifting (No RPM above 3000).",
+  name: "Gutes Schalten",
+  description: "Gute Gangwechsel (Umdrehungen stets unter 3000 U/min).",
   custom_fields: { image: 'stumble.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 13,
-  name: "awesome-shifting",
-  description: "Awesome gear shifting! (No RPM above 2500)",
+  name: "Hervorragendes Schalten",
+  description: "Sehr gute Gangwechsel (Umdrehungen stets unter 2500 U/min).",
   custom_fields: { image: 'star.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 14,
-  name: "good-route",
-  description: "Great route without much standing time.",
+  name: "Gute Route",
+  description: "Gute Strecke ohne viel Standzeit.",
   custom_fields: { image: 'linegraph.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 15,
-  name: "smooth-braking",
-  description: "Not wasting energy by braking too hard.",
+  name: "Sanftes Bremse",
+  description: "Es wurde keine Energie durch zu abruptes Bremsen verschwendet.",
   custom_fields: { image: 'wheel.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 16,
-  name: "smooth-acceleration",
-  description: "Not wasting energy by accelerating too hard.",
+  name: "Sanftes Beschleunigen",
+  description: "Es wurde keine Energie durch zu schnelles Beschleunigen verschwendet.",
   custom_fields: { image: 'barchart.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 17,
-  name: "shared-trip",
-  description: "Sharing a trip.",
+  name: "Fahrt geteilt",
+  description: "Teilen einer Fahrt.",
   custom_fields: { image: 'facebook.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 18,
-  name: "consecutive-trips-2",
-  description: "Logging trips on two consecutive days.",
+  name: "2 Fahrten",
+  description: "An 2 aufeinanderfolgenden Tagen eine Fahrt aufgenommen.",
   custom_fields: { image: 'calendar-2.png', points: '2' }
 })
 Merit::Badge.create! ({
   id: 19,
-  name: "consecutive-trips-3",
-  description: "Logging trips on three consecutive days.",
+  name: "3 Fahrten",
+  description: "An 3 aufeinanderfolgenden Tagen eine Fahrt aufgenommen.",
   custom_fields: { image: 'calendar-3.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 20,
-  name: "consecutive-trips-4",
-  description: "Logging trips on four consecutive days.",
+  name: "4 Fahrten",
+  description: "An 4 aufeinanderfolgenden Tagen eine Fahrt aufgenommen.",
   custom_fields: { image: 'calendar-4.png', points: '4' }
 })
 Merit::Badge.create! ({
   id: 21,
-  name: "consecutive-trips-5",
-  description: "Logging trips on five consecutive days.",
+  name: "5 Fahrten",
+  description: "An 5 aufeinanderfolgenden Tagen eine Fahrt aufgenommen.",
   custom_fields: { image: 'calendar-5.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 22,
-  name: "consecutive-trips-6",
-  description: "Logging trips on six consecutive days.",
+  name: "6 Fahrten",
+  description: "An 6 aufeinanderfolgenden Tagen eine Fahrt aufgenommen.",
   custom_fields: { image: 'calendar-6.png', points: '6' }
 })
 Merit::Badge.create! ({
   id: 23,
-  name: "consecutive-trips-7",
-  description: "Logging trips on seven consecutive days.",
+  name: "7 Fahrten",
+  description: "An 7 aufeinanderfolgenden Tagen eine Fahrt aufgenommen.",
   custom_fields: { image: 'calendar-7.png', points: '7' }
 })
 Merit::Badge.create! ({
   id: 24,
-  name: "first-friend",
-  description: "Adding a friend.",
+  name: "Freundschaft",
+  description: "Erste Freundeseinladung.",
   custom_fields: { image: 'adduser.png', points: '2' }
 })
 Merit::Badge.create! ({
   id: 25,
-  name: "first-comment",
-  description: "Commenting on something.",
+  name: "Erster Kommentar",
+  description: "Schreiben eines Kommentares.",
   custom_fields: { image: 'pencil.png', points: '2' }
 })
 Merit::Badge.create! ({
   id: 26,
-  name: "got-comment",
-  description: "Got a comment on something.",
+  name: "Kommentar bekommen",
+  description: "Ersters Mal kommentiert werden.",
   custom_fields: { image: 'conversation.png', points: '2' }
 })
 Merit::Badge.create! ({
   id: 27,
-  name: "test-user",
-  description: "Official test user.",
+  name: "Tester",
+  description: "Offizieller Test-User",
   custom_fields: { image: 'heart.png', points: '0' }
 })
 Merit::Badge.create! ({
   id: 28,
-  name: "most-miles",
-  description: "Mileage leader.",
+  name: "Streckenmeister",
+  description: "Am meisten gefahrene Kilometer aller Fahrer.",
   custom_fields: { image: 'globe.png', points: '5' }
 })
