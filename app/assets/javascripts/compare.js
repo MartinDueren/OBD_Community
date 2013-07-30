@@ -30,6 +30,7 @@ function initChartMap1(){
   for(var i = 0; i < gon.measurementsMap1.length; i++) {
     var coords = gon.measurementsMap1[i].latlon.replace("(", "").replace(")","").split(" ")
     var date = new Date(gon.measurementsMap1[i].recorded_at).getTime();
+    var consumption = gon.measurements[i].consumption * 3600 / gon.measurements[i].speed;
     //speed
     seriesData[0][i] = {
       x: date,
@@ -45,11 +46,12 @@ function initChartMap1(){
     //consumption
     seriesData[2][i] = {
       x: date,
-      y: gon.measurementsMap1[i].consumption * 3600 / gon.measurementsMap1[i].speed,
+      y: consumption,
       label: "l/100km"
     }
     dataHash1[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
+  
   
   
   var chart = new CanvasJS.Chart("chartContainerMap1", {
