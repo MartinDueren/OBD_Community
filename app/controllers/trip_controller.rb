@@ -66,6 +66,12 @@ class TripController < BaseController
       gon.user_group = current_user.group
       gon.params = params
       gon.measurements = @trip.measurements.order("recorded_at ASC")
+
+      @trip.measurements.each_with_index do |m, i|
+        gon.measurements[i].consumption = m.consumption * 3600 / m.speed
+      end
+
+
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
     end
