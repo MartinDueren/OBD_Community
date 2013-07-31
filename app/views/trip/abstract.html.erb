@@ -43,7 +43,7 @@
 				</div>
 				<div class="span6 listing">
 					<div class="row">
-						<%= link_to "#{@trip.getTripLength} Kilometers driven from #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} to #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} on #{@trip.measurements.first.recorded_at.strftime("%a, %d %B %Y")} at #{@trip.measurements.first.recorded_at.strftime("%H:%M %P")}", "/trip/abstract/#{@trip.id}" %>
+						<%= link_to "#{@trip.getTripLength} Kilometer von #{Geocoder.search(@trip.measurements.first.latlon.y.to_s + "," + @trip.measurements.first.latlon.x.to_s).first.address} nach #{Geocoder.search(@trip.measurements.last.latlon.y.to_s + "," + @trip.measurements.last.latlon.x.to_s).first.address} am #{I18n.l @trip.measurements.first.recorded_at, format: :literal_date} um #{I18n.l @trip.measurements.first.recorded_at, format: :time_ago}", "/trip/abstract/#{@trip.id}" %>
 					</div>
 					<div class="row">
 						<div class="span2">

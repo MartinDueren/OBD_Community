@@ -80,3 +80,20 @@ $('a#change-sensor-avg-standing-time').click(function(){ changeSensor("avg_stand
 $('a#change-sensor-max-speed').click(function(){ changeSensor("max_speed");});
 
 window.onload = init;
+
+!function ($) {
+    $(function(){
+
+        var $root = $('html, body');
+
+        $('a').click(function() {
+            var href = $.attr(this, 'href');
+            $root.animate({
+                scrollTop: $(href).offset().top
+            }, 500, function () {
+                window.location.hash = href;
+            });
+            return false;
+        });
+    })
+}(window.jQuery)

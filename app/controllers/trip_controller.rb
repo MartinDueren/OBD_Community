@@ -167,10 +167,18 @@ class TripController < BaseController
       end
       Rails.logger.info "vor respond to"
 
+
+
       respond_to do |format|
         if @trip.save
-          format.html { redirect_to @trip, notice: 'Trip successfully created.' }
-          format.json { render json: @trip, status: :created}
+
+          if @trip.measurements.length > 4
+            format.html { redirect_to @trip, notice: 'Trip successfully created.' }
+            format.json { render json: @trip, status: :created}
+          else 
+            @trip.destroy
+            format.json { render json: "Corrupted Trip Measurements", status: :created }
+          end
         else
           format.html { render :layout => "trips" }
           format.json { render json: @trip.errors, status: :unprocessable_entity }
