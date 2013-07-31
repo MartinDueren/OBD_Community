@@ -178,6 +178,7 @@ class TripController < BaseController
           else 
             @trip.destroy
             format.json { render json: "Corrupted Trip Measurements", status: :created }
+          end
         else
           format.html { render :layout => "trips" }
           format.json { render json: @trip.errors, status: :unprocessable_entity }
