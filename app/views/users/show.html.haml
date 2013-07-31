@@ -93,7 +93,7 @@
                     = link_to image_tag("/assets/trips/#{@trips[@trips.length-i].id}.png", size: "300x300"), "/trip/show/#{@trips[@trips.length-i].id}"
                 %div.span6.listing
                   .row
-                    = link_to "#{@trips[@trips.length-i].getTripLength} Kilometer am #{I18n.l @trips[@trips.length-i].measurements.first.recorded_at, format: :literal_date} um #{I18n.l @trips[@trips.length-i].measurements.first.recorded_at, format: :time_ago} Uhr", "/trip/show/#{@trips[@trips.length-i].id}"
+                    = link_to "#{@trips[@trips.length-i].getTripLength} Kilometer am #{I18n.l @trips[@trips.length-i].measurements.first.created_at, format: :literal_date} um #{I18n.l @trips[@trips.length-i].created_at, format: :time_ago} Uhr", "/trip/show/#{@trips[@trips.length-i].id}"
                   %div.row
                     %p
                     %p

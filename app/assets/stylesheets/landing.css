@@ -16,7 +16,7 @@
 }
 
 .apply-wrapper {
-	bottom: 110%;
+	bottom: 100%;
 	position: absolute;
 	left: -20px;
 	width: 90%;
@@ -59,29 +59,6 @@
 	font-weight: bold;
 }
 
-.button-facebook {
-padding: 5px 15px 3px 10px;
-margin-top: 8px;
-display: inline-block;
-font-size: 14px;
-line-height: 1;
-font-weight: bold;
-color: #fff;
-cursor: pointer;
-text-shadow: 0 -1px 0 rgba(0,0,0,0.25);
--webkit-border-radius: 4px;
--moz-border-radius: 4px;
--ms-border-radius: 4px;
--o-border-radius: 4px;
-border-radius: 4px;
-border: 1px solid #2e487e;
-background-color: #3b5997;
-background-image: -webkit-gradient(linear, 50% 100%, 50% 0%, color-stop(0%, rgba(0,0,0,0.13)), color-stop(100%, rgba(255,255,255,0.13)));
-background-image: -webkit-linear-gradient(bottom, rgba(0,0,0,0.13) 0%, rgba(255,255,255,0.13) 100%);
-background-image: -moz-linear-gradient(bottom, rgba(0,0,0,0.13) 0%, rgba(255,255,255,0.13) 100%);
-background-image: -o-linear-gradient(bottom, rgba(0,0,0,0.13) 0%, rgba(255,255,255,0.13) 100%);
-background-image: linear-gradient(bottom, rgba(0,0,0,0.13) 0%,rgba(255,255,255,0.13) 100%);
--webkit-box-shadow: 0 1px 3px rgba(0,0,0,0.38),inset 0 0 3px rgba(255,255,255,0.1);
--moz-box-shadow: 0 1px 3px rgba(0,0,0,0.38),inset 0 0 3px rgba(255,255,255,0.1);
-box-shadow: 0 1px 3px rgba(0,0,0,0.38),inset 0 0 3px rgba(255,255,255,0.1);
+.row {
+	margin-left: 0px;
 }
