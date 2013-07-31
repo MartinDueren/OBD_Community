@@ -51,28 +51,6 @@ class TripController < BaseController
     gon.measurementsMap1 = @tripA.measurements.order("recorded_at ASC")
     gon.measurementsMap2 = @tripB.measurements.order("recorded_at ASC")
 
-    speed = 1
-    @tripA.measurements.each_with_index do |m, i|
-      if m.speed > 0
-        speed = m.speed
-      else
-        speed = 1
-      end
-      gon.measurementsMap1[i].consumption = m.consumption * 3600 / speed * 100
-    end
-
-    speed = 1
-    @tripB.measurements.each_with_index do |m, i|
-      if m.speed > 0
-        speed = m.speed
-      else
-        speed = 1
-      end
-      gon.measurementsMap2[i].consumption = m.consumption * 3600 / speed * 100
-    end
-
-
-
     render :layout => "trips"
   end
   
@@ -90,17 +68,6 @@ class TripController < BaseController
       gon.params = params
       gon.measurements = @trip.measurements.order("recorded_at ASC")
 
-      speed = 1
-      @trip.measurements.order("recorded_at ASC").each_with_index do |m, idx|
-        if m.speed > 0
-          speed = m.speed
-        else
-          speed = 1
-        end
-        gon.measurements[idx].consumption = m.consumption * 3600 / speed * 100
-      end
-
-
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
     end
@@ -113,16 +80,6 @@ class TripController < BaseController
       gon.user = current_user.id
       gon.params = params
       gon.measurements = @trip.measurements
-
-      speed = 1
-      @trip.measurements.each_with_index do |m, i|
-        if m.speed > 0
-          speed = m.speed
-        else
-          speed = 1
-        end
-        gon.measurements[i].consumption = m.consumption * 3600 / speed * 100 
-      end
 
       gon.statistics = {"max_speed" => @trip.measurements.maximum(:speed), "max_rpm" => @trip.measurements.maximum(:rpm), "max_consumption" => @trip.measurements.maximum(:consumption)}
       render :layout => "trips"
@@ -163,14 +120,22 @@ class TripController < BaseController
           maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
         end
 
-        consumption = feature[:properties][:phenomenons][:Consumption][:value] #is in l/s
+        speed = feature[:properties][:phenomenons][:Speed][:value]
+        consumption = 0
+        if speed > 0 
+          consumption = (maf * 3355) / (speed * 100)
+        else
+          consumption = (maf * 3355) / 10000
+        end
+
+        #consumption = feature[:properties][:phenomenons][:Consumption][:value] #is in l/s
         if consumption > 50
           consumption = 50
         end
 
         m = Measurement.new(
           "recorded_at" => feature[:properties][:time],
-          "speed" => feature[:properties][:phenomenons][:Speed][:value],
+          "speed" => speed,
           "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
           "maf" => maf, #is in g/s
           "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
