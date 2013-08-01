@@ -163,7 +163,7 @@ class TripController < BaseController
           "consumption" => m.consumption,
           "co2" => m.co2,
           "latlon" => m.latlon
-          )
+          ).save
       end
       Rails.logger.info "vor respond to"
 
