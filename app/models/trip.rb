@@ -128,8 +128,8 @@ class Trip < ActiveRecord::Base
 
       #### Check for individual badges if trip longer than 1 km
       Rails.logger.info "Checking for individual Badges"
-      Rails.logger.info "self.length=" + self.getTripLength
-      Rails.logger.info "Trip.length=" + Trip.find_by_id(self.id).getTripLength
+      Rails.logger.info "self.length=" + self.getTripLength.to_s
+      Rails.logger.info "Trip.length=" + Trip.find_by_id(self.id).getTripLength.to_s
       Rails.logger.info "self.measurements.first.to_json=" + self.measurements.first.to_json
       if self.measurements.length > 10
         firstTrip
