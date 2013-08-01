@@ -5,7 +5,7 @@
   </div>
   <div class="span2">
     <h4 class="muted">BENZINVERBRAUCH</h4>
-    <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getAvgConsumption) %> Liters</p>
+    <p><img src="../../assets/icon_durchschnitt.gif"> </i><%= '%.2f' % (@trip.getAvgConsumption) %> Liters</p>
     <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption) %> Liters = <%= '%.2f' % (@trip.getTotalConsumption * @fuel_prices[0].to_f) %>€</p>
   </div>
   <div class="span2">

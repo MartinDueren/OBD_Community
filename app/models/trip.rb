@@ -67,6 +67,7 @@ class Trip < ActiveRecord::Base
 
   #Check for badges and calc all relevant statistics, watch out for the spaghetti monster!!
   def integrateTrip
+    Rails.logger.info "Integrating trip"
     measurements = self.measurements.order("recorded_at ASC")
 
     #remove standing time from beginning and end
