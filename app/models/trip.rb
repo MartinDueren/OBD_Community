@@ -156,18 +156,6 @@ class Trip < ActiveRecord::Base
         User.find_by_id(self.user_id).add_points(badge[0].custom_fields[:points], "#{badge[0].custom_fields[:points]} Points granted #{badge[0].description}")
       end
       
-      #update user statistics
-      Rails.logger.info "Updating User Statistics"
-      div = self.measurements.length + @current_user.measurement_count
-      @current_user.update_attributes(:mileage => (@current_user.mileage + @tripAttrs[:length].to_i))
-      @current_user.update_attributes(:rpm => (((@current_user.rpm * @current_user.measurement_count) + (self.measurements.average(:rpm).to_f * self.measurements.length)) / div))
-      @current_user.update_attributes(:speed => (((@current_user.speed * @current_user.measurement_count) + (self.measurements.average(:speed).to_f * self.measurements.length)) / div))
-      @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.measurement_count) + (self.measurements.average(:consumption).to_f * self.measurements.length)) / div))
-      @current_user.update_attributes(:standingtime => (@current_user.standingtime + (self.measurements.where(:speed => 0).count * 5)))
-      @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (self.measurements.average(:co2).to_f * self.measurements.length)) / div))
-      @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (self.getTotalCo2 / 1000)))
-      @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (self.getTotalConsumption / 1000)))
-      @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 
       #### find nearest street for every measurement and calculate stats 
       Rails.logger.info "Finding nearest streets for every measurement and update dataset statistics"
