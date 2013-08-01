@@ -85,29 +85,28 @@
             %h2#trip-list="Zuletzte hochgeladene Fahrten"
             - if current_user.group == 1
               = icon_link_to 'icon-plus-sign',  "Zeige alle Fahrten", "/trip/show?user=#{@user.id}"
-            - for i in 1..10 
-              - break if @trips[@trips.length-i] == nil
+            - for trip in current_user.trips.find(:all, :order => "id desc", :limit => 10).reverse
               .row.well
                 %div.span6
                   %div.trip_info
-                    = link_to image_tag("/assets/trips/#{@trips[@trips.length-i].id}.png", size: "300x300"), "/trip/show/#{@trips[@trips.length-i].id}"
+                    = link_to image_tag("/assets/trips/#{trip.id}.png", size: "300x300"), "/trip/show/#{trip.id}"
                 %div.span6.listing
                   .row
-                    = link_to "#{@trips[@trips.length-i].getTripLength} Kilometer am #{I18n.l @trips[@trips.length-i].measurements.first.created_at, format: :literal_date} um #{I18n.l @trips[@trips.length-i].created_at, format: :time_ago} Uhr", "/trip/show/#{@trips[@trips.length-i].id}"
+                    = link_to "#{trip.getTripLength} Kilometer am #{I18n.l trip.measurements.first.created_at, format: :literal_date} um #{I18n.l trip.created_at, format: :time_ago} Uhr", "/trip/show/#{trip.id}"
                   %div.row
                     %p
                     %p
                       %ul
                         %li
                           %i.icon-globe
-                          = ('%.2f' % @trips[@trips.length-i].getTripLength).to_s + " Km"
+                          = ('%.2f' % trip.getTripLength).to_s + " Km"
                         %li
                           %i.icon-fire
-                          = ('%.2f' % @trips[@trips.length-i].measurements.average(:consumption)).to_s + " Liter"
+                          = ('%.2f' % trip.measurements.average(:consumption)).to_s + " Liter"
                         %li
                           %i.icon-leaf
-                          = ('%.2f' % @trips[@trips.length-i].measurements.average(:co2)).to_s + " g/s"
-                  - if current_user.group == 3
+                          = ('%.2f' % trip.measurements.average(:co2)).to_s + " g/s"
+                  - if current_user.group == 3 || current_user.group == 0
                     %div.row
                       %div
                         %p
@@ -115,7 +114,7 @@
                             = "Verdiente Badges:"
                         %table.table.table-striped
                           %tbody
-                            - @trips[i].badges.each do |badge|
+                            - trip.badges.each do |badge|
                               %tr
                                 %td
                                   %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}

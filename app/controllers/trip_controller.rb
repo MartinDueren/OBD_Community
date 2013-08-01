@@ -154,7 +154,6 @@ class TripController < BaseController
       measurements.sort! { |a,b| a.recorded_at <=> b.recorded_at }
       Rails.logger.info "nach sort"
       measurements.each do  |m|
-        debugger
         @trip.measurements.new(
           "recorded_at" => m.recorded_at,
           "speed" => m.speed,
@@ -166,7 +165,6 @@ class TripController < BaseController
           "co2" => m.co2,
           "latlon" => m.latlon
           )
-        debugger
       end
       Rails.logger.info "vor respond to"
 
@@ -190,6 +188,7 @@ class TripController < BaseController
             
             #update user statistics
             Rails.logger.info "Updating User Statistics"
+            Rails.logger.info 
             div = @trip.measurements.length + @current_user.measurement_count
             @current_user.update_attributes(:mileage => (@current_user.mileage + @trip.getTripLength))
             @current_user.update_attributes(:rpm => (((@current_user.rpm * @current_user.measurement_count) + (@trip.measurements.average(:rpm).to_f * @trip.measurements.length)) / div))
