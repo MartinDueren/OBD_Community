@@ -175,6 +175,18 @@ class TripController < BaseController
           if @trip.measurements.length > 4
             format.html { redirect_to @trip, notice: 'Trip successfully created.' }
             format.json { render json: @trip, status: :created}
+
+            @exec = "/usr/bin/phantomjs/bin/phantomjs " +
+                  "./app/assets/javascripts/phantom_snapshot.js " +
+                  "http://" + configatron.app_host + "/trip/show_static_trip?id=#{@trip.id} " +
+                  "./public/assets/trips/#{@trip.id}.png '#map'"
+            thread = Thread.new{
+              system(@exec)
+            }
+            thread.join
+            
+            @trip.delay.integrateTrip
+            #@trip.integrateTrip
           else 
             @trip.destroy
             format.json { render json: "Corrupted Trip Measurements", status: :created }
@@ -203,17 +215,7 @@ class TripController < BaseController
       end
     end
 
-    @exec = "/usr/bin/phantomjs/bin/phantomjs " +
-          "./app/assets/javascripts/phantom_snapshot.js " +
-          "http://" + configatron.app_host + "/trip/show_static_trip?id=#{@trip.id} " +
-          "./public/assets/trips/#{@trip.id}.png '#map'"
-    thread = Thread.new{
-      system(@exec)
-    }
-    thread.join
     
-    @trip.delay.integrateTrip
-    #@trip.integrateTrip
   end
 
 
