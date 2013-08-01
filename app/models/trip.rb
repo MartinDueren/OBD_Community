@@ -71,6 +71,7 @@ class Trip < ActiveRecord::Base
     measurements = self.measurements.order("recorded_at ASC")
 
     #remove standing time from beginning and end
+    Rails.logger.info "Removing leading and trailing zeros"
     for i in (measurements.length-1).downto(0)
       if measurements[i].speed == 0
         measurements[i].destroy
@@ -88,6 +89,7 @@ class Trip < ActiveRecord::Base
     end
     ################
 
+    Rails.logger.info "Calculating trip attributes"
     if measurements.length > 0
 
       @tripAttrs = {:length => 0, :rpmAbove2500 => 0, :rpmAbove3000 => 0, :standingTime => 0, :braking => 0, :acceleration => 0, :measurements => measurements}
@@ -125,6 +127,7 @@ class Trip < ActiveRecord::Base
 
 
       #### Check for individual badges if trip longer than 1 km
+      Rails.logger.info "Checking for individual Badges"
       if self.getTripLength > 1
         firstTrip
         km
@@ -144,12 +147,14 @@ class Trip < ActiveRecord::Base
       self.save
 
       #### Grant Badges
+      Rails.logger.info "Granting Badges"
       self.badges.each do |badge|
         User.find_by_id(self.user_id).add_badge(badge[0].id)
         User.find_by_id(self.user_id).add_points(badge[0].custom_fields[:points], "#{badge[0].custom_fields[:points]} Points granted #{badge[0].description}")
       end
       
       #update user statistics
+      Rails.logger.info "Updating User Statistics"
       div = self.measurements.length + @current_user.measurement_count
       @current_user.update_attributes(:mileage => (@current_user.mileage + @tripAttrs[:length].to_i))
       @current_user.update_attributes(:rpm => (((@current_user.rpm * @current_user.measurement_count) + (self.measurements.average(:rpm).to_f * self.measurements.length)) / div))
@@ -162,6 +167,7 @@ class Trip < ActiveRecord::Base
       @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + self.measurements.length))
 
       #### find nearest street for every measurement and calculate stats 
+      Rails.logger.info "Finding nearest streets for every measurement and update dataset statistics"
       res = OsmRoads.find_by_sql("SELECT DISTINCT ON (pt_id) pt_id, ln_id, ST_AsText(ST_line_interpolate_point(ln_geom, ST_line_locate_point(ln_geom, pt_geom))) FROM (SELECT ln.geom AS ln_geom, pt.latlon AS pt_geom, ln.id AS ln_id, pt.id AS pt_id, ST_Distance(ln.geom, pt.latlon) AS d FROM (SELECT * FROM measurements WHERE trip_id = #{self.id}) pt, osm_roads ln WHERE ST_DWithin(pt.latlon, ln.geom, 10.0) ORDER BY pt_id,d ) AS subquery;")
 
       res.each do |m|
@@ -181,17 +187,20 @@ class Trip < ActiveRecord::Base
 
         osm_road.update_attributes(:measurement_count => osm_road.measurement_count + 1)
       end
+      Rails.logger.info "Integrating trip - done"
     end
   end
 
 
   def firstTrip
+    Rails.logger.info "...in first Trip"
     if User.find_by_id(self.user_id).trips.length == 1
       self.badges << [Merit::Badge.get(1), self.id]
     end
   end
 
   def km
+    Rails.logger.info "...in km"
     mileage = 0
     User.find_by_id(self.user_id).trips.each { |t|
       mileage += t.getTripLength.to_f
@@ -211,14 +220,17 @@ class Trip < ActiveRecord::Base
   end
 
   def co2
+    Rails.logger.info "...in co2"
     #TODO add co2Avg field to user, should be corrected on every trip create
   end
 
   def fuelConsumption
+    Rails.logger.info "...in consumption"
     #TODO add fuelConsumtion field to user, should be corrected on every trip create
   end
 
   def shifting
+    Rails.logger.info "...in shifting"
     #if less than 1% of measurements is below 2500/3000 rpm
     if @tripAttrs[:rpmAbove2500] <= 1*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(13), self.id]
@@ -228,12 +240,14 @@ class Trip < ActiveRecord::Base
   end
 
   def goodRoute
+    Rails.logger.info "...in good route"
     if @tripAttrs[:standingTime] <= 10*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(14), self.id]
     end
   end
 
   def smoothBraking
+    Rails.logger.info "...in smooth braking"
     #if less than 2% of brakings were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(15), self.id]
@@ -241,6 +255,7 @@ class Trip < ActiveRecord::Base
   end
 
   def smoothAcceleration
+    Rails.logger.info "...in acceleration"
     #if less than 2% of brakings were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(16), self.id]
@@ -253,6 +268,7 @@ class Trip < ActiveRecord::Base
 
   #TODO test if works
   def consecutiveTrips
+    Rails.logger.info "...in consecutive trips"
     @consecutive = 1
     if User.find_by_id(self.user_id).trips.length > 1
       while self.prev.created_at.beginning_of_day == self.created_at.yesterday.beginning_of_day
