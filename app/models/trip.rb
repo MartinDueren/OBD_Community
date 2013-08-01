@@ -193,29 +193,34 @@ class Trip < ActiveRecord::Base
 
 
   def firstTrip
-    Rails.logger.info "...in first Trip"
+    
     if User.find_by_id(self.user_id).trips.length == 1
+      Rails.logger.info "granted first Trip"
       self.badges << [Merit::Badge.get(1), self.id]
     end
   end
 
   def km
-    Rails.logger.info "...in km"
+   
     mileage = 0
     User.find_by_id(self.user_id).trips.each { |t|
       mileage += t.getTripLength.to_f
     }
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(2) and mileage >= 50 
       self.badges << [Merit::Badge.get(2), self.id]  
+       Rails.logger.info "granted 50 km"
     end
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(3) and mileage >= 100 
       self.badges << [Merit::Badge.get(3), self.id]
+       Rails.logger.info "granted 100 km"
     end
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(4) and mileage >= 500 
       self.badges << [Merit::Badge.get(4), self.id]
+       Rails.logger.info "granted 500 km"
     end
     if !User.find_by_id(self.user_id).badges.include? Merit::Badge.find(5) and mileage >= 1000 
       self.badges << [Merit::Badge.get(5), self.id]
+       Rails.logger.info "granted 1000 km"
     end
   end
 
@@ -230,35 +235,40 @@ class Trip < ActiveRecord::Base
   end
 
   def shifting
-    Rails.logger.info "...in shifting"
+    
     #if less than 1% of measurements is below 2500/3000 rpm
     if @tripAttrs[:rpmAbove2500] <= 1*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(13), self.id]
+      Rails.logger.info "granted good shifting"
     elsif @tripAttrs[:rpmAbove3000] <= 1*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(12), self.id]
+      Rails.logger.info "granted awesome shifting"
     end
   end
 
   def goodRoute
-    Rails.logger.info "...in good route"
+    
     if @tripAttrs[:standingTime] <= 10*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(14), self.id]
+      Rails.logger.info "granted good route"
     end
   end
 
   def smoothBraking
-    Rails.logger.info "...in smooth braking"
+    
     #if less than 2% of brakings were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(15), self.id]
+      Rails.logger.info "granted smooth braking"
     end
   end
 
   def smoothAcceleration
-    Rails.logger.info "...in acceleration"
+    
     #if less than 2% of brakings were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(16), self.id]
+      Rails.logger.info "granted acceleration"
     end
   end
 
@@ -268,7 +278,7 @@ class Trip < ActiveRecord::Base
 
   #TODO test if works
   def consecutiveTrips
-    Rails.logger.info "...in consecutive trips"
+    
     @consecutive = 1
     if User.find_by_id(self.user_id).trips.length > 1
       while self.prev.created_at.beginning_of_day == self.created_at.yesterday.beginning_of_day
@@ -278,16 +288,22 @@ class Trip < ActiveRecord::Base
     case @consecutive
     when 2
       self.badges << [Merit::Badge.get(18), self.id]
+      Rails.logger.info "granted consecutive trips"
     when 3
       self.badges << [Merit::Badge.get(19), self.id]
+      Rails.logger.info "granted consecutive trips"
     when 4
       self.badges << [Merit::Badge.get(20), self.id]
+      Rails.logger.info "granted consecutive trips"
     when 5
       self.badges << [Merit::Badge.get(21), self.id]
+      Rails.logger.info "granted consecutive trips"
     when 6
       self.badges << [Merit::Badge.get(22), self.id]
+      Rails.logger.info "granted consecutive trips"
     when 7
       self.badges << [Merit::Badge.get(23), self.id]
+      Rails.logger.info "granted consecutive trips"
     end
   end
 
