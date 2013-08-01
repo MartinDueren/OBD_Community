@@ -109,7 +109,7 @@ Merit::Badge.create! ({
 })
 Merit::Badge.create! ({
   id: 15,
-  name: "Sanftes Bremse",
+  name: "Sanftes Bremsen",
   description: "Es wurde keine Energie durch zu abruptes Bremsen verschwendet.",
   custom_fields: { image: 'wheel.png', points: '3' }
 })
