@@ -128,7 +128,10 @@ class Trip < ActiveRecord::Base
 
       #### Check for individual badges if trip longer than 1 km
       Rails.logger.info "Checking for individual Badges"
-      if self.getTripLength > 1
+      Rails.logger.info "self.length=" + self.getTripLength
+      Rails.logger.info "Trip.length=" + Trip.find_by_id(self.id).getTripLength
+      Rails.logger.info "self.measurements.first.to_json=" + self.measurements.first.to_json
+      if self.measurements.length > 10
         firstTrip
         km
         co2
@@ -143,7 +146,7 @@ class Trip < ActiveRecord::Base
         gotComment
         mostMiles
       end
-
+      Rails.logger.info self.to_json
       self.save
 
       #### Grant Badges
@@ -169,8 +172,9 @@ class Trip < ActiveRecord::Base
       #### find nearest street for every measurement and calculate stats 
       Rails.logger.info "Finding nearest streets for every measurement and update dataset statistics"
       res = OsmRoads.find_by_sql("SELECT DISTINCT ON (pt_id) pt_id, ln_id, ST_AsText(ST_line_interpolate_point(ln_geom, ST_line_locate_point(ln_geom, pt_geom))) FROM (SELECT ln.geom AS ln_geom, pt.latlon AS pt_geom, ln.id AS ln_id, pt.id AS pt_id, ST_Distance(ln.geom, pt.latlon) AS d FROM (SELECT * FROM measurements WHERE trip_id = #{self.id}) pt, osm_roads ln WHERE ST_DWithin(pt.latlon, ln.geom, 10.0) ORDER BY pt_id,d ) AS subquery;")
-
+      Rails.logger.info "Found " + res.length.to_s + " street segments"
       res.each do |m|
+        Rails.logger.info "Updating element with id " + m.ln_id.to_s
         osm_road = OsmRoads.find_by_id(m.ln_id)
         nm = Measurement.find_by_id(m.pt_id)
         div = osm_road.measurement_count + 1

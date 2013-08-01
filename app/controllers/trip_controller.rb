@@ -184,7 +184,7 @@ class TripController < BaseController
               system(@exec)
             }
             thread.join
-            
+            debugger
             @trip.delay.integrateTrip
             #@trip.integrateTrip
           else 
