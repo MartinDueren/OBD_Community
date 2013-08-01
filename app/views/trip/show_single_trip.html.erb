@@ -4,7 +4,8 @@
     <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> Minuten</p>
   </div>
   <div class="span2">
-    <h4 class="muted">BENZINVERBRAUCH</h4><br>
+    <h4 class="muted">BENZINVERBRAUCH</h4>
+    <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getAvgConsumption) %> Liters</p>
     <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getTotalConsumption) %> Liters = <%= '%.2f' % (@trip.getTotalConsumption * @fuel_prices[0].to_f) %>€</p>
   </div>
   <div class="span2">

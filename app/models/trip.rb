@@ -42,11 +42,7 @@ class Trip < ActiveRecord::Base
   end
 
   def getAvgConsumption
-    avg = 0
-    self.measurements.each do |m|
-      avg += m.consumption / m.speed
-    end
-    avg / self.measurements.length
+    self.measurements.average(:consumption).to_f
   end
 
   def getTotalConsumption
