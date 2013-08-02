@@ -29,10 +29,10 @@
         = radio_button :user, :gender, User::FEMALE
         =:female.l
 
-  = f.date_select :birthday, {:start_year => 1926, :end_year => Time.now.year - 1}
+  = f.date_select :birthday, {:start_year => 1926, :end_year => Time.now.year - 1}, :label => "Geburtstag"
    
   %h2=:about_me.l
-  = f.text_area :description, :class => "rich_text_editor"
+  = f.text_area :description, :label => "Beschreibung", :class => "rich_text_editor"
   
   .controls
     = f.submit :save_changes.l

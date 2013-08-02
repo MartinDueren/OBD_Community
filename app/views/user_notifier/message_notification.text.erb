@@ -1,0 +1,14 @@
+Hey <%= @message.recipient.login %>!
+
+<%= @message.sender.login %> hat dir eine private Nachricht auf <%= configatron.community_name %> geschickt. Hier kannst du sie lesen:
+
+<%= user_message_url(@message.recipient, @message) %> 
+
+Danke,
+Das <%= configatron.community_name %> Team
+
+------------------------------------------------------------
+
+Hast du dein Passwort vergessen? Hier kannst du es zurücksetzen:
+
+<%= configatron.app_host %>/forgot_password

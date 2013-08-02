@@ -1,5 +1,5 @@
 = render :partial => 'posts/author_profile', :locals => {:user => @user} if @user
--@page_title = :comments.l + " on " + @title
+-@page_title = :comments.l + " zu " + @title
 
 - if @comments.empty?
   = :no_comments_found.l_with_args(:type => @commentable.class.to_s.underscore)

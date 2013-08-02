@@ -19,6 +19,7 @@ gem 'css3-progress-bar-rails'
 gem 'delayed_job'
 gem 'delayed_job_active_record' #bundle exec rake jobs:work
 gem 'daemons'
+gem 'rails-i18n'
 
 ruby '1.9.3'
 gem 'rails', '3.2.11'

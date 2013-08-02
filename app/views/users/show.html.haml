@@ -41,13 +41,13 @@
                       = "STANDZEIT"
                   %th
                     %h4.muted
-                      = "DURCHSCHNITTL. GESCHWINDIGKEIT"
+                      = "GESCHWINDIGKEIT"
                   %th
                     %h4.muted
-                      = "DURCHSCHNITTL. UMDREHUNGEN"
+                      = "UMDREHUNGEN"
                   %th
                     %h4.muted
-                      = "DURCHSCHNITTL. VERBRAUCH"
+                      = "VERBRAUCH"
               %tbody
                 %tr.success
                   %td
@@ -60,13 +60,13 @@
                     %i.icon-pause
                     = ('%.2f' % (@standing_time / 60 / 60)).to_s + " h"
                   %td
-                    %i.icon-random
+                    = image_tag "../../assets/icon_durchschnitt.gif"
                     = ('%.0f' % @speed).to_s + " Km/h"
                   %td
-                    %i.icon-refresh
+                    = image_tag "../../assets/icon_durchschnitt.gif"
                     = ('%.0f' % @rpm).to_s + " U/min"
                   %td
-                    %i.icon-tint
+                    = image_tag "../../assets/icon_durchschnitt.gif"
                     = ('%.1f' % @consumption).to_s + " l/100 km"
         - if current_user.group == 3 || current_user.group == 0
           .row
