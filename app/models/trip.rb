@@ -272,7 +272,7 @@ class Trip < ActiveRecord::Base
   def consecutiveTrips
     
     @consecutive = 1
-    if User.find_by_id(self.user_id).trips.length > 1
+    if self.prev != nil
       while self.prev.created_at.beginning_of_day == self.created_at.yesterday.beginning_of_day
         @consecutive += 1
       end
