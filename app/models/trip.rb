@@ -186,7 +186,7 @@ class Trip < ActiveRecord::Base
 
   def firstTrip
     
-    if User.find_by_id(self.user_id).trips.length == 1
+    if self.id == User.find_by_id(self.user_id).trips.minimum(:id)
       Rails.logger.info "granted first Trip"
       self.badges << [Merit::Badge.get(1), self.id]
     end
