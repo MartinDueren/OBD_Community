@@ -34,11 +34,6 @@
           = render :partial => "shared/messages"
       
       = yield
-      
-      -if show_footer_content?    
-        .row#footer-content
-          = image_tag 'spinner.gif', :plugin => 'community_engine'
-          =:loading_recent_content.l  
               
       .row
         .span12
