@@ -17,7 +17,7 @@
     = image_tag @user.avatar_photo_url(:medium), :class => "thumbnail"
     = link_to :profile_photo_crop.l, crop_profile_photo_user_path(@user)        
 
-= form_tag user_path(:welcome => 'invite'), :method => 'put', :multipart =>true, :class => "form form-horizontal" do
+= form_tag user_path, :method => 'put', :multipart =>true, :class => "form form-horizontal" do
   
   %fieldset
     %legend= :description.l
@@ -41,5 +41,5 @@
   %br
   %br
   .controls
-    = link_to "Speichern und weiter zum Profil", user_path(@user), :class => 'btn btn-primary'
+    = submit_tag "Speichern und weiter zum Profil", :class => 'btn btn-primary'
 

@@ -258,7 +258,6 @@ class TripController < BaseController
     def basic_auth
 
       authenticate_or_request_with_http_basic do |username, password|
-        debugger
         if user = User.find_by_login(username)
           if user.valid_password?(password)
             UserSession.create(user) if(user.present?)
