@@ -269,7 +269,6 @@ class Trip < ActiveRecord::Base
   end
 
 
-!User.find_by_id(self.user_id).badges.include? Merit::Badge.find(5)
   #TODO test if works
   def consecutiveTrips
     user = User.find_by_id(self.user_id)
