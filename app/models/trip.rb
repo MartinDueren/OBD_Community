@@ -270,14 +270,19 @@ class Trip < ActiveRecord::Base
 
   #TODO test if works
   def consecutiveTrips
-    
-    @consecutive = 1
-    if self.prev != nil
-      while self.prev.created_at.beginning_of_day == self.created_at.yesterday.beginning_of_day
-        @consecutive += 1
+    user = User.find_by_id(self.user_id)
+    user_trips = user.trips.order("created_at DESC")
+    consecutive = 1
+    for i in 0..(user_trips.length-2)
+      if i > 6 then
+        break
+      end
+      if user_trips[i+1].created_at.beginning_of_day == user_trips[i].created_at.yesterday.beginning_of_day
+        consecutive += 1
       end
     end
-    case @consecutive
+
+    case consecutive
     when 2
       self.badges << [Merit::Badge.get(18), self.id]
       Rails.logger.info "granted consecutive trips"
