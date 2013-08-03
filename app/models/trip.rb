@@ -268,10 +268,26 @@ class Trip < ActiveRecord::Base
     #TODO
   end
 
+
+!User.find_by_id(self.user_id).badges.include? Merit::Badge.find(5)
   #TODO test if works
   def consecutiveTrips
     user = User.find_by_id(self.user_id)
     user_trips = user.trips.order("created_at DESC")
+    consecutive_badges = [Merit::Badge.find(18),Merit::Badge.find(19),Merit::Badge.find(20),Merit::Badge.find(21),Merit::Badge.find(22),Merit::Badge.find(23)]
+    self_badges = []
+    self.badges.each do |b|
+      self_badges << b[0]
+    end
+    consecutive_badges += self_badges
+
+    user_trips.each do |t|
+      if t != self && t.created_at.beginning_of_day == self.created_at.beginning_of_day && consecutive_badges.length != consecutive_badges.uniq.length 
+        Rails.logger.info "Exiting consecutive Trips because there was another trip today"
+        return
+      end
+    end
+
     consecutive = 1
     for i in 0..(user_trips.length-2)
       if i > 6 then
