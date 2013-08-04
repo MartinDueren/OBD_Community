@@ -87,6 +87,14 @@ class Trip < ActiveRecord::Base
         break
       end
     end
+
+
+    #if no measurements left, destroy and exit
+    if self.measurements.length <= 5
+      Rails.logger.info "Destroying trip"
+      self.destroy
+      return
+    end
     ################
 
     Rails.logger.info "Calculating trip attributes"
