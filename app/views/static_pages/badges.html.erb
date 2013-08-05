@@ -66,7 +66,8 @@
                     <p>Keine Badges erhalten diese Fahrt.</p>
                   <% else %>
                     <% @trip.badges.each do |badge| %>
-                      <li><%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "30x30" %> <%= badge[0].name %></li>
+                      <% @description = "#{badge[0].custom_fields[:points]}" + " Punkte für: #{badge[0].description}" %>
+                      <li><a rel="tooltip" data-placement="left" data-original-title="<%= @description %>" ><%= image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "30x30" %> <%= badge[0].name %></a></li>
                     <%end%>
                   <% end %>
                 </ul>
@@ -84,7 +85,8 @@
       <h2>Verdiente Badges:</h2>
       <a href="#badgesModal" data-toggle="modal"><i class="icon-plus-sign"></i> Verfügbare Badges</a>
       <% @badgesList.each do |k, v| %>
-        <h4><%= image_tag "Badges/#{Merit::Badge.get(k).custom_fields[:image]}", size: "50x50" %> x<%= v %></h4>
+        <% @description = "#{Merit::Badge.get(k).custom_fields[:points]}" + " Punkte für: #{Merit::Badge.get(k).description}" %>
+        <h4><a rel="tooltip" data-placement="left" data-original-title="<%= @description %>" ><%= image_tag "Badges/#{Merit::Badge.get(k).custom_fields[:image]}", size: "50x50" %> x<%= v %></a></h4>
       <%end%>
     </div>
   </div>
