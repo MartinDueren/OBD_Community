@@ -166,6 +166,24 @@ class Trip < ActiveRecord::Base
       Rails.logger.info "Finding nearest streets for every measurement and update dataset statistics"
       res = OsmRoads.find_by_sql("SELECT DISTINCT ON (pt_id) pt_id, ln_id, ST_AsText(ST_line_interpolate_point(ln_geom, ST_line_locate_point(ln_geom, pt_geom))) FROM (SELECT ln.geom AS ln_geom, pt.latlon AS pt_geom, ln.id AS ln_id, pt.id AS pt_id, ST_Distance(ln.geom, pt.latlon) AS d FROM (SELECT * FROM measurements WHERE trip_id = #{self.id}) pt, osm_roads ln WHERE ST_DWithin(pt.latlon, ln.geom, 10.0) ORDER BY pt_id,d ) AS subquery;")
       Rails.logger.info "Found " + res.length.to_s + " street segments"
+      
+      #count measurements with speed == 0 for each matched segment
+      count = Hash.new(0)
+      res.each do |m|
+        if Measurement.find_by_id(m.pt_id).speed == 0
+          count[m.ln_id] += 5
+        end
+      end
+
+      count.each do |m|
+        road = OsmRoads.find_by_id(m[0])
+        times_visited = road.times_visited
+        road_standing_time = road.avg_standing_time
+        new_avg = (((road_standing_time * times_visited) + m[1]) / (times_visited + 1))
+
+        road.update_attributes(:avg_standing_time => new_avg)
+      end
+
       res.each do |m|
         Rails.logger.info "Updating element with id " + m.ln_id.to_s
         osm_road = OsmRoads.find_by_id(m.ln_id)
@@ -176,10 +194,16 @@ class Trip < ActiveRecord::Base
           osm_road.update_attributes(:max_speed => nm.speed)
         end
 
+
+
         osm_road.update_attributes(:avg_speed => (((osm_road.avg_speed * osm_road.measurement_count) + nm.speed) / div))
         osm_road.update_attributes(:avg_rpm => (((osm_road.avg_rpm * osm_road.measurement_count) + nm.rpm) / div))
         osm_road.update_attributes(:avg_consumption => (((osm_road.avg_consumption * osm_road.measurement_count) + nm.consumption) / div))
-        osm_road.update_attributes(:avg_standing_time => (((osm_road.avg_standing_time * osm_road.measurement_count) + 5) / div))
+
+
+        
+
+        
         osm_road.update_attributes(:avg_co2 => (((osm_road.avg_co2 * osm_road.measurement_count) + nm.co2) / div))
 
         osm_road.update_attributes(:measurement_count => osm_road.measurement_count + 1)
