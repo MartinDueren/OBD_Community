@@ -55,38 +55,38 @@ Merit::Badge.create! ({
 })
 Merit::Badge.create! ({
   id: 6,
-  name: "CO2 beste 25%",
-  description: "CO2 Emissionen sind niedriger als die von 75% der anderen Fahrer.",
+  name: "CO2 25%",
+  description: "Die CO2 Emissionen der Fahrt sind um 25% besser als die der anderen Fahrer.",
   custom_fields: { image: 'shoot.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 7,
-  name: "CO2 beste 50%",
-  description: "CO2 Emissionen sind niedriger als die von 50% der anderen Fahrer.",
-  custom_fields: { image: 'nut.png', points: '3' }
+  name: "CO2 35%",
+  description: "Die CO2 Emissionen der Fahrt sind um 35% besser als die der anderen Fahrer.",
+  custom_fields: { image: 'nut.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 8,
   name: "CO2 Bester",
-  description: "Die niedrigsten CO2 Emissionen aller Fahrer diese Woche.",
+  description: "Die niedrigsten CO2 Emissionen aller Fahrten diese Woche.",
   custom_fields: { image: 'tree.png', points: '8' }
 })
 Merit::Badge.create! ({
   id: 9,
-  name: "Verbrauch beste 25%",
+  name: "Verbrauch 25%",
   description: "Benzinverbrauch niedriger als bei 75% der anderen Fahrer.",
   custom_fields: { image: 'silver.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 10,
-  name: "Verbrauch beste 50%",
+  name: "Verbrauch 35%",
   description: "Benzinverbrauch niedriger als bei 50% der anderen Fahrer.",
   custom_fields: { image: 'bronze.png', points: '3' }
 })
 Merit::Badge.create! ({
   id: 11,
   name: "Verbrauch Bester",
-  description: "Niedrigster Benzinverbrauch aller Fahrer diese Woche.",
+  description: "Niedrigster Benzinverbrauch aller Fahrten diese Woche.",
   custom_fields: { image: 'gold.png', points: '8' }
 })
 Merit::Badge.create! ({
@@ -118,12 +118,6 @@ Merit::Badge.create! ({
   name: "Sanftes Beschleunigen",
   description: "Es wurde keine Energie durch zu schnelles Beschleunigen verschwendet.",
   custom_fields: { image: 'barchart.png', points: '3' }
-})
-Merit::Badge.create! ({
-  id: 17,
-  name: "Fahrt geteilt",
-  description: "Teilen einer Fahrt.",
-  custom_fields: { image: 'facebook.png', points: '5' }
 })
 Merit::Badge.create! ({
   id: 18,
