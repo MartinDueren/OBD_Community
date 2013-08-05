@@ -1,8 +1,3 @@
-/* TODO
-get trip id with gon
-display gps route (w nice styling)
-*/
-
 var lineLayer = new OpenLayers.Layer.Vector("Line Layer"); 
 var line = new OpenLayers.Geometry.LineString(gon.coords)
 var style = { 

@@ -149,9 +149,6 @@ class Trip < ActiveRecord::Base
         smoothBraking
         smoothAcceleration
         consecutiveTrips
-        firstFriend
-        firstComment
-        gotComment
         mostMiles
       end
       Rails.logger.info self.to_json
@@ -193,13 +190,13 @@ class Trip < ActiveRecord::Base
 
 
   def firstTrip
-    
     if self.id == User.find_by_id(self.user_id).trips.minimum(:id)
       Rails.logger.info "granted first Trip"
       self.badges << [Merit::Badge.get(1), self.id]
     end
   end
 
+  #confirmed working
   def km
    
     mileage = 0
@@ -224,18 +221,56 @@ class Trip < ActiveRecord::Base
     end
   end
 
+  #not confirmed working
   def co2
-    Rails.logger.info "...in co2"
-    #TODO add co2Avg field to user, should be corrected on every trip create
-  end
-
-  def fuelConsumption
-    Rails.logger.info "...in consumption"
-    #TODO add fuelConsumtion field to user, should be corrected on every trip create
-  end
-
-  def shifting
+    trip_co2 = self.getTripCo2
+    overall_co2 = User.average(:co2)
     
+    if trip_co2 < (overall_co2 - ((overall_co2 / 100) * 35))
+      self.badges << [Merit::Badge.get(7), self.id]
+    elsif trip_co2 < (overall_co2 - ((overall_co2 / 100) * 25))
+      self.badges << [Merit::Badge.get(6), self.id]
+    end
+
+    min_co2_week = 999
+    trips_last_week = Trip.where(:created_at => Time.now.prev_week..Time.now.prev_week.end_of_week)
+    trips_last_week.each do |trip|
+      if trip.getTripCo2 < min_co2_week && trip != self
+        min_co2_week = trip.getTripCo2
+      end
+    end
+
+    if trip_co2 < min_co2_week
+      self.badges << [Merit::Badge.get(8), self.id]
+    end
+  end
+
+  #not confirmed working
+  def fuelConsumption
+    trip_consumption = self.getAvgConsumption
+    overall_consumption = User.average(:consumption)
+    
+    if trip_consumption < (overall_consumption - ((overall_consumption / 100) * 35))
+      self.badges << [Merit::Badge.get(10), self.id]
+    elsif trip_consumption < (overall_consumption - ((overall_consumption / 100) * 25))
+      self.badges << [Merit::Badge.get(9), self.id]
+    end
+
+    min_consumption_week = 999
+    trips_last_week = Trip.where(:created_at => Time.now.prev_week..Time.now.prev_week.end_of_week)
+    trips_last_week.each do |trip|
+      if trip.getAvgConsumption < min_consumption_week && trip != self
+        min_consumption_week = trip.getAvgConsumption
+      end
+    end
+
+    if trip_consumption < min_consumption_week
+      self.badges << [Merit::Badge.get(11), self.id]
+    end
+  end
+
+
+  def shifting  
     #if less than 1% of measurements is below 2500/3000 rpm
     if @tripAttrs[:rpmAbove2500] <= 1*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(13), self.id]
@@ -247,7 +282,6 @@ class Trip < ActiveRecord::Base
   end
 
   def goodRoute
-    
     if @tripAttrs[:standingTime] <= 10*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(14), self.id]
       Rails.logger.info "granted good route"
@@ -255,7 +289,6 @@ class Trip < ActiveRecord::Base
   end
 
   def smoothBraking
-    
     #if less than 2% of brakings were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(15), self.id]
@@ -264,7 +297,6 @@ class Trip < ActiveRecord::Base
   end
 
   def smoothAcceleration
-    
     #if less than 2% of brakings were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(16), self.id]
@@ -272,12 +304,6 @@ class Trip < ActiveRecord::Base
     end
   end
 
-  def sharedTrip
-    #TODO
-  end
-
-
-  #TODO test if works
   def consecutiveTrips
     user = User.find_by_id(self.user_id)
     user_trips = user.trips.order("created_at DESC")
@@ -327,24 +353,13 @@ class Trip < ActiveRecord::Base
     end
   end
 
-  def firstFriend
-    #TODO
-  end
-
-  def firstComment
-    #TODO
-  end
-
-  def gotComment
-    #TODO
-  end
-
-  def testUser
-    User.find_by_id(self.user_id).add_badge(27)
-  end
-
   def mostMiles
-    #TODO
+    @current_user = User.find_by_id(self.user_id)
+    unless @current_user.mileage >= User.maximum(:mileage)
+      if (User.mileage + self.getTripLength) > User.maximum(:mileage)
+        self.badges << [Merit::Badge.get(28), self.id]
+      end
+    end
   end
 
 end
