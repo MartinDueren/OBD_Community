@@ -150,6 +150,10 @@ function initChart(){
 
 function initMap() {
 
+  map.events.register("move", map, function() {
+            postAnalytics();
+        });
+
   var osm = new OpenLayers.Layer.OSM("Base Layer");
   vectorLayer = new OpenLayers.Layer.Vector("Driven Route");
   map.addLayers([osm, vectorLayer]);
@@ -230,13 +234,9 @@ function addHeatmapLayer(){
   map.addLayers([heatmap]);
 }
 
-var lastSelect = new Date().getTime();
-function selectPoint(point){
-  if(lastSelect != 0 && (new Date().getTime() - lastSelect) > 3000){
-    $.post("http://giv-dueren.uni-muenster.de/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
 
-    lastSelect = new Date().getTime();
-  }
+function selectPoint(point){
+  postAnalytics();
   if(map.getLayersByName("Marker").length > 0){
     map.removeLayer(marker);
   }
@@ -248,6 +248,16 @@ function selectPoint(point){
   marker.addFeatures(markers);
   map.addLayers([marker]);
 
+}
+
+var lastPost = new Date().getTime();
+function postAnalytics(){
+  if(lastPost != 0 && (new Date().getTime() - lastPost) > 3000){
+    console.log("interaction");
+    $.post("http://giv-dueren.uni-muenster.de/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
+
+    lastPost = new Date().getTime();
+  }
 }
 
 function changeSensor(sensor){

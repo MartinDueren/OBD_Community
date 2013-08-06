@@ -45,7 +45,7 @@ function initChartMap1(){
     //consumption
     seriesData[2][i] = {
       x: date,
-      y: gon.measurements[i].consumption,
+      y: gon.measurementsMap1[i].consumption,
       label: "l/100km"
     }
     dataHash1[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
@@ -186,6 +186,8 @@ function addHeatmapLayerMap1(){
   map1.addLayers([heatmap]);
 }
 
+
+//TODO this could be more DRY
 function selectPoint(point){
 	if(searchResult.dataPoint.x in dataHash1){
 		if(map1.getLayersByName("Marker1").length > 0){
@@ -197,6 +199,7 @@ function selectPoint(point){
   	var markers1 = [new OpenLayers.Feature.Vector(dataHash1[searchResult.dataPoint.x], null, highlightStyle)];
   	marker1.addFeatures(markers1);
   	map1.addLayers([marker1]);
+
 	}else if(searchResult.dataPoint.x in dataHash2){
 		if(map2.getLayersByName("Marker2").length > 0){
     	map2.removeLayer(marker2);
@@ -207,6 +210,7 @@ function selectPoint(point){
 	  var markers2 = [new OpenLayers.Feature.Vector(dataHash2[searchResult.dataPoint.x], null, highlightStyle)];
 	  marker2.addFeatures(markers2);
 	  map2.addLayers([marker2]);
+
 	}
 	
   
@@ -273,7 +277,7 @@ function initChartMap2(){
     //consumption
     seriesData[2][i] = {
       x: date,
-      y: gon.measurementsMap2[i].consumption * 3600 / gon.measurementsMap2[i].speed,
+      y: gon.measurementsMap2[i].consumption,
       label: "l/100km"
     }
     dataHash2[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
