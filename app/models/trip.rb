@@ -352,11 +352,16 @@ class Trip < ActiveRecord::Base
 
 
     consecutive = 1
-    for i in 0..(user.trips.length-2)
-      if user_trips[i+1].created_at.beginning_of_day == user_trips[i].created_at.yesterday.beginning_of_day
+    user_trips = user.trips.order('created_at ASC')
+    for i in 0..(user_trips.length-2)
+      if user_trips[i].id == 71
+        debugger
+      end
+      if user_trips[i].created_at.beginning_of_day == user_trips[i+1].created_at.yesterday.beginning_of_day
         consecutive += 1
       end
     end
+    
 
     case consecutive
     when 2
