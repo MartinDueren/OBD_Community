@@ -313,7 +313,7 @@ class Trip < ActiveRecord::Base
   end
 
   def smoothBraking
-    #if less than 2% of brakings were less than 30 km/h diff between measurements
+    #if less than 2% of measurements were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(15), self.id]
       Rails.logger.info "granted smooth braking"
@@ -321,7 +321,7 @@ class Trip < ActiveRecord::Base
   end
 
   def smoothAcceleration
-    #if less than 2% of brakings were less than 30 km/h diff between measurements
+    #if less than 2% of measurements were less than 30 km/h diff between measurements
     if @tripAttrs[:braking] <= 2*(self.measurements.length/100)
       self.badges << [Merit::Badge.get(16), self.id]
       Rails.logger.info "granted acceleration"
@@ -330,26 +330,29 @@ class Trip < ActiveRecord::Base
 
   def consecutiveTrips
     user = User.find_by_id(self.user_id)
-    user_trips = user.trips.order("created_at DESC")
-    consecutive_badges = [Merit::Badge.find(18),Merit::Badge.find(19),Merit::Badge.find(20),Merit::Badge.find(21),Merit::Badge.find(22),Merit::Badge.find(23)]
-    self_badges = []
-    self.badges.each do |b|
-      self_badges << b[0]
-    end
-    consecutive_badges += self_badges
+    user_trips_today = user.trips.where("DATE(created_at) = ?", Date.today)
+    consecutive_badges = [18,19,20,21,22,23] #badge ids
+    
+    user_trips_today.each do |t|
+      unless t == self
+        #get real badges without unneccesray fields
+        t_badges = []
+        t.badges.each do |b|
+          t_badges << b[0].id
+        end
 
-    user_trips.each do |t|
-      if t != self && t.created_at.beginning_of_day == self.created_at.beginning_of_day && consecutive_badges.length != consecutive_badges.uniq.length 
-        Rails.logger.info "Exiting consecutive Trips because there was another trip today"
-        return
+        #add t_badges with conesc_badges to find out if there are duplicates and exit method if true
+        t_badges += consecutive_badges
+        if t_badges.length != t_badges.uniq.length
+          Rails.logger.info "Exiting consecutive Trips because there was another trip today with a consecutive badge"
+          return
+        end
       end
     end
+
 
     consecutive = 1
-    for i in 0..(user_trips.length-2)
-      if i > 6 then
-        break
-      end
+    for i in 0..(user.trips.length-2)
       if user_trips[i+1].created_at.beginning_of_day == user_trips[i].created_at.yesterday.beginning_of_day
         consecutive += 1
       end

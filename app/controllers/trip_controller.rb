@@ -31,6 +31,7 @@ class TripController < BaseController
   end
 
   def abstract
+    I18n.locale = "de"
     gon.user = current_user.id
 
     gon.params = params

@@ -40,32 +40,32 @@ function init() {
 function changeSensor(sensor){
     switch (sensor){
         case "avg_speed":
-            document.getElementById("legend_description").innerHTML="Showing average speed";
+            document.getElementById("legend_description").innerHTML="Durchschnittliche Geschwindigkeit";
             document.getElementById("legend_image").src= wms_url + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_speed&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
             layer.mergeNewParams({styles:sensor});
             break;
         case "avg_rpm":
-            document.getElementById("legend_description").innerHTML="Showing average rpm";
+            document.getElementById("legend_description").innerHTML="Durchschnittliche Umdrehungen";
             document.getElementById("legend_image").src= wms_url + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_rpm&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
             layer.mergeNewParams({styles:sensor});
             break;
         case "avg_co2": 
-            document.getElementById("legend_description").innerHTML="Showing average co2";
+            document.getElementById("legend_description").innerHTML="Durchschnittliche CO2 Emissionen";
             document.getElementById("legend_image").src= wms_url + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_co2&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
             layer.mergeNewParams({styles:sensor});
             break; 
         case "avg_consumption": 
-            document.getElementById("legend_description").innerHTML="Showing average consumption";
+            document.getElementById("legend_description").innerHTML="Durchschnittlicher Verbrauch";
             document.getElementById("legend_image").src= wms_url + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_consumption&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
             layer.mergeNewParams({styles:sensor});
             break; 
         case "avg_standing_time": 
-            document.getElementById("legend_description").innerHTML="Showing average standing time";
+            document.getElementById("legend_description").innerHTML="Durchschnittliche Standzeit";
             document.getElementById("legend_image").src= wms_url + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=avg_standing_time&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
             layer.mergeNewParams({styles:sensor});
             break; 
         case "max_speed":
-            document.getElementById("legend_description").innerHTML="Showing max speed"; 
+            document.getElementById("legend_description").innerHTML="Max Geschwindigkeit"; 
             document.getElementById("legend_image").src= wms_url + "REQUEST=GetLegendGraphic&VERSION=1.0.0&FORMAT=image/png&WIDTH=20&HEIGHT=20&LAYER=OBDComm:osm_roads&style=max_speed&FORMAT=image/png&transparent=true&LEGEND_OPTIONS=forceRule:True;dx:0.2;dy:0.2;mx:0.2;my:0.2;fontStyle:borderColor:0000ff;border:true;fontColor:000000;fontSize:14";
             layer.mergeNewParams({styles:sensor});
             break;    
