@@ -74,10 +74,11 @@
               = "" + (@better.length + 1).to_s + ". Platz mit " + @user.points.to_s + " Punkten"
             %p 
               
-            %p
-              - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
-              = progress_bar(progress, :color => 'blue', :rounded => true)
-              = icon_link_to 'icon-plus-sign',  "Zeige Badges", "/badges?user=#{@user.id}"
+            - if Merit::Score.top_scored.first != nil
+              %p
+                - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
+                = progress_bar(progress, :color => 'blue', :rounded => true)
+                = icon_link_to 'icon-plus-sign',  "Zeige Badges", "/badges?user=#{@user.id}"
 
 
         - unless @trips.empty?
