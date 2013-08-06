@@ -70,11 +70,12 @@
                     = ('%.1f' % @consumption).to_s + " l/100 km"
         - if current_user.group == 3 || current_user.group == 0
           .row
-            %p.lead.muted
-              = "" + (@better.length + 1).to_s + ". Platz mit " + @user.points.to_s + " Punkten"
-            %p 
-              
             - if Merit::Score.top_scored.first != nil
+              %p.lead.muted
+                = "" + (@better.length + 1).to_s + ". Platz mit " + @user.points.to_s + " Punkten"
+              %p 
+                
+              
               %p
                 - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
                 = progress_bar(progress, :color => 'blue', :rounded => true)

@@ -233,7 +233,7 @@ function addHeatmapLayer(){
 var lastSelect = new Date().getTime();
 function selectPoint(point){
   if(lastSelect != 0 && (new Date().getTime() - lastSelect) > 3000){
-    $.post("http://localhost:3000/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
+    $.post("http://giv-dueren.uni-muenster.de/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
 
     lastSelect = new Date().getTime();
   }
