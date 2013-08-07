@@ -47,13 +47,13 @@ function initChart(){
     seriesData[0][i] = {
       x: date,
       y: gon.measurements[i].co2,
-      label: "CO2"
+      label: "kg/100 km"
     }
     //consumption
     seriesData[1][i] = {
       x: date,
       y: gon.measurements[i].consumption,
-      label: "l/100km"
+      label: "l/100 km"
     }
     dataHash[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
@@ -86,7 +86,7 @@ function initChart(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
       type: "spline",
-      name: "CO2 in g/s",
+      name: "CO2 in kg/100 km",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[0]

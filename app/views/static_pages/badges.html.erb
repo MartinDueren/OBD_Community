@@ -52,11 +52,11 @@
                 </div>
                 <div class="span">
                   <h4 class="muted">Verbrauch</h4>
-                  <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.measurements.average(:consumption)) %> l/100 km</p>
+                  <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getAvgConsumption %> l/100 km</p>
                 </div>
                 <div class="span">
                   <h4 class="muted">CO2</h4>
-                  <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.measurements.average(:co2)) %> g/s</p>
+                  <p><i class="icon-fire"> </i><%= '%.2f' % (@trip.getAvgCo2) %> kg/100 km</p>
                 </div>   
               </div>
               <div class="row">

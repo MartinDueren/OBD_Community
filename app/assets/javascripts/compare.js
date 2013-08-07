@@ -40,13 +40,13 @@ function initChartMap1(){
     seriesData[1][i] = {
       x: date,
       y: gon.measurementsMap1[i].rpm,
-      label: "rpm/10"
+      label: "U/min"
     }
     //consumption
     seriesData[2][i] = {
       x: date,
       y: gon.measurementsMap1[i].consumption,
-      label: "l/100km"
+      label: "l/100 km"
     }
     dataHash1[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
@@ -65,7 +65,13 @@ function initChartMap1(){
         includeZero: false
     },
     axisY: {
-        valueFormatString: " "
+        title: "Geschwindigkeit",
+        titleFontSize: 15
+    },
+    axisY2: {
+        title: "U/min",
+        titleFontSize: 15
+        //valueFormatString: " "
     },
     data: [//array of dataSeries
     { //dataSeries object
@@ -73,7 +79,7 @@ function initChartMap1(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       
       type: "spline",
-      name: "Speed in Km/h",
+      name: "Geschwindigkeit in Km/h",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[0]
@@ -83,7 +89,7 @@ function initChartMap1(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "primary",
       type: "spline",
-      name: "Consumption in l/100km",
+      name: "Verbrauch in l/100 km",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[2]
@@ -93,7 +99,7 @@ function initChartMap1(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
       type: "spline",
-      name: "rpm",
+      name: "U/min",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[1]
@@ -272,13 +278,13 @@ function initChartMap2(){
     seriesData[1][i] = {
       x: date,
       y: gon.measurementsMap2[i].rpm,
-      label: "rpm/10"
+      label: "U/min"
     }
     //consumption
     seriesData[2][i] = {
       x: date,
       y: gon.measurementsMap2[i].consumption,
-      label: "l/100km"
+      label: "l/100 km"
     }
     dataHash2[date] = new OpenLayers.Geometry.Point( coords[1], coords[2] ).transform(epsg4326, projectTo);
   }
@@ -296,7 +302,13 @@ function initChartMap2(){
         includeZero: false
     },
     axisY: {
-        valueFormatString: " "
+        title: "Geschwindigkeit",
+        titleFontSize: 15
+    },
+    axisY2: {
+        title: "U/min",
+        titleFontSize: 15
+        //valueFormatString: " "
     },
     data: [//array of dataSeries
     { //dataSeries object
@@ -304,7 +316,7 @@ function initChartMap2(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       
       type: "spline",
-      name: "Speed in Km/h",
+      name: "Geschwindigkeit in Km/h",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[0]
@@ -314,7 +326,7 @@ function initChartMap2(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "primary",
       type: "spline",
-      name: "Consumption in l/100km",
+      name: "Verbrauch in l/100 km",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[2]
@@ -324,7 +336,7 @@ function initChartMap2(){
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
       type: "spline",
-      name: "rpm",
+      name: "U/min",
       showInLegend: true,
       xValueType: "dateTime",
       dataPoints: seriesData[1]

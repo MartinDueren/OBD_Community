@@ -1,15 +1,15 @@
 <div class="row">
   <div class="span2">
     <h4 class="muted">DISTANZ</h4><br>
-    <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> minutes</p>
+    <p><i class="icon-globe"> </i><%= @trip.getTripLength %> Km in <%=(@trip.measurements.last.recorded_at.to_i - @trip.measurements.first.recorded_at.to_i) / 60 %> Minuten</p>
   </div>
   <div class="span2">
     <h4 class="muted">DURCHSCHNITTL. VERBRAUCH</h4>
-    <p><i class="icon-fire"> </i><%= '%.2f' % @trip.measurements.average(:consumption).to_f %> Liters</p>
+    <p><img src="../../assets/icon_durchschnitt.gif"> <%= '%.2f' % @trip.getAvgConsumption %> Liter</p>
   </div>
   <div class="span2">
     <h4 class="muted">DURCHSCHNITTL. CO2</h4>
-    <p><i class="icon-leaf"></i> <%= '%.2f' % @trip.measurements.average(:co2).to_f %> g/s</p>
+    <p><img src="../../assets/icon_durchschnitt.gif"> <%= '%.2f' % @trip.getAvgCo2 %> kg/100 km</p>
   </div>
 
 </div>
@@ -27,15 +27,15 @@
 <div class="row">
   <div class="span6">
     <h2 class="featurette-heading">CO2 Fußabdruck</h2>
-    <p class="lead">Bei dieser Fahrt wurden ca. <strong><%= '%.2f' % (@trip.getTotalCo2 / 1000) %> kg</strong> CO2 ausgetoßen und <strong><%= '%.0f' % (@trip.getTotalConsumption) %> Liter</strong> Benzin verbraucht.</p>
+    <p class="lead">Bei dieser Fahrt wurden ca. <strong><%= '%.2f' % (@trip.getTotalCo2) %> kg</strong> CO2 ausgetoßen und <strong><%= '%.0f' % (@trip.getTotalConsumption) %> Liter</strong> Benzin verbraucht.</p>
     <img src="/assets/footprint.jpg" class="img-rounded">
   </div><!-- /.span6 -->
   <div class="span6">
     <h2 class="featurette-heading">In anderen Worten</h2>
-    <p class="lead">Bei der Produktion von 1 kg Rindfleisch werden 13.3 kg CO2 produziert. Diese Fahrt ist also Equivalent zur Produktion von <strong><%= '%.2f' % ((@trip.getTotalCo2 / 1000) / 13.3) %></strong> kg Rindfleisch.</p>
+    <p class="lead">Bei der Produktion von 1 kg Rindfleisch werden 13.3 kg CO2 produziert. Diese Fahrt ist also Equivalent zur Produktion von <strong><%= '%.2f' % ((@trip.getTotalCo2) / 13.3) %></strong> kg Rindfleisch.</p>
     <p class="lead"><strong>ODER<strong></p>
     <p class="lead">
-    	Ein großer Ahorn-Baum kann bis zu 205 kg CO2 jährlich aus der Atmosphäre aufnehmen. Für diese Fahrt würde der selbe Baum ca. <strong><%= '%.0f' % ((@trip.getTotalCo2 / 1000) / (205.0 / 360.0)) %></strong> Tage benötigen, um das produzierte CO2 aufzunehmen.
+    	Ein großer Ahorn-Baum kann bis zu 205 kg CO2 jährlich aus der Atmosphäre aufnehmen. Für diese Fahrt würde der selbe Baum ca. <strong><%= '%.0f' % ((@trip.getTotalCo2) / (205.0 / 360.0)) %></strong> Tage benötigen, um das produzierte CO2 aufzunehmen.
     </p>
   </div><!-- /.span6 -->
 </div><!-- /.row -->

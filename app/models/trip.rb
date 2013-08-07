@@ -25,24 +25,25 @@ class Trip < ActiveRecord::Base
   	('%.2f' % @trip_length).to_f
   end
 
-  def getTripCo2
-    self.measurements.average(:co2).to_f
+  def getAvgCo2
+    self.getTotalCo2 / (self.getTripLength / 100)
   end
 
-  #outputs grams
+  #outputs kg
   def getTotalCo2
     sum = 0
     self.measurements.each_with_index do |m,i|
       unless i == 0
+        co2 = (((m.maf / 14.7) / 730 )) * 2.35 #kg per s
         seconds = m.recorded_at - self.measurements[i-1].recorded_at
-        sum += seconds * (m.co2)
+        sum += seconds * co2
       end
     end
     sum
   end
 
   def getAvgConsumption
-    self.measurements.average(:consumption).to_f
+    self.getTotalConsumption / (self.getTripLength / 100)
   end
 
   def getTotalConsumption
@@ -247,7 +248,7 @@ class Trip < ActiveRecord::Base
 
   #not confirmed working
   def co2
-    trip_co2 = self.getTripCo2
+    trip_co2 = self.getAvgCo2
     overall_co2 = User.average(:co2)
     
     if trip_co2 < (overall_co2 - ((overall_co2 / 100) * 35))
@@ -259,8 +260,8 @@ class Trip < ActiveRecord::Base
     min_co2_week = 999
     trips_last_week = Trip.where(:created_at => Time.now.prev_week..Time.now.prev_week.end_of_week)
     trips_last_week.each do |trip|
-      if trip.getTripCo2 < min_co2_week && trip != self
-        min_co2_week = trip.getTripCo2
+      if trip.getAvgCo2 < min_co2_week && trip != self
+        min_co2_week = trip.getAvgCo2
       end
     end
 

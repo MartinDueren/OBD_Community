@@ -124,6 +124,7 @@ class TripController < BaseController
 
         speed = feature[:properties][:phenomenons][:Speed][:value]
         consumption = 0
+        co2 = 0
         if speed > 0 
           consumption = (maf * 3355) / (speed * 100)
         else
@@ -135,6 +136,8 @@ class TripController < BaseController
           consumption = 50
         end
 
+        co2 = consumption * 2.35 #gets kg/100 km
+
         m = Measurement.new(
           "recorded_at" => feature[:properties][:time],
           "speed" => speed,
@@ -143,7 +146,7 @@ class TripController < BaseController
           "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
           "map" => feature[:properties][:phenomenons][:'Intake Pressure'][:value],
           "consumption" => consumption,
-          "co2" => feature[:properties][:phenomenons][:CO2][:value],
+          "co2" => co2,
           "latlon" => coords,
           )
 
@@ -191,15 +194,16 @@ class TripController < BaseController
             Rails.logger.info "Updating User Statistics"
             Rails.logger.info 
             div = @trip.measurements.length + @current_user.measurement_count
-            @current_user.update_attributes(:mileage => (@current_user.mileage + @trip.getTripLength))
+            
             @current_user.update_attributes(:rpm => (((@current_user.rpm * @current_user.measurement_count) + (@trip.measurements.average(:rpm).to_f * @trip.measurements.length)) / div))
             @current_user.update_attributes(:speed => (((@current_user.speed * @current_user.measurement_count) + (@trip.measurements.average(:speed).to_f * @trip.measurements.length)) / div))
-            @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.measurement_count) + (@trip.measurements.average(:consumption).to_f * @trip.measurements.length)) / div))
+            @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.mileage) + (@trip.getAvgConsumption * @trip.getTripLength)) / (@current_user.mileage + @trip.getTripLength)))
             @current_user.update_attributes(:standingtime => (@current_user.standingtime + (@trip.measurements.where(:speed => 0).count * 5)))
             @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.measurement_count) + (@trip.measurements.average(:co2).to_f * @trip.measurements.length)) / div))
             @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (@trip.getTotalCo2 / 1000)))
             @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption / 1000)))
             @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + @trip.measurements.length))
+            @current_user.update_attributes(:mileage => (@current_user.mileage + @trip.getTripLength))
 
 
             @trip.delay.integrateTrip

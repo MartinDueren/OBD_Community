@@ -104,7 +104,6 @@ function initChart(){
     axisY: {
         title: "Geschwindigkeit",
         titleFontSize: 15
-        //valueFormatString: " "
     },
     axisY2: {
         title: "U/min",
