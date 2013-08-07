@@ -200,8 +200,8 @@ class TripController < BaseController
             @current_user.update_attributes(:consumption => (((@current_user.consumption * @current_user.mileage) + (@trip.getAvgConsumption * @trip.getTripLength)) / (@current_user.mileage + @trip.getTripLength)))
             @current_user.update_attributes(:standingtime => (@current_user.standingtime + (@trip.measurements.where(:speed => 0).count * 5)))
             @current_user.update_attributes(:co2 => (((@current_user.co2 * @current_user.mileage) + (@trip.getAvgCo2 * @trip.getTripLength)) / (@current_user.mileage + @trip.getTripLength)))
-            @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (@trip.getTotalCo2 / 1000)))
-            @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption / 1000)))
+            @current_user.update_attributes(:total_co2 => (@current_user.total_co2 + (@trip.getTotalCo2)))
+            @current_user.update_attributes(:total_consumption => (@current_user.total_consumption + (@trip.getTotalConsumption)))
             @current_user.update_attributes(:measurement_count => (@current_user.measurement_count + @trip.measurements.length))
             @current_user.update_attributes(:mileage => (@current_user.mileage + @trip.getTripLength))
 

@@ -104,10 +104,10 @@
                           = ('%.2f' % trip.getTripLength).to_s + " Km"
                         %li
                           %i.icon-fire
-                          = ('%.2f' % trip.getAvgConsumption.to_s + " Liter"
+                          = ('%.2f' % trip.getAvgConsumption).to_s + " Liter"
                         %li
                           %i.icon-leaf
-                          = ('%.2f' % trip.getAvgCo2.to_s + " kg/100 km"
+                          = ('%.2f' % trip.getAvgCo2).to_s + " kg/100 km"
                   - if current_user.group == 3 || current_user.group == 0
                     %div.row
                       %div
