@@ -15,7 +15,7 @@
 	    <p><i class="icon-time"> </i> <abbr title="Dauer"><%=(@tripA.measurements.last.recorded_at.to_i - @tripA.measurements.first.recorded_at.to_i) / 60 %> min</abbr></p>
 	  </div>
 	  <div class="span1">
-	    <p><i class="icon-fire"></i> <abbr title="Durchschnittl. Verbrauch"> <%= '%.2f' % @tripA.measurements.average(:consumption).to_f %> L</abbr></p>
+	    <p><i class="icon-fire"></i> <abbr title="Durchschnittl. Verbrauch"> <%= '%.2f' % @tripA.getAvgConsumption.to_f %> L</abbr></p>
 	  </div>
 	  <div class="span1">
 	    <p><i class="icon-pause"></i> <abbr title="Standzeit"><%= '%.0f' % (@tripA.measurements.where(:speed => 0).count * 5 / 60) %> min</abbr></p>
@@ -32,7 +32,7 @@
 	    <p><i class="icon-time"> </i> <abbr title="Dauer"><%=(@tripB.measurements.last.recorded_at.to_i - @tripB.measurements.first.recorded_at.to_i) / 60 %> min</abbr></p>
 	  </div>
 	  <div class="span1">
-	    <p><i class="icon-fire"></i> <abbr title="Durchschnittl. Verbrauch"> <%= '%.2f' % @tripB.measurements.average(:consumption).to_f %> L</abbr></p>
+	    <p><i class="icon-fire"></i> <abbr title="Durchschnittl. Verbrauch"> <%= '%.2f' % @tripB.getAvgConsumption.to_f %> L</abbr></p>
 	  </div>
 	  <div class="span1">
 	    <p><i class="icon-pause"></i> <abbr title="Standzeit"><%= '%.0f' % (@tripB.measurements.where(:speed => 0).count * 5 / 60) %> min</abbr></p>

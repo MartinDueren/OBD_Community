@@ -55,7 +55,7 @@
                 %h4.muted="DISTANCE"
                 %p
                   %i.icon-fire
-                    = ('%.2f' % @trip.measurements.average(:consumption).to_f).to_s + " Liters"
+                    = ('%.2f' % @trip.getAvgConsumption.to_f).to_s + " Liters"
             %div.row
               %div.span6
                 %p
