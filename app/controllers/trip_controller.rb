@@ -137,14 +137,33 @@ class TripController < BaseController
         end
 
         co2 = consumption * 2.35 #gets kg/100 km
+        recorded_at = feature[:properties][:time]
+        rpm = feature[:properties][:phenomenons][:Rpm][:value]
+        iat = feature[:properties][:phenomenons][:'Intake Temperature'][:value]
+        map = feature[:properties][:phenomenons][:'Intake Pressure'][:value]
+
+        if !measurements.empty? && (Time.parse(recorded_at) - measurements.last.recorded_at) > 15 
+          m = Measurement.new(
+            "recorded_at" => measurements.last.recorded_at + 15,
+            "speed" => 0,
+            "rpm" => 0,
+            "maf" => 0, #is in g/s
+            "iat" => 0,
+            "map" => 0,
+            "consumption" => 0,
+            "co2" => 0,
+            "latlon" => measurements.last.latlon,
+            )
+          measurements << m
+        end
 
         m = Measurement.new(
-          "recorded_at" => feature[:properties][:time],
+          "recorded_at" => recorded_at,
           "speed" => speed,
-          "rpm" => feature[:properties][:phenomenons][:Rpm][:value],
+          "rpm" => rpm,
           "maf" => maf, #is in g/s
-          "iat" => feature[:properties][:phenomenons][:'Intake Temperature'][:value],
-          "map" => feature[:properties][:phenomenons][:'Intake Pressure'][:value],
+          "iat" => iat,
+          "map" => map,
           "consumption" => consumption,
           "co2" => co2,
           "latlon" => coords,

@@ -135,7 +135,7 @@ function initChart(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
-      type: "spline",
+      type: "line",
       name: "U/min",
       showInLegend: true,
       xValueType: "dateTime",
