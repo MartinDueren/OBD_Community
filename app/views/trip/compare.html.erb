@@ -1,3 +1,4 @@
+<% @page_title = "Vergleich" %>
 <div class="row">
 	<div class="span6">
 	  <h4>Fahrt von <span class="muted"><%= Geocoder.search(@tripA.measurements.first.latlon.y.to_s + "," + @tripA.measurements.first.latlon.x.to_s).first.address%></span> nach <span class="muted"><%= Geocoder.search(@tripA.measurements.last.latlon.y.to_s + "," + @tripA.measurements.last.latlon.x.to_s).first.address%></span></h4>

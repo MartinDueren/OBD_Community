@@ -3,19 +3,19 @@
 - @sidebar_left = true
 
 %div.container-fluid
-
-
-  %div.span3.sidebar
-    %ul.nav.nav-list.well.affix{"data-offset-top" => "30%"}
-      %li.nav-header
-        = "Springen zu ..."
-      %li.divider
-      %li
-        = link_to "Letzte Fahrten", "#trip-list"
-      %li
-        = link_to "Eigene Kommentare", "#comments-list"
-      %li
-        = link_to "Erhaltene Kommentare", "#received-list" 
+  
+  - if current_user.friendship_exists_with?(@user) || current_user == @user
+    %div.span3.sidebar
+      %ul.nav.nav-list.well.affix{"data-offset-top" => "30%"}
+        %li.nav-header
+          = "Springen zu ..."
+        %li.divider
+        %li
+          = link_to "Letzte Fahrten", "#trip-list"
+        %li
+          = link_to "Eigene Kommentare", "#comments-list"
+        %li
+          = link_to "Erhaltene Kommentare", "#received-list" 
 
   .container
     .row
@@ -79,74 +79,80 @@
               %p
                 - progress = '%.0f' % ((@user.points) / ((Merit::Score.top_scored[0]["sum_points"].to_f)/100))
                 = progress_bar(progress, :color => 'blue', :rounded => true)
-                = icon_link_to 'icon-plus-sign',  "Zeige Badges", "/badges?user=#{@user.id}"
+                - if current_user.friendship_exists_with?(@user) || current_user == @user
+                  = icon_link_to 'icon-plus-sign',  "Zeige Badges", "/badges?user=#{@user.id}"
 
 
-        - unless @trips.empty?
-          .row
-            %h2#trip-list="Zuletzte hochgeladene Fahrten"
-            - if current_user.group == 1
-              = icon_link_to 'icon-plus-sign',  "Zeige alle Fahrten", "/trip/show?user=#{@user.id}"
-            - @trips.each do |trip|
-              .row.well
-                %div.span6
-                  %div.trip_info
-                    = link_to image_tag("/assets/trips/#{trip.id}.png", size: "300x300"), "/trip/show/#{trip.id}"
-                %div.span6.listing
-                  .row
-                    = link_to "#{trip.getTripLength} Kilometer am #{I18n.l trip.measurements.first.created_at, format: :literal_date} um #{I18n.l trip.created_at, format: :time_ago} Uhr", "/trip/show/#{trip.id}"
-                  %div.row
-                    %p
-                    %p
-                      %ul
-                        %li
-                          %i.icon-globe
-                          = ('%.2f' % trip.getTripLength).to_s + " Km"
-                        %li
-                          %i.icon-fire
-                          = ('%.2f' % trip.getAvgConsumption).to_s + " Liter"
-                        %li
-                          %i.icon-leaf
-                          = ('%.2f' % trip.getAvgCo2).to_s + " kg/100 km"
-                  - if current_user.group == 3 || current_user.group == 0
+        - if current_user.friendship_exists_with?(@user) || current_user == @user
+          - unless @trips.empty?
+            .row
+              %h2#trip-list="Zuletzte hochgeladene Fahrten"
+              - if current_user.group == 1
+                = icon_link_to 'icon-plus-sign',  "Zeige alle Fahrten", "/trip/show?user=#{@user.id}"
+              - @trips.each do |trip|
+                .row.well
+                  %div.span6
+                    %div.trip_info
+                      = link_to image_tag("/assets/trips/#{trip.id}.png", size: "300x300"), "/trip/show/#{trip.id}"
+                  %div.span6.listing
+                    .row
+                      = link_to "#{trip.getTripLength} Kilometer am #{I18n.l trip.measurements.first.created_at, format: :literal_date} um #{I18n.l trip.created_at, format: :time_ago} Uhr", "/trip/show/#{trip.id}"
                     %div.row
-                      %div
-                        %p
-                          %strong
-                            = "Verdiente Badges:"
-                        %table.table.table-striped
-                          %tbody
-                            - trip.badges.each do |badge|
-                              %tr
-                                %td
-                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
-                                    = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
-                                %td
-                                  %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
-                                    = "Verdient für: " + badge[0].description
+                      %p
+                      %p
+                        %ul
+                          %li
+                            %i.icon-globe
+                            = ('%.2f' % trip.getTripLength).to_s + " Km"
+                          %li
+                            %i.icon-fire
+                            = ('%.2f' % trip.getAvgConsumption).to_s + " Liter"
+                          %li
+                            %i.icon-leaf
+                            = ('%.2f' % trip.getAvgCo2).to_s + " kg/100 km"
+                    - if current_user.group == 3 || current_user.group == 0
+                      %div.row
+                        %div
+                          %p
+                            %strong
+                              = "Verdiente Badges:"
+                          %table.table.table-striped
+                            %tbody
+                              - trip.badges.each do |badge|
+                                %tr
+                                  %td
+                                    %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
+                                      = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
+                                  %td
+                                    %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
+                                      = "Verdient für: " + badge[0].description
 
-        - unless @users_comments.empty?
+          - unless @users_comments.empty?
+            .row
+              %h2#comments-list=:my_recent_comments.l
+              - @users_comments.each do |comment|
+                .row.well
+                  .pull-right
+                    - if comment.recipient
+                      = link_to image_tag(comment.recipient.avatar_photo_url(:thumb), :alt => "#{comment.recipient.login}"), commentable_url(comment), :class => 'thumbnail'
+                  %h3
+                    - if comment.commentable.eql?(comment.recipient)
+                      = :to.l + ": #{link_to comment.recipient.login, commentable_url(comment)}".html_safe
+                    - else
+                      = :on_commentable.l + ": #{link_to comment.commentable_name, commentable_url(comment)} (#{comment.commentable_type.l})".html_safe
+                  %p= truncate_words( comment.comment, 10, '...').html_safe
           .row
-            %h2#comments-list=:my_recent_comments.l
-            - @users_comments.each do |comment|
-              .row.well
-                .pull-right
-                  - if comment.recipient
-                    = link_to image_tag(comment.recipient.avatar_photo_url(:thumb), :alt => "#{comment.recipient.login}"), commentable_url(comment), :class => 'thumbnail'
-                %h3
-                  - if comment.commentable.eql?(comment.recipient)
-                    = :to.l + ": #{link_to comment.recipient.login, commentable_url(comment)}".html_safe
-                  - else
-                    = :on_commentable.l + ": #{link_to comment.commentable_name, commentable_url(comment)} (#{comment.commentable_type.l})".html_safe
-                %p= truncate_words( comment.comment, 10, '...').html_safe
-        .row
-          %h2#received-list=:profile_comments.l
-          %a#newest_comment
-          = render :partial => 'comments/comment', :collection => @comments
-          %span#more_comments_links= more_comments_links(@user)
-          %h3=:add_your_comment.l
-          = render :partial => 'comments/comment_form', :locals => {:commentable => @user}
-
+            %h2#received-list=:profile_comments.l
+            %a#newest_comment
+            = render :partial => 'comments/comment', :collection => @comments
+            %span#more_comments_links= more_comments_links(@user)
+            %h3=:add_your_comment.l
+            = render :partial => 'comments/comment_form', :locals => {:commentable => @user}
+        - else
+          %h4
+            = "Du bist nicht mit " + @user.login + " befreundet und kannst nicht seine Fahrten oder andere Daten einsehen."
+            %center
+              %li.addfriend= add_friend_link(@user)
 
 
 
