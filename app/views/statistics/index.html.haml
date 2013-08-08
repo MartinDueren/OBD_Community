@@ -1,0 +1,38 @@
+= render :partial => 'shared/admin_nav'
+-@page_title = :statistics.l
+%dl.dl-horizontal
+  %dt= :total_users.l
+  %dd= @total_users
+  %dt= :unactivated_users.l
+  %dd= @unactivated_users
+  %dt= :new_today.l
+  %dd
+    = @today_new_users.size
+    %ul
+      - @today_new_users.each do |user|
+        %li= link_to user.login, user_path(user)
+
+  %dt= :new_yesterday.l
+  %dd
+    = @yesterday_new_users.size
+    %ul
+    - @yesterday_new_users.each do |user|
+      %li= link_to user.login, user_path(user)
+
+  %dt= :active.l
+  %dd
+    = @active_users_count
+    = :user.l
+    (
+    = number_to_percentage((@active_users_count/@total_users.to_f)*100, :precision => 1)
+    =", 1 "+:month.l+")"
+  %dt= :most_active_1_month.l
+  %dd
+    = :user.l
+    %ul
+      - @active_users.each do |user|
+        %li
+          = link_to user.login, user_path(user.id)
+          \(
+          = user.activities_count
+          \)

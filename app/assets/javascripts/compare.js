@@ -122,6 +122,9 @@ function initMap1() {
   //map.addControl(new OpenLayers.Control.OverviewMap());
   map1.addControl(new OpenLayers.Control.KeyboardDefaults());
   //map.addControl(new OpenLayers.Control.DragPan());
+  map1.events.register("move", map1, function() {
+            postAnalytics();
+        });
 
   epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
   projectTo = map1.getProjectionObject();
@@ -195,6 +198,7 @@ function addHeatmapLayerMap1(){
 
 //TODO this could be more DRY
 function selectPoint(point){
+  postAnalytics();
 	if(searchResult.dataPoint.x in dataHash1){
 		if(map1.getLayersByName("Marker1").length > 0){
 			map1.removeLayer(marker1);
@@ -359,6 +363,9 @@ function initMap2() {
   //map.addControl(new OpenLayers.Control.OverviewMap());
   map2.addControl(new OpenLayers.Control.KeyboardDefaults());
   //map.addControl(new OpenLayers.Control.DragPan());
+  map2.events.register("move", map2, function() {
+            postAnalytics();
+        });
 
   epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
   projectTo = map2.getProjectionObject();
@@ -427,6 +434,16 @@ function addHeatmapLayerMap2(){
   });
   heatmap.addFeatures(features);
   map2.addLayers([heatmap]);
+}
+
+var lastPost = new Date().getTime();
+function postAnalytics(){
+  if(lastPost != 0 && (new Date().getTime() - lastPost) > 3000){
+    console.log("interaction");
+    $.post("http://giv-dueren.uni-muenster.de/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
+
+    lastPost = new Date().getTime();
+  }
 }
 
 //call init

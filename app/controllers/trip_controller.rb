@@ -48,6 +48,7 @@ class TripController < BaseController
     @tripA = Trip.find_by_id(params[:a])
     @tripB = Trip.find_by_id(params[:b])
     gon.user = current_user.id
+    gon.user_group = current_user.group
     gon.params = params
     gon.measurementsMap1 = @tripA.measurements.order("recorded_at ASC")
     gon.measurementsMap2 = @tripB.measurements.order("recorded_at ASC")
@@ -79,6 +80,7 @@ class TripController < BaseController
     if params.has_key?(:id)
       @trip = Trip.find_by_id(params[:id])
       gon.user = current_user.id
+      gon.user_group = current_user.group
       gon.params = params
       gon.measurements = @trip.measurements
 

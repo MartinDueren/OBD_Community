@@ -7,8 +7,9 @@ class StaticPagesController < BaseController
   before_filter :track_action
 
   def community_map
-    gon.user = current_user.id
-    gon.params = params
+      gon.user = current_user.id
+      gon.user_group = current_user.group
+      gon.params = params
     render :layout => "fullmap"
   end
   

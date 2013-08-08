@@ -18,7 +18,10 @@ function init() {
 
     map = new OpenLayers.Map('map', mapOptions);
 
-
+    map.events.register("move", map, function() {
+            postAnalytics();
+        });
+    
     var osm = new OpenLayers.Layer.OSM();
     map.addLayers([osm]);
 
@@ -72,6 +75,16 @@ function changeSensor(sensor){
     }
     
     
+}
+
+var lastPost = new Date().getTime();
+function postAnalytics(){
+  if(lastPost != 0 && (new Date().getTime() - lastPost) > 3000){
+    console.log("interaction");
+    $.post("http://giv-dueren.uni-muenster.de/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
+
+    lastPost = new Date().getTime();
+  }
 }
 
 $('a#change-sensor-avg-speed').click(function(){ changeSensor("avg_speed");});

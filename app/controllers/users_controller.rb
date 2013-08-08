@@ -24,6 +24,8 @@ class UsersController < BaseController
   before_filter :admin_required, :only => [:assume, :destroy, :featured, :toggle_featured, :toggle_moderator]
   before_filter :admin_or_current_user_required, :only => [:statistics]
 
+  before_filter :track_action, :only => [:index, :show]
+
   def activate
     redirect_to signup_path and return if params[:id].blank?
     @user = User.find_by_activation_code(params[:id]) 
@@ -76,7 +78,7 @@ class UsersController < BaseController
     @clippings      = @user.clippings.find(:all, :limit => 5)
     @photos         = @user.photos.find(:all, :limit => 5)
     @comment        = Comment.new(params[:comment])
-    @trips          = @user.trips.sort_by { |i| i.created_at }
+    @trips          = @user.trips.find(:all, :order => "id desc", :limit => 10)
     @mileage        = @user.mileage
     @speed          = @user.speed
     @consumption    = @user.consumption
@@ -442,6 +444,12 @@ class UsersController < BaseController
     end
 
   private
+    def track_action
+      if current_user != nil
+        Analytics.new(:user_id => current_user.id, :action => action_name, :url => "/user/#{action_name}/", :description => params.to_json, :group => current_user.group, :category => "").save
+      end
+    end
+
     def require_group_2
       unless current_user.group == 2 || current_user.group == 0
         redirect_to login_url

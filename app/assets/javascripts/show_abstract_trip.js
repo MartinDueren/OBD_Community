@@ -119,6 +119,9 @@ function initMap() {
   //map.addControl(new OpenLayers.Control.OverviewMap());
   map.addControl(new OpenLayers.Control.KeyboardDefaults());
   //map.addControl(new OpenLayers.Control.DragPan());
+  map.events.register("move", map, function() {
+            postAnalytics();
+        });
 
   epsg4326 =  new OpenLayers.Projection("EPSG:4326"); //WGS 1984 projection
   projectTo = map.getProjectionObject();
@@ -193,6 +196,7 @@ function addHeatmapLayer(){
 }
 
 function selectPoint(point){
+  postAnalytics();
   if(map.getLayersByName("Marker").length > 0){
     map.removeLayer(marker);
   }
@@ -226,7 +230,15 @@ function getColor(sensor, value){
     else return "#E01B1B";
 }
 
+var lastPost = new Date().getTime();
+function postAnalytics(){
+  if(lastPost != 0 && (new Date().getTime() - lastPost) > 3000){
+    console.log("interaction");
+    $.post("http://giv-dueren.uni-muenster.de/analytics/create", { user_id: gon.user, group: gon.user_group, action_name: gon.params.action, url: "/" + gon.params.controller + "/" + gon.params.action + "/", category: "interaction", description: JSON.stringify(gon.params) } );
 
+    lastPost = new Date().getTime();
+  }
+}
 
 //call init
 window.onload = init;
