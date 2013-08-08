@@ -71,12 +71,12 @@ function initChart(){
         includeZero: false
     },
     axisY: {
-        title: "CO2",
+        title: "Verbrauch",
         titleFontSize: 15
         //valueFormatString: " "
     },
     axisY2: {
-        title: "Verbrauch",
+        title: "CO2",
         titleFontSize: 15
         //valueFormatString: " "
     },
