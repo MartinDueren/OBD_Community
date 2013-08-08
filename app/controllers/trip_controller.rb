@@ -5,11 +5,9 @@ class TripController < BaseController
   #before_filter :basic_auth, :only => [:create]
   before_filter :track_action, :only => [:show, :abstract, :compare, :show_single_trip, :show_abstract_trip]
 
-  before_filter :require_group_1, :only => [:show_single_trip]
-  before_filter :require_group_1, :only => [:show]
+  before_filter :require_group_1, :only => [:show, :show_single_trip]
   before_filter :require_group_1_or_2, :only => [:compare]
-  before_filter :require_group_4, :only => [:show_abstract_trip]
-  before_filter :require_group_4, :only => [:abstract]
+  before_filter :require_group_4, :only => [:abstract, :show_abstract_trip]
 
   uses_tiny_mce do
     {:only => [:show], :options => configatron.default_mce_options}
