@@ -269,7 +269,7 @@ class Trip < ActiveRecord::Base
       end
     end
 
-    if trip_co2 < min_co2_week
+    if min_co2_week != 999 && trip_co2 < min_co2_week
       self.badges << [Merit::Badge.get(8), self.id]
     end
   end
@@ -293,7 +293,7 @@ class Trip < ActiveRecord::Base
       end
     end
 
-    if trip_consumption < min_consumption_week
+    if min_consumption_week != 999 &&trip_consumption < min_consumption_week
       self.badges << [Merit::Badge.get(11), self.id]
     end
   end
