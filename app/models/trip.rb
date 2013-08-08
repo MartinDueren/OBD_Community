@@ -286,7 +286,7 @@ class Trip < ActiveRecord::Base
     end
 
     min_consumption_week = 999
-    trips_last_week = Trip.where(:created_at => Time.now.prev_week..Time.now.prev_week.end_of_week)
+    trips_last_week = Trip.where(:created_at => (Time.now-7.days)..Time.now)
     trips_last_week.each do |trip|
       if trip.getAvgConsumption < min_consumption_week && trip != self
         min_consumption_week = trip.getAvgConsumption
