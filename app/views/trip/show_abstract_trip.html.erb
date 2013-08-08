@@ -24,22 +24,69 @@
 </div>
 
 <hr class="featurette-divider">
-
+<% total_co2 = @trip.getTotalCo2 %>
 <div class="row">
   <div class="span6">
-    <h2 class="featurette-heading">CO2 Fußabdruck</h2>
-    <p class="lead">Bei dieser Fahrt wurden ca. <strong><%= '%.2f' % (@trip.getTotalCo2) %> kg</strong> CO2 ausgetoßen und <strong><%= '%.2f' % (@trip.getTotalConsumption) %> Liter</strong> Benzin verbraucht.</p>
-    <img src="/assets/footprint.jpg" class="img-rounded">
+    <h2 class="featurette-heading">CO2 Fußabdruck <img src="/assets/footprint.jpg" class="img-rounded" height="40px" width="30px"></h2>
+    <p class="lead">Bei dieser Fahrt wurden ca. <strong><%= '%.2f' % (total_co2) %> kg</strong> CO2 ausgetoßen und <strong><%= '%.2f' % (@trip.getTotalConsumption) %> Liter</strong> Benzin verbraucht.</p> 
+    <p class="lead"><strong>Was die meisten nicht wissen:</strong> CO2 kann nicht vom Auto gefiltert werden. Durch einen Liter verbranntes Benzin werden IMMER ca. 2.35 Kg CO2 ausgestoßen.</p> 
+    
   </div><!-- /.span6 -->
   <div class="span6">
-    <h2 class="featurette-heading">In anderen Worten</h2>
-    <p class="lead">Bei der Produktion von 1 kg Rindfleisch werden 13.3 kg CO2 produziert. Diese Fahrt ist also Equivalent zur Produktion von <strong><%= '%.2f' % ((@trip.getTotalCo2) / 13.3) %></strong> kg Rindfleisch.</p>
-    <p class="lead"><strong>ODER<strong></p>
-    <p class="lead">
-    	Ein großer Ahorn-Baum kann bis zu 205 kg CO2 jährlich aus der Atmosphäre aufnehmen. Für diese Fahrt würde der selbe Baum ca. <strong><%= '%.0f' % ((@trip.getTotalCo2) / (205.0 / 360.0)) %></strong> Tage benötigen, um das produzierte CO2 aufzunehmen.
-    </p>
+    <h2 class="featurette-heading">Graph: <span class="muted">Zoomen und Scrollen</span></h2>
+    <p class="lead">Fahre mit der Maus über den Graphen, um auf der Karte zu sehen wo die Messung liegt. Zoomen und Scrollen im Graphen und in der Karte sind auch möglich! Die Wärmekarte (Heatmap) zeigt an welchen Stellen besonders viel CO2 produziert wurde.</p>
   </div><!-- /.span6 -->
 </div><!-- /.row -->
+
+<h2 class="featurette-heading">Was erzeugt auch <%= '%.2f' % (total_co2) %> kg CO2<span class="muted"> (Zufällig Fakten)</span></h2>
+<% a = 1 %>
+<% a = rand(1..6) %>
+<% b = a %>
+<% until b != a %>
+  <% b = rand(1..6) %>
+<% end %>
+<% if a == 1 || b == 1 %>
+  <div class="row well">
+    <p class="lead">
+      Bei der Produktion von 1 kg Rindfleisch werden 13.3 kg CO2 produziert. Diese Fahrt ist also Equivalent zur Produktion von <strong><%= '%.2f' % ((total_co2) / 13.3) %> kg</strong> Rindfleisch.
+    </p>
+  </div>
+<% end %>
+<% if a == 2 || b == 2 %>
+  <div class="row well">
+    <p class="lead">
+        Ein großer Ahorn-Baum kann bis zu 205 kg CO2 jährlich aus der Atmosphäre aufnehmen. Für diese Fahrt würde der selbe Baum ca. <strong><%= '%.0f' % ((total_co2) / (205.0 / 360.0)) %> Tage</strong> benötigen, um das produzierte CO2 aufzunehmen.
+    </p>
+  </div>
+<% end %>
+<% if a == 3 || b == 3 %>
+  <div class="row well">
+    <p class="lead">
+      Eine 13 Watt Energiespar-Birne erzeugt <strong><%= '%.2f' % (total_co2) %> kg</strong> CO2 wenn sie <strong><%= '%.2f' % (total_co2 * 3.21) %> Tage</strong> ununterbrochen leuchtet.
+    </p>
+  </div>
+<% end %>
+<% if a == 4 || b == 4 %>
+  <div class="row well">
+    <p class="lead">
+      Eine Boing A 747 erzeugt im normalen Flug <strong><%= '%.2f' % (total_co2) %> kg</strong> CO2 innerhalb von <strong><%= '%.2f' % (total_co2 * 0.1136) %> Sekunden</strong>.
+    </p>
+  </div>
+<% end %>
+<% if a == 5 || b == 5 %>
+  <div class="row well">
+    <p class="lead">
+      Ein 42 Zoll LCD Fernseher erzeugt <strong><%= '%.2f' % (total_co2) %> kg</strong> CO2 wenn er <strong><%= '%.2f' % (total_co2 * 5.99) %> Stunden</strong> ununterbrochen genutzt wird.
+    </p>
+  </div>
+<% end %>
+<% if a == 6 || b == 6 %>
+  <div class="row well">
+    <p class="lead">
+      Die Energie, die für den Betrieb eines normalen Haushalts benötigt wird, erzeugt <strong><%= '%.2f' % (total_co2) %> kg</strong> CO2 innerhalb von <strong><%= '%.2f' % ((total_co2 * 40.43) / 60) %> Stunden</strong>. 
+    </p>
+  </div>
+<% end %>
 
 <hr class="featurette-divider">
 
