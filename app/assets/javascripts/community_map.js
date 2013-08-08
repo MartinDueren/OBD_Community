@@ -41,6 +41,7 @@ function init() {
 
 
 function changeSensor(sensor){
+    postAnalytics();
     switch (sensor){
         case "avg_speed":
             document.getElementById("legend_description").innerHTML="Durchschnittliche Geschwindigkeit";
