@@ -115,7 +115,7 @@ function initChart(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       
-      type: "spline",
+      type: "line",
       name: "Geschwindigkeit in Km/h",
       showInLegend: true,
       xValueType: "dateTime",
@@ -125,7 +125,7 @@ function initChart(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "primary",
-      type: "spline",
+      type: "line",
       name: "Verbrauch in l/100 km",
       showInLegend: true,
       xValueType: "dateTime",

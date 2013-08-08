@@ -2,7 +2,7 @@ class StaticPagesController < BaseController
   
   #before_filter force_ssl, :only => [:auth]
   before_filter :require_group_2, :only => [:community_map]
-  before_filter :require_group_3, :only => [:scoreboard, badges]
+  before_filter :require_group_3, :only => [:scoreboard, :badges]
   before_filter :track_action
 
   def community_map
