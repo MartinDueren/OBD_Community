@@ -87,7 +87,7 @@
             %h2#trip-list="Zuletzte hochgeladene Fahrten"
             - if current_user.group == 1
               = icon_link_to 'icon-plus-sign',  "Zeige alle Fahrten", "/trip/show?user=#{@user.id}"
-            - @trip.each do |trip|
+            - @trips.each do |trip|
               .row.well
                 %div.span6
                   %div.trip_info
