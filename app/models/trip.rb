@@ -35,8 +35,10 @@ class Trip < ActiveRecord::Base
     self.measurements.each_with_index do |m,i|
       unless i == 0
         co2 = (((m.maf / 14.7) / 730 )) * 2.35 #kg per s
-        seconds = m.recorded_at - self.measurements[i-1].recorded_at
-        sum += seconds * co2
+        unless (m.recorded_at - self.measurements[i-1].recorded_at) > 10
+          seconds = m.recorded_at - self.measurements[i-1].recorded_at
+          sum += seconds * co2
+        end
       end
     end
     sum
@@ -391,7 +393,7 @@ class Trip < ActiveRecord::Base
   def mostMiles
     @current_user = User.find_by_id(self.user_id)
     unless @current_user.mileage >= User.maximum(:mileage)
-      if (User.mileage + self.getTripLength) > User.maximum(:mileage)
+      if (@current_user.mileage + self.getTripLength) > User.maximum(:mileage)
         self.badges << [Merit::Badge.get(28), self.id]
       end
     end

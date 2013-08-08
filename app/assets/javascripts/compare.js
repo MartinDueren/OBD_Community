@@ -78,7 +78,7 @@ function initChartMap1(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       
-      type: "spline",
+      type: "line",
       name: "Geschwindigkeit in Km/h",
       showInLegend: true,
       xValueType: "dateTime",
@@ -88,7 +88,7 @@ function initChartMap1(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "primary",
-      type: "spline",
+      type: "line",
       name: "Verbrauch in l/100 km",
       showInLegend: true,
       xValueType: "dateTime",
@@ -98,7 +98,7 @@ function initChartMap1(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
-      type: "spline",
+      type: "line",
       name: "U/min",
       showInLegend: true,
       xValueType: "dateTime",
