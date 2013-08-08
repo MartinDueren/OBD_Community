@@ -83,7 +83,7 @@
                   = icon_link_to 'icon-plus-sign',  "Zeige Badges", "/badges?user=#{@user.id}"
 
 
-        - if current_user.friendship_exists_with?(@user) || current_user == @user
+        - if current_user.friendship_exists_with?(@user) || current_user == @user || current_user.admin?
           - unless @trips.empty?
             .row
               %h2#trip-list="Zuletzte hochgeladene Fahrten"
