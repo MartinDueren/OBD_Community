@@ -116,16 +116,20 @@
                           %p
                             %strong
                               = "Verdiente Badges:"
-                          %table.table.table-striped
-                            %tbody
-                              - trip.badges.each do |badge|
-                                %tr
-                                  %td
-                                    %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
-                                      = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
-                                  %td
-                                    %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
-                                      = "Verdient für: " + badge[0].description
+                          - if trip.badges.empty?
+                            %p
+                              = "Keine Badges erhalten für diese Fahrt."
+                          - else
+                            %table.table.table-striped
+                              %tbody
+                                - trip.badges.each do |badge|
+                                  %tr
+                                    %td
+                                      %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
+                                        = image_tag "Badges/#{badge[0].custom_fields[:image]}", size: "28x28"
+                                    %td
+                                      %a{"rel"=>"tooltip", "data-placement"=>"left", "title"=>"Gibt #{badge[0].custom_fields[:points]} Punkte!"}
+                                        = "Verdient für: " + badge[0].description
 
           - unless @users_comments.empty?
             .row

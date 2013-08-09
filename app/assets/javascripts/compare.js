@@ -98,7 +98,7 @@ function initChartMap1(){
 
       /*** Change type "column" to "bar", "area", "line" or "pie"***/
       axisYType: "secondary",
-      type: "line",
+      type: "spline",
       name: "U/min",
       showInLegend: true,
       xValueType: "dateTime",
