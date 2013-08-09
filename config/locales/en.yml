@@ -10,3 +10,10 @@ en:
   badges: "Badges"
   scoreboard: "Scoreboard"
   trips: "Trips"
+  views:
+    pagination:
+      first: "&laquo; Erste"
+      last: "Letzte &raquo;"
+      previous: "&lsaquo; Vorige"
+      next: "Nächste &rsaquo;"
+      truncate: "&hellip;"

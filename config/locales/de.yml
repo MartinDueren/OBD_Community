@@ -1,9 +1,9 @@
-de: 
+de:
   bootstrap_forms:
     errors:
       header: 'Bitte behebe folgende Fehler:'
     buttons:
-      cancel: 'Forget it!'
+      cancel: 'Vergiss es!'
   hello: "Hallo Welt"
   community_tagline: ""
   my_trips: "Fahrten"
@@ -504,6 +504,7 @@ de:
   #en: friendship_could_not_be_created: Friendship could not be created
   friendship_could_not_be_created: Freundschaft konnte nicht angelegt werden
   #en: friendship_request_detail: Friendship request detail
+  friendship_request_accepted: Freundschaftsanfrage wurde akzeptiert
   friendship_request_detail: Details der Freundschaftsanfrage
   #en: friendship_requested: Requested friendship with %{friend}.
   friendship_requested: Freundschaft von %{friend} angefragt.
@@ -1312,6 +1313,7 @@ de:
   when_you_see_an_image_you_like_on_the_web: Wenn du ein Bild siehst, dass du haben willst, klick das Bookmarklet, um es zu sichern auf %{site}
   #en: why_sign_up: Why Sign up?
   why_sign_up: Warum Registrieren?
+  would_like_to_be_friends_with_you_on: Jemand möchte mit dir befreundet sein!
   #en: write_a_blog_post: Write a blog post!
   write_a_blog_post: Mache einen Blogeintrag!
   #en: write_a_message: "Write a message:"

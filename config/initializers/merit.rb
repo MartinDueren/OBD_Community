@@ -156,24 +156,6 @@ Merit::Badge.create! ({
   custom_fields: { image: 'calendar-7.png', points: '7' }
 })
 Merit::Badge.create! ({
-  id: 24,
-  name: "Freundschaft",
-  description: "Erste Freundeseinladung.",
-  custom_fields: { image: 'adduser.png', points: '2' }
-})
-Merit::Badge.create! ({
-  id: 25,
-  name: "Erster Kommentar",
-  description: "Schreiben eines Kommentares.",
-  custom_fields: { image: 'pencil.png', points: '2' }
-})
-Merit::Badge.create! ({
-  id: 26,
-  name: "Kommentar bekommen",
-  description: "Ersters Mal kommentiert werden.",
-  custom_fields: { image: 'conversation.png', points: '2' }
-})
-Merit::Badge.create! ({
   id: 27,
   name: "Tester",
   description: "Offizieller Test-User",
