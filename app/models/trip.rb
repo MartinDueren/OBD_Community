@@ -346,7 +346,7 @@ class Trip < ActiveRecord::Base
           t_badges << b[0].id
         end
 
-        #add t_badges with conesc_badges to find out if there are duplicates and exit method if true
+        #add t_badges with consec_badges to find out if there are duplicates and exit method if true
         t_badges += consecutive_badges
         if t_badges.length != t_badges.uniq.length
           Rails.logger.info "Exiting consecutive Trips because there was another trip today with a consecutive badge"
@@ -357,13 +357,16 @@ class Trip < ActiveRecord::Base
 
 
     consecutive = 1
-    user_trips = user.trips.order('created_at ASC')
+    user_trips = user.trips.order('created_at DESC')
     for i in 0..(user_trips.length-2)
-      if user_trips[i].id == 71
-        debugger
-      end
-      if user_trips[i].created_at.beginning_of_day == user_trips[i+1].created_at.yesterday.beginning_of_day
+      puts user_trips[i].created_at
+      puts i
+      if user_trips[i+1].created_at.beginning_of_day == user_trips[i].created_at.yesterday.beginning_of_day
         consecutive += 1
+      else
+        if user_trips[i].created_at.beginning_of_day != user_trips[i+1].created_at.beginning_of_day
+          break
+        end
       end
     end
     

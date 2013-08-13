@@ -114,12 +114,20 @@ class TripController < BaseController
       measurements = []
       params[:features].each { |feature| 
         coords = wgs84_factory.point(feature[:geometry][:coordinates][0],feature[:geometry][:coordinates][1])
+        rpm = feature[:properties][:phenomenons][:Rpm][:value]
+        iat = feature[:properties][:phenomenons][:'Intake Temperature'][:value]
+        map = feature[:properties][:phenomenons][:'Intake Pressure'][:value]
 
         maf = 0
         if feature[:properties][:phenomenons][:'MAF'] != nil
           maf = feature[:properties][:phenomenons][:'MAF'][:value]
         else
           maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
+        end
+
+        if @current_user.login == "dhudi"
+          imap = rpm * (map - 70.0) / (iat + 273.0)
+          maf = (imap / 120.0) * (80.0 / 100.0) * 1.995 * 28.97 / 8.317
         end
 
         speed = feature[:properties][:phenomenons][:Speed][:value]
@@ -138,9 +146,6 @@ class TripController < BaseController
 
         co2 = consumption * 2.35 #gets kg/100 km
         recorded_at = feature[:properties][:time]
-        rpm = feature[:properties][:phenomenons][:Rpm][:value]
-        iat = feature[:properties][:phenomenons][:'Intake Temperature'][:value]
-        map = feature[:properties][:phenomenons][:'Intake Pressure'][:value]
 
         if !measurements.empty? && (Time.parse(recorded_at) - measurements.last.recorded_at) > 15 
           m = Measurement.new(

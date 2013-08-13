@@ -73,13 +73,13 @@
 									if trip_avg_co2 < (overall_avg_co2 - (25 * avg_co2_per))
 										smilie_text = "Wow! Die CO2 Werte dieser Fahrt sind um 25% besser als der Durchschnitt."
 										image_tag "/assets/smilies/1.png", size: "70x70"
-									elsif (overall_avg_co2 - (5 * avg_co2_per)) > trip_avg_co2 && trip_avg_co2 > (overall_avg_co2 - (15 * avg_co2_per))
+									elsif (overall_avg_co2 - (5 * avg_co2_per)) > trip_avg_co2 && trip_avg_co2 > (overall_avg_co2 - (25 * avg_co2_per))
 										smilie_text = "Toll! Die CO2 Werte dieser Fahrt sind um 15% besser als der Durchschnitt."
 										image_tag "/assets/smilies/2.png", size: "70x70"
 									elsif (overall_avg_co2 + (5 * avg_co2_per)) > trip_avg_co2 && trip_avg_co2 > (overall_avg_co2 - (5 * avg_co2_per))
 										smilie_text = "Die CO2 Werte dieser Fahrt sind super!"
 										image_tag "/assets/smilies/3.png", size: "70x70"
-									elsif (overall_avg_co2 + (5 * avg_co2_per)) < trip_avg_co2 && trip_avg_co2 < (overall_avg_co2 + (15 * avg_co2_per))
+									elsif (overall_avg_co2 + (5 * avg_co2_per)) < trip_avg_co2 && trip_avg_co2 < (overall_avg_co2 + (25 * avg_co2_per))
 										smilie_text = "Ups! Die CO2 Werte dieser Fahrt sind um 15% schlechter als der Durchschnitt."
 										image_tag "/assets/smilies/4.png", size: "70x70"
 									elsif trip_avg_co2 > (overall_avg_co2 + (25 * avg_co2_per))
