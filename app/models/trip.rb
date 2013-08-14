@@ -55,7 +55,7 @@ class Trip < ActiveRecord::Base
         consumption = m.maf / 10731 #to l per s
         unless (m.recorded_at - self.measurements[i-1].recorded_at) > 10
           seconds = m.recorded_at - self.measurements[i-1].recorded_at
-          sum += seconds * m.consumption 
+          sum += seconds * consumption 
         end
       end
     end
