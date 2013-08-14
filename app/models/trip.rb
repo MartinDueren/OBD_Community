@@ -32,7 +32,7 @@ class Trip < ActiveRecord::Base
   #outputs kg
   def getTotalCo2
     sum = 0
-    self.measurements.each_with_index do |m,i|
+    self.measurements.order("recorded_at ASC").each_with_index do |m,i|
       unless i == 0
         co2 = (((m.maf / 14.7) / 730 )) * 2.35 #kg per s
         unless (m.recorded_at - self.measurements.order("recorded_at ASC")[i-1].recorded_at) > 10
