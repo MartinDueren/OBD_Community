@@ -50,7 +50,7 @@ class Trip < ActiveRecord::Base
 
   def getTotalConsumption
     sum = 0
-    self.measurements.each_with_index do |m,i|
+    self.measurements.order("recorded_at ASC").each_with_index do |m,i|
       unless i == 0
         consumption = m.maf / 10731 #to l per s
         unless (m.recorded_at - self.measurements[i-1].recorded_at) > 10
