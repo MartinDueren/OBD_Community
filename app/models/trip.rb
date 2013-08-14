@@ -34,6 +34,9 @@ class Trip < ActiveRecord::Base
     sum = 0
     self.measurements.each_with_index do |m,i|
       unless i == 0
+        if(m.maf < 0.0)
+          m.maf = 0.0
+        end
         co2 = (((m.maf / 14.7) / 730 )) * 2.35 #kg per s
         unless (m.recorded_at - self.measurements[i-1].recorded_at) > 10
           seconds = m.recorded_at - self.measurements[i-1].recorded_at
@@ -52,6 +55,9 @@ class Trip < ActiveRecord::Base
     sum = 0
     self.measurements.order("recorded_at ASC").each_with_index do |m,i|
       unless i == 0
+        if(m.maf < 0.0)
+          m.maf = 0.0
+        end
         consumption = m.maf / 10731 #to l per s
         unless (m.recorded_at - self.measurements[i-1].recorded_at) > 10
           seconds = m.recorded_at - self.measurements[i-1].recorded_at
