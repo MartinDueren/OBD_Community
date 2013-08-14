@@ -128,6 +128,9 @@ class TripController < BaseController
         if @current_user.login == "dhudi" || @current_user.login == "Annette"
           imap = rpm * (map - 70.0) / (iat + 273.0)
           maf = (imap / 120.0) * (80.0 / 100.0) * 1.995 * 28.97 / 8.317
+          if maf < 0.0
+            maf = 0.0
+          end
         end
 
         speed = feature[:properties][:phenomenons][:Speed][:value]
