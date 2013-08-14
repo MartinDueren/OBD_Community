@@ -125,7 +125,7 @@ class TripController < BaseController
           maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
         end
 
-        if @current_user.login == "dhudi"
+        if @current_user.login == "dhudi" || @current_user.login == "Annette"
           imap = rpm * (map - 70.0) / (iat + 273.0)
           maf = (imap / 120.0) * (80.0 / 100.0) * 1.995 * 28.97 / 8.317
         end
