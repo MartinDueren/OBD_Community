@@ -32,11 +32,12 @@ class Trip < ActiveRecord::Base
   #outputs kg
   def getTotalCo2
     sum = 0
-    self.measurements.order("recorded_at ASC").each_with_index do |m,i|
+    self_measurements = self.measurements.order("recorded_at ASC")
+    self_measurements.each_with_index do |m,i|
       unless i == 0
         co2 = (((m.maf / 14.7) / 730 )) * 2.35 #kg per s
-        unless (m.recorded_at - self.measurements.order("recorded_at ASC")[i-1].recorded_at) > 10
-          seconds = m.recorded_at - self.measurements.order("recorded_at ASC")[i-1].recorded_at
+        unless (m.recorded_at - self_measurements[i-1].recorded_at) > 10
+          seconds = m.recorded_at - self_measurements[i-1].recorded_at
           sum += seconds * co2
         end
       end
@@ -50,11 +51,12 @@ class Trip < ActiveRecord::Base
 
   def getTotalConsumption
     sum = 0
-    self.measurements.order("recorded_at ASC").each_with_index do |m,i|
+    self_measurements = self.measurements.order("recorded_at ASC")
+    self_measurements.each_with_index do |m,i|
       unless i == 0
         consumption = m.maf / 10731 #to l per s
-        unless (m.recorded_at - self.measurements.order("recorded_at ASC")[i-1].recorded_at) > 10
-          seconds = m.recorded_at - self.measurements.order("recorded_at ASC")[i-1].recorded_at
+        unless (m.recorded_at - self_measurements[i-1].recorded_at) > 10
+          seconds = m.recorded_at - self_measurements[i-1].recorded_at
           sum += seconds * consumption 
         end
       end
