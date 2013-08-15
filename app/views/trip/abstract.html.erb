@@ -17,7 +17,7 @@
         <tr>
           <td><i class="icon-globe"> </i><%= current_user.mileage %> Km</td>
           <td><i class="icon-list"> </i><%= current_user.trips.length %></td> 
-          <td><i class="icon-road"> </i><%= '%.2f' % (current_user.total_co2 / 60.0 / 60.0) %> kg</td>
+          <td><i class="icon-road"> </i><%= '%.2f' % (current_user.total_co2) %> kg</td>
           <td><img src="../../assets/icon_durchschnitt.gif"> <%= '%.0f' % current_user.co2 %> kg/100 km</td>
           <td><i class="icon-fire"> </i><%= '%.0f' % current_user.total_consumption %> Liter</td>
           <td><img src="../../assets/icon_durchschnitt.gif"> <%= '%.1f' % current_user.consumption %> l/100km</td>
