@@ -107,7 +107,6 @@ class TripController < BaseController
 
     wgs84_factory = RGeo::Cartesian.factory(:srid => 4326)
 
-    Rails.logger.info "vor unless"
     unless params[:import].nil?
       @trip.user_id = @current_user.id
 
@@ -125,7 +124,7 @@ class TripController < BaseController
           maf = feature[:properties][:phenomenons][:'Calculated MAF'][:value]
         end
 
-        if @current_user.login == "dhudi" || @current_user.login == "Annette"
+        if @current_user.login == "dhudi" || @current_user.login == "Annette" || @current_user.login == "Josef"
           imap = rpm * (map - 70.0) / (iat + 273.0)
           if @current_user.login == "Annette"
             imap = rpm * (map - 75.0) / (iat + 273.0)
