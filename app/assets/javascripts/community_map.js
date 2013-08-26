@@ -25,6 +25,26 @@ function init() {
     var osm = new OpenLayers.Layer.OSM();
     map.addLayers([osm]);
 
+    var grey = new OpenLayers.Layer.OSM('Simple OSM Map', null, {
+        eventListeners: {
+            tileloaded: function(evt) {
+                var ctx = evt.tile.getCanvasContext();
+                if (ctx) {
+                    var imgd = ctx.getImageData(0, 0, evt.tile.size.w, evt.tile.size.h);
+                    var pix = imgd.data;
+                    for (var i = 0, n = pix.length; i < n; i += 4) {
+                        pix[i] = pix[i + 1] = pix[i + 2] = (3 * pix[i] + 4 * pix[i + 1] + pix[i + 2]) / 8;
+                    }
+                    ctx.putImageData(imgd, 0, 0);
+                    evt.tile.imgDiv.removeAttribute("crossorigin");
+                    evt.tile.imgDiv.src = ctx.canvas.toDataURL();
+                }
+            }
+        }
+    });
+
+    map.addLayer(grey);
+
 
     layer = new OpenLayers.Layer.WMS(
         "Community Statistics",
@@ -35,6 +55,7 @@ function init() {
     );
 
     map.addLayer(layer);
+    map.addControl(new OpenLayers.Control.LayerSwitcher());
     map.setCenter(muenster_center, 13);
 
 }
