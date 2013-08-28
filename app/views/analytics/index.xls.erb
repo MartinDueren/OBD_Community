@@ -1,0 +1,31 @@
+<?xml version="1.0"?>
+<Workbook xmlns="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:o="urn:schemas-microsoft-com:office:office"
+  xmlns:x="urn:schemas-microsoft-com:office:excel"
+  xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
+  xmlns:html="http://www.w3.org/TR/REC-html40">
+  <Worksheet ss:Name="Sheet1">
+    <Table>
+      <Row>
+        <Cell><Data ss:Type="String">Time</Data></Cell>
+        <Cell><Data ss:Type="String">User</Data></Cell>
+        <Cell><Data ss:Type="String">Group</Data></Cell>
+        <Cell><Data ss:Type="String">Action</Data></Cell>
+        <Cell><Data ss:Type="String">Description</Data></Cell>
+        <Cell><Data ss:Type="String">Url</Data></Cell>
+        <Cell><Data ss:Type="String">Category</Data></Cell>
+      </Row>
+    <% @analytics.each do |a| %>
+      <Row>
+        <Cell><Data ss:Type="Date"><%= a.created_at %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= a.user_id %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= a.group %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= a.action %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= a.description %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= a.url %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= a.category %></Data></Cell>
+      </Row>
+    <% end %>
+    </Table>
+  </Worksheet>
+</Workbook>
