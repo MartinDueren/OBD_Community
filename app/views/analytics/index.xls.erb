@@ -4,7 +4,7 @@
   xmlns:x="urn:schemas-microsoft-com:office:excel"
   xmlns:ss="urn:schemas-microsoft-com:office:spreadsheet"
   xmlns:html="http://www.w3.org/TR/REC-html40">
-  <Worksheet ss:Name="Sheet1">
+  <Worksheet ss:Name="Original Data">
     <Table>
       <Row>
         <Cell><Data ss:Type="String">Time</Data></Cell>
@@ -16,16 +16,134 @@
         <Cell><Data ss:Type="String">Category</Data></Cell>
       </Row>
     <% @analytics.each do |a| %>
+      <% if a.group != 5 && a.group != 0 && a.group != nil && a.user_id != 16 && a.user_id != 10 && a.action != "auth" && a.category != "interaction" %>
+        <Row>
+          <Cell><Data ss:Type="Date"><%= a.created_at %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= a.user_id %></Data></Cell>
+          <Cell><Data ss:Type="Number"><%= a.group %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= a.action %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= a.description %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= a.url %></Data></Cell>
+          <Cell><Data ss:Type="String"><%= a.category %></Data></Cell>
+        </Row>
+      <% end %>
+    <% end %>
+    </Table>
+  </Worksheet>
+  <Worksheet ss:Name="Results">
+    <Table>
       <Row>
-        <Cell><Data ss:Type="Date"><%= a.created_at %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= a.user_id %></Data></Cell>
-        <Cell><Data ss:Type="Number"><%= a.group %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= a.action %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= a.description %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= a.url %></Data></Cell>
-        <Cell><Data ss:Type="String"><%= a.category %></Data></Cell>
+        <Cell><Data ss:Type="String">User</Data></Cell>
+        <Cell><Data ss:Type="String">Num Visits Group 1</Data></Cell>
+        <Cell><Data ss:Type="String">Num Visits Group 2</Data></Cell>
+        <Cell><Data ss:Type="String">Num Visits Group 3</Data></Cell>
+        <Cell><Data ss:Type="String">Num Visits Group 4</Data></Cell>
+        <Cell><Data ss:Type="String">Num Interactions Group 1</Data></Cell>
+        <Cell><Data ss:Type="String">Num Interactions Group 2</Data></Cell>
+        <Cell><Data ss:Type="String">Num Interactions Group 4</Data></Cell>
+        <Cell><Data ss:Type="String">Num Trips Total</Data></Cell>
+        <Cell><Data ss:Type="String">Km Total</Data></Cell>
+        <Cell><Data ss:Type="String">Trips Viewed in %</Data></Cell>
+      </Row>
+    <% @testers = [9,11,12,15,17,18,19,23] %>
+    <% @grp1_visits = 0 %>
+    <% @grp1_interactions = 0 %>
+    <% @grp2_visits = 0 %>
+    <% @grp2_interactions = 0 %>
+    <% @grp3_visits = 0 %>
+    <% @grp3_interactions = 0 %>
+    <% @grp4_visits = 0 %>
+    <% @grp4_interactions = 0 %>
+    <% @testers.each do |t| %>
+      <% @user = {:visits_grp_1 => 0, :visits_grp_2 => 0, :visits_grp_3 => 0, :visits_grp_4 => 0, :interactions_grp_1 => 0, :interactions_grp_2 => 0, :interactions_grp_3 => 0, :interactions_grp_4 => 0} %>
+      <% @trip_ids = [] %>
+      <% User.find_by_id(t).trips.each do |trip| %>
+        <% if !(@trip_ids.include? trip.id) %>
+          <% @trip_ids << trip.id %>
+        <% end %>
+      <% end %>
+      <% @trips_viewed = [] %>
+      <% Analytics.where('user_id = ?', t).each do |a| %>
+        <% if a.group != 5 && a.group != 0 && a.group != nil && a.action != "auth" %>
+          <% if JSON.parse(a.description)["id"] != nil && !(@trips_viewed.include? JSON.parse(a.description)["id"]) %>
+            <% @trips_viewed << JSON.parse(a.description)["id"] %>
+          <% end %>
+          <% if a.group == 1 %>
+            <% if a.category == "interaction" %>
+              <% @user[:interactions_grp_1] += 1 %>
+              <% @grp1_interactions += 1 %>
+            <% else %>
+              <% @user[:visits_grp_1] += 1 %>
+              <% @grp1_visits += 1 %>
+            <% end %>
+          <% elsif a.group == 2 %>
+            <% if a.category == "interaction" %>
+              <% @user[:interactions_grp_2] += 1 %>
+              <% @grp2_interactions += 1 %>
+            <% else %>
+              <% @user[:visits_grp_2] += 1 %>
+              <% @grp2_visits += 1 %>
+            <% end %>
+          <% elsif a.group == 3 %>
+            <% if a.category == "interaction" %>
+              <% @user[:interactions_grp_3] += 1 %>
+              <% @grp3_interactions += 1 %>
+            <% else %>
+              <% @user[:visits_grp_3] += 1 %>
+              <% @grp3_visits += 1 %>
+            <% end %>
+          <% elsif a.group == 4 %>
+            <% if a.category == "interaction" %>
+              <% @user[:interactions_grp_4] += 1 %>
+              <% @grp4_interactions += 1 %>
+            <% else %>
+              <% @user[:visits_grp_4] += 1 %>
+              <% @grp3_visits += 1 %>
+            <% end %>
+          <% end %>
+        <% end %>
+      <% end %>
+      <Row>
+        <Cell><Data ss:Type="Number"><%= t %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:visits_grp_1] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:visits_grp_2] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:visits_grp_3] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:visits_grp_4] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:interactions_grp_1] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:interactions_grp_2] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= @user[:interactions_grp_4] %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= User.find_by_id(t).trips.length %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= User.find_by_id(t).mileage %></Data></Cell>
+        <Cell><Data ss:Type="Number"><%= '%.2f' % (@trips_viewed.length.to_f / @trip_ids.length.to_f * 100.0) %></Data></Cell>
       </Row>
     <% end %>
+      <Row>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String">Group</Data></Cell>
+        <Cell><Data ss:Type="String">Visits</Data></Cell>
+        <Cell><Data ss:Type="String">Interactions</Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String"><%= 1 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp1_visits %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp1_interactions %></Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String"><%= 2 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp2_visits %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp2_interactions %></Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String"><%= 3 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp3_visits %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp3_interactions %></Data></Cell>
+      </Row>
+      <Row>
+        <Cell><Data ss:Type="String"><%= 4 %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp4_visits %></Data></Cell>
+        <Cell><Data ss:Type="String"><%= @grp4_interactions %></Data></Cell>
+      </Row>
     </Table>
   </Worksheet>
 </Workbook>
