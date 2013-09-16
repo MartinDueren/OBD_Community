@@ -154,9 +154,6 @@
       <% @trips_viewed = [] %>
       <% Analytics.where('user_id = ?', t).each do |a| %>
         <% if a.group != 5 && a.group != 0 && a.group != nil && a.action != "auth" && a.url != "/static_pages/landing/" && a.url != "/user/index/" && a.url != "/user/show/" && a.url != "/static_pages/help/"%>
-          <% if JSON.parse(a.description)["id"] != nil && !(@trips_viewed.include? JSON.parse(a.description)["id"]) && (@trip_ids include? trip.id) %>
-            <% @trips_viewed << JSON.parse(a.description)["id"] %>
-          <% end %>
           <% if a.group == 1 %>
             <% if a.category == "interaction" %>
               <% @user[:interactions_grp_1] += 1 %>
